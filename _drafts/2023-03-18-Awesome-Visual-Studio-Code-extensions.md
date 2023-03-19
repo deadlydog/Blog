@@ -43,6 +43,9 @@ Read more about it in [the official docs](https://code.visualstudio.com/docs/edi
 Searching and installing extensions in VS Code is easy.
 To view your installed extensions and search for others, click the `Extensions` icon in the Activity Bar (the left sidebar).
 You can also open the Extensions view from the Command Palette using the `View: Extensions` command, or with the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>.
+Use the search box at the top to find extensions.
+
+![Extensions view and search box](/assets/Posts/2023-03-18-Awesome-Visual-Studio-Code-extensions/extensions-activity-bar-view.png)
 
 See [the official extensions docs](https://code.visualstudio.com/docs/editor/extension-marketplace) for more info.
 You can also browse extensions on the [VS Code Marketplace](https://marketplace.visualstudio.com/VSCode).
