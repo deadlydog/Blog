@@ -31,8 +31,7 @@ Below I list some of the extensions that I use, and that you may want to conside
 
 ### Settings Sync
 
-Before getting started, I want to mention Settings Sync.
-If you do not have it enabled, you should consider doing so.
+If you do not have Settings Sync enabled, you should consider doing so.
 It allows you to sync your extensions across multiple machines, and can also sync settings, keyboard shortcuts, user snippets and tasks, UI state, and profiles.
 It is great for when you wipe your computer, or migrate to a new machine, as it brings all your customizations with you.
 It used to require an extension, but is now built into VS Code.
@@ -40,31 +39,31 @@ Read more about it in [the official docs](https://code.visualstudio.com/docs/edi
 
 ### Installing extensions
 
-Searching and installing extensions in VS Code is easy.
 To view your installed extensions and search for others, click the `Extensions` icon in the Activity Bar (the left sidebar).
 You can also open the Extensions view from the Command Palette using the `View: Extensions` command, or with the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>.
-Use the search box at the top to find extensions.
+Use the search box at the top to find extensions, and click the `Install` button to install them.
+Some extensions may require a reload of VS Code to take effect.
 
 ![Extensions view and search box](/assets/Posts/2023-03-18-Awesome-Visual-Studio-Code-extensions/extensions-activity-bar-view.png)
 
 See [the official extensions docs](https://code.visualstudio.com/docs/editor/extension-marketplace) for more info.
 You can also browse extensions on the [VS Code Marketplace](https://marketplace.visualstudio.com/VSCode).
 
-Alright, enough preamble, let's see the settings!
+Alright, enough preamble, let's see the extensions!
 
-If there are other settings you think belong on this list, please let me know in the comments.
+If there are other great extensions you think belong on this list, please let me know in the comments.
 
 <!-- Related: You may also be interested in this post about [Visual Studio Code extensions to install](/Visual-Studio-Code-extensions-to-install/). -->
 
 ## Editor extensions
 
+### Code Runner
 
-### Default language for code-runner
+Select some lines of code and press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>N</kbd> to run it, or use the right-click context menu.
+It supports many languages, including PowerShell, JavaScript, TypeScript, Python, PHP, Go, Ruby, C#, and more.
+You can also specify a default language, which will be used when you have not yet saved the file (so VS Code does not know the file type and language), or when you are working in a markdown file and want to run a code snippet.
 
-This setting will be used when you select some text, right-click, and select `Run Code` from the context menu.
-
-This is handy when you open a new tab and have not yet saved the file (so VS Code does not know the file type and language), but want to run a portion of the code.
-It is also useful when you are working in a markdown file and want to run a code snippet.
+[View the extension on the marketplace](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)
 
 I work a lot in PowerShell, so I set the default language to `powershell`.
 You may want to set it to something like `javascript`, `typescript`, `python`, `csharp`, `markdown`, etc.
