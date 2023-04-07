@@ -93,6 +93,35 @@ Automatically rename paired HTML/XML tags.
 
 [View Auto Rename Tag on the marketplace](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag)
 
+### Better Comments
+
+Extension ID: `aaron-bond.better-comments`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### Code Runner
 
 Extension ID: `formulahendry.code-runner`
