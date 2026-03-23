@@ -58,27 +58,39 @@ Infrastructure teams may think they need to purchase additional hardware sooner 
 
 ## Hidden costs of not decommissioning properly
 
-Aside from the monetary hosting costs, there are hidden costs that can be just as costly:
+Aside from the monetary hosting costs, there are hidden costs of not decommissioning apps, or only partially decommissioning them, that can be just as expensive.
 
+### Mental costs of keeping old services around
 
+- It creates a larger inventory of things to keep track of, creating additional mental overhead and cognitive load for teams.
+- It can be worrying to have a bunch of unknown services running in your environment, especially if you don't know what they are for or who is responsible for them.
+  - If they do eventually get assigned to a team, the team may feel stressed about having to be responsible for something they don't understand or have any knowledge around.
+- It can lead to a hesitancy of making changes for fear of breaking something, slowing progress.
 
-- Costs of keeping old services around (hosting/operational costs, migrating platform costs, mental/knowledge costs)
-  - Pay to host it
-  - Pay for software licensing or monitoring node
-  - Extra things to be migrated when changing platforms
-  - If people don't know what a service is for they are scared/hesitant to remove it
-  - People asking questions about it when they discover it (have same conversations again year after year)
-  - Jobs take longer to run (e.g. managing on-prem things with scripts, IaC deployments, etc)
+### People time costs
 
-- Security costs
-  - Dangling DNS (add link)
-  - Paying for security scanning and monitoring of unused services
-  - Forgotten services that are unpatched and vulnerable to attack
+- You may need to have several meetings with different teams to figure out what a service is for, who is using it, and whether it can be safely decommissioned.
+  Taking time out of people's days is costly in terms of their hourly wages, but more importantly, it introduces context switching and lost productivity where they could have been working on something else.
+
+  If things are not properly decommissioned, these conversations tend to happen repeatedly, year after year, as new people join the company and discover the same old services again.
+- Updating dependencies (e.g. the .NET version or 3rd party libraries) can take a lot of time, especially if the service requires manual testing and deployment.
+- Unnecessary components may be needlessly migrated during platform migrations.
+  If you have a service that is no longer needed, but you don't know it, time and effort will likely be spent migrating it to the new platform.
+  This could be migrating it to a new hosting environment (e.g. Azure App Service to Kubernetes), or updating the app to send logs and metrics to the new monitoring platform (e.g. New Relic to Azure Monitor).
+
+  It might not even be an entire service; maybe something small like load balancer routing rules, or a storage account.
+  These things still take time out of people's days to determine what should be done with them.
+- Leads to inaccurate reports about what is in their current infrastructure, which may impact planning and decision making for things like capacity planning, budgeting, migrations, etc.
+- Automated jobs take longer to run (e.g. managing resources with scripts, IaC deployments, etc).
+
+### Security costs
+
+- Dangling DNS (add link).
+- Paying for security scanning and monitoring of unused services.
+- More services that need to be patched to avoid vulnerabilities and attacks.
 
 - People time costs
-  - Creates confusion about what is in use and what is not
-  - People have to spend time investigating what a service is for, which may involve meetings with several other people or teams, wasting all their time
-  - Leads to inaccurate reports about what is in their current infrastructure, which may impact planning and decision making for things like capacity planning, budgeting, migrations, etc.
+
   - Makes it harder to find the services that are actually in use, leading to wasted time and effort
 
 Ideally you have everything defined in a central place as infrastructure as code; this makes deleting it easy.
@@ -101,3 +113,11 @@ The next best thing is to have all of the infrastructure components documented s
   - Etc
 
 ## Conclusion
+
+If people don't know what a service is for, they will be hesitant to change or remove it, which can lead to it being left around indefinitely and incurring all of the above costs.
+This is true not only for entire apps or systems, but also for individual components and resources.
+
+The best way to ensure all parts of a service get decommissioned properly is to have a clear process and checklist for doing so.
+I've presented a starting checklist that you can build off of, but it should be customized to fit your company's processes and infrastructure.
+
+It's unlikely that the checklist will be perfect on the first try, so be sure to continually update it as you learn from each decommissioning experience.
