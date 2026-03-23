@@ -81,17 +81,13 @@ Aside from the monetary hosting costs, there are hidden costs of not decommissio
   It might not even be an entire service; maybe something small like load balancer routing rules, or a storage account.
   These things still take time out of people's days to determine what should be done with them.
 - Leads to inaccurate reports about what is in their current infrastructure, which may impact planning and decision making for things like capacity planning, budgeting, migrations, etc.
-- Automated jobs take longer to run (e.g. managing resources with scripts, IaC deployments, etc).
+- Automated jobs take longer to run (e.g. managing resources with scripts, IaC deployments, etc), so people wait longer for them to complete.
 
 ### Security costs
 
-- Dangling DNS (add link).
+- [Dangling DNS](https://learn.microsoft.com/en-us/azure/security/fundamentals/subdomain-takeover) vulnerabilities when DNS is not decommissioned properly.
 - Paying for security scanning and monitoring of unused services.
 - More services that need to be patched to avoid vulnerabilities and attacks.
-
-- People time costs
-
-  - Makes it harder to find the services that are actually in use, leading to wasted time and effort
 
 Ideally you have everything defined in a central place as infrastructure as code; this makes deleting it easy.
 The next best thing is to have all of the infrastructure components documented somewhere, such as docs in the app's git repo.
