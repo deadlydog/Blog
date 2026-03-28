@@ -15,13 +15,34 @@ The most neglected phase of the software development lifecycle (SDLC) is often t
 An app has reached end-of-life, users are no longer using it, and everything should be shut down and deleted.
 It seems straightforward enough, but many companies overlook this phase, or do it poorly.
 
-It's easy to understand why people rush through the decommissioning phase, or skip it altogether.
-Product and development teams want to focus on creating new features and fixing bugs; things that add value and bring in more revenue.
-However, failing to properly decommission services can lead to significant costs, both obvious and hidden.
+Failing to properly decommission services can lead to significant costs, both obvious and hidden.
 
 ## TL;DR
 
+## Zombie resources
 
+If teams are diligent, they'll remember to remove all of the resources their application used.
+However, it's common for teams to clean up some resources, but forget others.
+The resources left behind and not doing anything are referred to as "zombie resources".
+
+For example, teams may delete the app service, but forget to delete the database, or the backups.
+They might remove their application from a Virtual Machine (VM), but leave the VM running.
+They might delete the app, but forget to remove the DNS records, load balancer rules, or monitoring alerts.
+
+[Recent statistics](https://n2ws.com/blog/cloud-computing-statistics) show that roughly 30% of cloud spend is wasted on unused or underutilized resources.
+The cost of these zombie resources can really add up over time, especially if teams just keep adding more of them.
+
+## Why services remain running after they are no longer needed
+
+It's easy to understand why people rush through the decommissioning phase and do not do it properly, or why sometimes it gets skipped altogether:
+
+- Product and development teams want to focus on creating new features and fixing bugs; things that add value and bring in more revenue.
+  Deleting things may not feel feel like it adds value, so it may get deprioritized.
+- Org restructures may result in services being handed off to different teams, and the new team may not even realize the service exists.
+- Sometimes a solo developer is responsible for a service, and when they leave the company, the service gets forgotten about.
+- Developers will often spin up sandbox environments for testing and experimentation, and then forget to clean them up when they are done.
+
+There are likely many other reasons, but these are the common ones I've seen.
 
 ## Obvious costs of not decommissioning properly
 
@@ -41,16 +62,9 @@ Many companies don't though.
 
 Often times cloud costs are lumped together into one single number, rather than broken down by departments, project, or team.
 It's not always easy for a dev team to identify which costs are theirs, especially if they are not organizing their resources properly or using tags/labels.
+
 Sometimes the only people who even see the costs are the finance team when paying the bill.
 They won't have the context to know if the amount is reasonable or not; they'll just pay it.
-
-If teams are diligent, they'll remember to remove all of the resources their application used.
-However, it's common for teams to clean up some resources, but forget others.
-For example, they may delete the app service, but forget to delete the database, or the backups.
-They might remove their application from a Virtual Machine (VM), but leave the VM running, incurring costs.
-
-[Recent statistics](https://n2ws.com/blog/cloud-computing-statistics) show that roughly 30% of cloud spend is wasted on unused or underutilized resources.
-The cost of these zombie resources can really add up over time, especially if teams just keep adding more of them.
 
 Even if the workloads are all on-premises, there are still potential monetary costs associated with keeping unused services around.
 They take up compute and storage resources that could be used for other things.
@@ -59,6 +73,12 @@ Infrastructure teams may think they need to purchase additional hardware sooner 
 ## Hidden costs of not decommissioning properly
 
 Aside from the monetary hosting costs, there are hidden costs of not decommissioning apps, or only partially decommissioning them, that can be just as expensive.
+
+### System load and performance costs
+
+- You might have a cron job or processor service running that's no longer necessary, making unnecessary requests, generating logs, and putting additional load on the system.
+- The service might be a noisy neighbour that causes performance issues for other services still in use on the same infrastructure.
+- It can create noise in monitoring and alerting systems, making it harder to identify real issues and lead to alert fatigue.
 
 ### Mental costs of keeping old services around
 
@@ -76,7 +96,7 @@ Aside from the monetary hosting costs, there are hidden costs of not decommissio
 - Updating dependencies (e.g. the .NET version or 3rd party libraries) can take a lot of time, especially if the service requires manual testing and deployment.
 - Unnecessary components may be needlessly migrated during platform migrations.
   If you have a service that is no longer needed, but you don't know it, time and effort will likely be spent migrating it to the new platform.
-  This could be migrating it to a new hosting environment (e.g. Azure App Service to Kubernetes), or updating the app to send logs and metrics to the new monitoring platform (e.g. New Relic to Azure Monitor).
+  This could be migrating it to a new hosting environment (e.g. Azure App Service to Kubernetes), or updating the app to send logs and metrics to a new monitoring platform (e.g. New Relic to Azure Monitor).
 
   It might not even be an entire service; maybe something small like load balancer routing rules, or a storage account.
   These things still take time out of people's days to determine what should be done with them.
@@ -88,11 +108,12 @@ Aside from the monetary hosting costs, there are hidden costs of not decommissio
 - [Dangling DNS](https://learn.microsoft.com/en-us/azure/security/fundamentals/subdomain-takeover) vulnerabilities when DNS is not decommissioned properly.
 - Paying for security scanning and monitoring of unused services.
 - More services that need to be patched to avoid vulnerabilities and attacks.
+- It can create noise in security monitoring and vulnerability scanning, making it harder to identify real threats and leading to security fatigue.
+
+## Decommissioning checklist
 
 Ideally you have everything defined in a central place as infrastructure as code; this makes deleting it easy.
 The next best thing is to have all of the infrastructure components documented somewhere, such as docs in the app's git repo.
-
-## Decommissioning checklist
 
 - How to decommission safely
   - Check logs for activity
