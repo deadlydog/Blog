@@ -110,24 +110,101 @@ Aside from the monetary hosting costs, there are hidden costs of not decommissio
 - More services that need to be patched to avoid vulnerabilities and attacks.
 - It can create noise in security monitoring and vulnerability scanning, making it harder to identify real threats and leading to security fatigue.
 
-## Decommissioning checklist
+## Decommissioning safely
 
-Ideally you have everything defined in a central place as infrastructure as code; this makes deleting it easy.
+If you're able to decommission a service that you know is no longer used, you can often move straight to deleting the resources.
+
+If you're not certain whether anything still relies on a service or component though, you likely want to take a few precautions before deleting it.
+
+A typical decommission flow might look something like this:
+
+1. Review logging and monitoring data to ensure the service is no longer being used.
+   1. If things are still calling the service, you should get those updated first to stop calling it.
+1. Notify the relevant teams and stakeholders of the decommission plans, including when it will be disabled.
+1. Disable any alerts associated with the service to avoid false paging or notifications.
+1. Disable the service in a way that is quick and easy to revert to perform a scream test (i.e. turn it off any see if anybody screams).
+   1. e.g. Disable the Azure Web App, update the k8s manifest, turn the Virtual Machine off, remove it from DNS, etc.
+1. Wait a period of time to ensure nothing blows up (e.g. a week), or perform a [brownout schedule](https://en.wikipedia.org/wiki/Brownout_(software_engineering)).
+   1. Depending on the service, consider waiting longer if needed.
+   e.g. Do month-end reports call the service?
+   If so, leave it disabled over the month-end period before deleting it.
+1. Delete the service and all of the infrastructure supporting it.
+1. Delete any monitoring and alerting associated with the service.
+1. Backup and delete any data stores associated with the service.
+1. Delete or archive the code and any metadata associated with the service.
+
+You would want to perform the above steps in your non-production environments first, to minimize the risk of unexpected consequences when doing it in production.
+
+## Decommission checklist
+
+Ideally you have everything defined in a central place as infrastructure as code; this makes finding and deleting everything easy.
+
+That's often not a reality for many teams though.
 The next best thing is to have all of the infrastructure components documented somewhere, such as docs in the app's git repo.
 
-- How to decommission safely
-  - Check logs for activity
-  - Take offline before deleting it (for how long? A few days, a week, a month, several months? It depends on the app/service). Essentially a scream test
-  - Take a backup before deleting it
+Below is a non-exhaustive list of things to consider deleting when decommissioning a service, to hopefully ensure nothing is missed.
 
-- Decommission checklist to make sure everything gets deleted
-  - Database and caches
-  - DNS records
-  - Load balancer rules
-  - File storage
-  - CDN
-  - Service Bus Topic subscriptions
-  - Etc
+### Monitoring and observability
+
+- Remove endpoints/nodes from availability checks (e.g. New Relic Synthetics, SolarWinds Orion, Azure Application Insights, etc.).
+  - Do this first so on-call personnel don't get paged unnecessarily.
+- Delete related dashboards and alerts (e.g. Application Insights, Hosted Graphite, SolarWinds, Honeycomb, Datadog, etc.).
+- Delete related SLI/SLOs from the SLO management system (e.g. Nobl9, Azure Monitor SLOs, etc.).
+
+### Infrastructure
+
+- Delete compute resources, such as Web Apps, Cloud Services, Functions/Lambas, Virtual Machines, etc.
+- Delete empty App Service Plans and/or shuffle App Service Plans if they are unbalanced after deleting a Web App.
+- Delete empty resource groups and subscriptions.
+- Delete Kubernetes resources and namespace (if applicable).
+- Delete secret stores (e.g. Azure Key Vault).
+- Delete service principals (e.g. Enterprise Application and Application Registrations from Azure Entra ID).
+- Delete traffic manager profiles, load balancer rules, and DNS records.
+- Delete any related API Management resources (e.g. Azure API Management).
+- Remove integrations with any other 3rd party services.
+
+### Data
+
+
+
+
+- Backup and delete databases (e.g. Azure storage accounts, SQL databases, Redis caches, Elastic Search, etc.).
+- Delete service bus queues/topics and subscriptions.
+- Delete CDN endpoints (e.g. Azure CDN, Azure Front Door)
+- Delete API keys from 3rd party services (e.g. SendGrid, Honeycomb, Azure DevOps)
+- Remove virtual machines from Remote Desktop Manager
+- Remove Active Directory groups related to the service
+
+### Documentation
+
+- Mark the service as decommissioned in Bird Brain
+- Confirm Bernankes (billing report team leads receive) is reporting $0 for the service
+- Archive or delete any wiki pages related to the service
+
+### Builds, Deployments, and Repositories
+
+- Archive, disable, or delete build and deployment pipelines.
+- Update the git repo ReadMe to mention the service is now decommissioned, and archive the git repository.
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Database and caches
+- DNS records
+- Load balancer rules
+- File storage
+- CDN
+- Service Bus Topic subscriptions
+- Etc
 
 ## Conclusion
 
