@@ -201,4 +201,6 @@ It's unlikely that the checklist will be perfect on the first try, so be sure to
 
 I hope this article has encouraged you to think about the decommissioning phase of the SDLC, and to hopefully save you and your company from the costs of neglecting it.
 
+Let me know your thoughts and experiences in the comments below.
+
 Happy decommissioning!
