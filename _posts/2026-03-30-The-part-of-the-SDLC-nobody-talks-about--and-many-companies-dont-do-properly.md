@@ -187,11 +187,12 @@ Below is a non-exhaustive list of things to consider deleting when decommissioni
 Decommissioning a service is not free; it takes time and effort to do it properly.
 The longer you leave it though, the more it will cost you and your company.
 
-If you are unsure of what the service is for and whether it is still being used, it can take a lot of time to investigate and confirm that it is safe to decommission.
-So it's important to invest the time upfront and decommission it as soon as you know a service is no longer needed.
-
-If people don't know what a service is for, they will be hesitant to change or remove it, which can lead to it being left around indefinitely and repeatedly incurring the above mentioned costs.
+When people don't know what a service is for, they will be hesitant to change or remove it, which can lead to it being left around indefinitely and repeatedly incurring the above mentioned costs.
 This is true not only for entire apps or systems, but also for individual components and resources.
+I have seen zombie services more than 15 years old still running in production!
+
+If you are unsure of what a service is for and whether it is still being used, it can take a lot of time to investigate and confirm that it is safe to decommission.
+So it's important to invest the time upfront and decommission it as soon as you know it is no longer needed.
 
 The best way to ensure all parts of a service get decommissioned properly is to have a clear process and checklist for doing so.
 I've presented a starting checklist that you can build off of, but it should be customized to fit your company's processes and infrastructure.
