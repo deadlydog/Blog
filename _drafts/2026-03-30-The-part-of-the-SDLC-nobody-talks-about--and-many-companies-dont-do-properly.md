@@ -52,7 +52,7 @@ There are many other reasons, but these are the common ones I've seen.
 
 ## Obvious costs of not decommissioning properly
 
-![Forgotten cloud service makes man poor](/assets/Posts/2026-01-29-The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/cloud-service-makes-man-poor.jpeg)
+![Forgotten cloud service makes man poor](/assets/Posts/2026-03-30-The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/cloud-service-makes-man-poor.jpeg)
 
 If you have a cloud service that is no longer in use, but still running, you are likely paying monthly for:
 
