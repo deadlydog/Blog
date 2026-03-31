@@ -19,6 +19,12 @@ Failing to properly decommission services can lead to significant costs, both ob
 
 ## TL;DR
 
+- Unused services and resources are costly in many ways, including money, creating noise in monitoring and alerting systems, adding mental overhead for teams, and potentially creating security vulnerabilities.
+- It's best to decommission services as soon as you know they are no longer needed.
+- It's important to have a clear process and checklist for decommissioning services, to ensure all of the resources get cleaned up properly and nothing gets missed.
+  - This article provides a starting process and checklist that you can build off of.
+- Decommissioning a service is not free, but the costs of not doing it properly are much higher in the long run.
+
 ## Zombie resources
 
 If teams are diligent, they'll remember to remove all of the resources their application used.
@@ -42,7 +48,7 @@ It's easy to understand why people rush through the decommissioning phase and do
 - Sometimes a solo developer is responsible for a service, and when they leave the company, the service gets forgotten about.
 - Developers will often spin up sandbox environments for testing and experimentation, and then forget to clean them up when they are done.
 
-There are likely many other reasons, but these are the common ones I've seen.
+There are many other reasons, but these are the common ones I've seen.
 
 ## Obvious costs of not decommissioning properly
 
@@ -50,18 +56,18 @@ There are likely many other reasons, but these are the common ones I've seen.
 
 If you have a cloud service that is no longer in use, but still running, you are likely paying monthly for:
 
-- The compute resources (VMs, containers, app services, functions/lambdas, etc)
-- Storage costs (databases, file storage, backups)
-- Networking costs (data transfer, load balancers, etc)
+- The compute resources (VMs, containers, app services, functions/lambdas, etc.)
+- Storage costs (databases, file storage, backups, etc.)
+- Networking costs (data transfer, load balancers, etc.)
 - Software licensing costs (per user or per instance licenses)
 - Monitoring and alerting costs (pay per node, or ingestion rates for logs and metrics)
 
-These monetary costs can be easy to identify, if you think to go looking for them.
+These monetary costs can be easy to identify, but only if you think to go looking for them.
 Some companies have a dedicated FinOps team whose job is to identify and eliminate these kinds of wasteful expenses.
 Many companies don't though.
 
-Often times cloud costs are lumped together into one single number, rather than broken down by departments, project, or team.
-It's not always easy for a dev team to identify which costs are theirs, especially if they are not organizing their resources properly or using tags/labels.
+Often times cloud costs are lumped together into one single number, rather than broken down by department, project, or team.
+It's not always easy for a dev team to identify which costs are theirs and know how much they are spending, especially if they are not organizing their resources properly or using tags/labels.
 
 Sometimes the only people who even see the costs are the finance team when paying the bill.
 They won't have the context to know if the amount is reasonable or not; they'll just pay it.
@@ -119,13 +125,13 @@ If you're not certain whether anything still relies on a service or component th
 A typical decommission flow might look something like this:
 
 1. Review logging and monitoring data to ensure the service is no longer being used.
-   1. If things are still calling the service, you should get those updated first to stop calling it.
+   - If things are still calling the service, you should get those updated first to stop calling it.
 1. Notify the relevant teams and stakeholders of the decommission plans, including when it will be disabled.
 1. Disable any alerts associated with the service to avoid false paging or notifications.
 1. Disable the service in a way that is quick and easy to revert to perform a scream test (i.e. turn it off any see if anybody screams).
-   1. e.g. Disable the Azure Web App, update the k8s manifest, turn the Virtual Machine off, remove it from DNS, etc.
+   - e.g. Stop the Azure Web App, disable the cron job, update the k8s manifest, turn the Virtual Machine off, remove the DNS hostname, etc.
 1. Wait a period of time to ensure nothing blows up (e.g. a week), or perform a [brownout schedule](https://en.wikipedia.org/wiki/Brownout_(software_engineering)).
-   1. Depending on the service, consider waiting longer if needed.
+   - Depending on the service, consider waiting longer if needed.
    e.g. Do month-end reports call the service?
    If so, leave it disabled over the month-end period before deleting it.
 1. Delete the service and all of the infrastructure supporting it.
@@ -148,13 +154,12 @@ Below is a non-exhaustive list of things to consider deleting when decommissioni
 
 - Remove endpoints/nodes from availability checks (e.g. New Relic Synthetics, SolarWinds Orion, Azure Application Insights, etc.).
   - Do this first so on-call personnel don't get paged unnecessarily.
-- Delete related dashboards and alerts (e.g. Application Insights, Hosted Graphite, SolarWinds, Honeycomb, Datadog, etc.).
-- Delete related SLI/SLOs from the SLO management system (e.g. Nobl9, Azure Monitor SLOs, etc.).
+- Delete related dashboards, alerts, SLIs, and SLOs (e.g. Application Insights, Hosted Graphite, SolarWinds, Honeycomb, Datadog, etc.).
 
 ### Infrastructure
 
 - Delete compute resources, such as Web Apps, Cloud Services, Functions/Lambas, Virtual Machines, etc.
-- Delete empty App Service Plans and/or shuffle App Service Plans if they are unbalanced after deleting a Web App.
+- Delete empty App Service Plans and/or shuffle them if they are unbalanced after deleting a Web App.
 - Delete empty resource groups and subscriptions.
 - Delete Kubernetes resources and namespace (if applicable).
 - Delete secret stores (e.g. Azure Key Vault).
@@ -165,53 +170,34 @@ Below is a non-exhaustive list of things to consider deleting when decommissioni
 
 ### Data
 
-
-
-
-- Backup and delete databases (e.g. Azure storage accounts, SQL databases, Redis caches, Elastic Search, etc.).
-- Delete service bus queues/topics and subscriptions.
+- Backup (if necessary) and delete databases and data stores (e.g. Azure storage accounts, SQL databases, Redis caches, Elasticsearch, etc.).
+- Delete service bus queues, topics, and subscribers.
 - Delete CDN endpoints (e.g. Azure CDN, Azure Front Door)
 - Delete API keys from 3rd party services (e.g. SendGrid, Honeycomb, Azure DevOps)
-- Remove virtual machines from Remote Desktop Manager
-- Remove Active Directory groups related to the service
+- Remove Active Directory groups and users related to the service
 
-### Documentation
-
-- Mark the service as decommissioned in Bird Brain
-- Confirm Bernankes (billing report team leads receive) is reporting $0 for the service
-- Archive or delete any wiki pages related to the service
-
-### Builds, Deployments, and Repositories
+### Builds, deployments, repositories, and documentation
 
 - Archive, disable, or delete build and deployment pipelines.
 - Update the git repo ReadMe to mention the service is now decommissioned, and archive the git repository.
-
-
-
-
-
-
-
-
-
-
-
-
-
-- Database and caches
-- DNS records
-- Load balancer rules
-- File storage
-- CDN
-- Service Bus Topic subscriptions
-- Etc
+- Archive or delete any wiki pages related to the service.
 
 ## Conclusion
 
-If people don't know what a service is for, they will be hesitant to change or remove it, which can lead to it being left around indefinitely and incurring all of the above costs.
+Decommissioning a service is not free; it takes time and effort to do it properly.
+The longer you leave it though, the more it will cost you and your company.
+
+If you are unsure of what the service is for and whether it is still being used, it can take a lot of time to investigate and confirm that it is safe to decommission.
+So it's important to invest the time upfront and decommission it as soon as you know a service is no longer needed.
+
+If people don't know what a service is for, they will be hesitant to change or remove it, which can lead to it being left around indefinitely and repeatedly incurring the above mentioned costs.
 This is true not only for entire apps or systems, but also for individual components and resources.
 
 The best way to ensure all parts of a service get decommissioned properly is to have a clear process and checklist for doing so.
 I've presented a starting checklist that you can build off of, but it should be customized to fit your company's processes and infrastructure.
 
 It's unlikely that the checklist will be perfect on the first try, so be sure to continually update it as you learn from each decommissioning experience.
+
+I hope this article has encouraged you to think about the decommissioning phase of the SDLC, and to hopefully save you and your company from the costs of neglecting it.
+
+Happy decommissioning!
