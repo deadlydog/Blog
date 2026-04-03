@@ -27,6 +27,24 @@ html[data-theme="dark"] .site-subtitle {
 	font-size: 0.8rem;
 }
 
+// Use nice colourful headings in posts for light and dark modes.
+.page__content h1,
+.page__content h2,
+.page__content h3,
+.page__content h4,
+.page__content h5,
+.page__content h6 {
+	color: #36B7E4;
+}
+html[data-theme="dark"] .page__content h1,
+html[data-theme="dark"] .page__content h2,
+html[data-theme="dark"] .page__content h3,
+html[data-theme="dark"] .page__content h4,
+html[data-theme="dark"] .page__content h5,
+html[data-theme="dark"] .page__content h6 {
+	color: #36B7E4;
+}
+
 // Reducing the Page Content font size also reduces the Table Of Contents size a bit too much, so make that bigger.
 .toc {
 	font-size: $type-size-4;
