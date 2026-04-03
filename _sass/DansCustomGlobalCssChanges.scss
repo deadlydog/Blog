@@ -16,6 +16,19 @@ html[data-theme="dark"] .site-subtitle {
 	color: #eaeaea; // Reset subtitle color in dark mode so it doesn't inherit the title color.
 }
 
+// Color headings nicely for light and dark modes.
+h1, h2, h3, h4, h5, h6 {
+	color: #1d4ed8; // A rich blue for light mode.
+}
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6 {
+	color: #38bdf8; // A bright sky blue that stands out against the dark background.
+}
+
 // Change the text selection colors to make it easier to see and prettier when highlighting text in both light and dark modes.
 ::selection {
 	color: #ffffff;
