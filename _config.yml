@@ -53,7 +53,7 @@ comments:
   #   theme                : # "github-light" (default), "github-dark"
   #   issue_term           : # "pathname" (default)
   staticman: # The actual staticman settings are stored in staticman.yml. These ones are needed by the theme to determine where comments get posted to.
-    branch: "main"
+    branch: "main" # This is also stored in staticman.yml file and should be kept in sync.
     endpoint: "https://dansblog-staticman.azurewebsites.net/v3/entry/github/"
 reCaptcha: # The siteKey and secret are also stored in staticman.yml. These ones are needed by the theme for Recaptcha to work.
   siteKey: "6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0"
