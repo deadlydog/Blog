@@ -2,12 +2,12 @@
 # GitHub Pages preview URL so changes can be reviewed before merging.
 #
 # Prerequisites:
-#   - GitHub Pages must be enabled in the repository settings and configured
-#     to deploy via GitHub Actions (Settings > Pages > Source > GitHub Actions).
-#   - The GitHub Actions "pages" permission must allow deployments from pull requests.
+#   - GitHub Pages must be enabled and configured to deploy from the gh-pages
+#     branch (Settings > Pages > Build and deployment > Source > Deploy from
+#     a branch, then select the gh-pages branch and / (root) folder).
 #
 # The preview URL is posted as a comment on the PR and updated on each new commit.
-# The preview environment is automatically cleaned up when the PR is closed.
+# The preview is automatically removed when the PR is closed.
 
 name: Deploy PR Preview
 
@@ -21,99 +21,36 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
   pull-requests: write
 
 jobs:
   deploy-preview:
-    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
-    environment:
-      name: pr-preview-${{ github.event.pull_request.number }}
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
       - name: Build with Jekyll
+        if: github.event.action != 'closed'
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
           destination: ./_site
 
       # Remove the CNAME file from the build output so the preview is served at
-      # the temporary github.io URL rather than the production custom domain.
+      # the github.io URL rather than the production custom domain.
       - name: Remove CNAME from preview build
+        if: github.event.action != 'closed'
         run: rm -f ./_site/CNAME
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-
-      - name: Deploy preview to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # Deploys the built site to the gh-pages branch under pr-preview/pr-{number}/.
+      # Posts a PR comment with the preview URL, updating it on each new commit.
+      # Automatically removes the preview and comment when the PR is closed.
+      - name: Deploy PR preview
+        uses: rossjrw/pr-preview-action@v1
         with:
-          preview: true
-
-      - name: Comment PR with preview URL
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const previewUrl = '${{ steps.deployment.outputs.page_url }}';
-            const commentMarker = '<!-- pr-preview-comment -->';
-            const body = `${commentMarker}\n🚀 **Preview deployment is ready!**\n\nView the changes at: ${previewUrl}\n\n_This preview updates automatically as new commits are pushed to the PR._`;
-
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-
-            const existingComment = comments.find(c => c.body.includes(commentMarker));
-
-            if (existingComment) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existingComment.id,
-                body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body,
-              });
-            }
-
-  cleanup-preview:
-    if: github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Remove preview comment from PR
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const commentMarker = '<!-- pr-preview-comment -->';
-
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-
-            const existingComment = comments.find(c => c.body.includes(commentMarker));
-
-            if (existingComment) {
-              await github.rest.issues.deleteComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existingComment.id,
-              });
-            }
+          source-dir: ./_site
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          action: auto
