@@ -1,0 +1,57 @@
+name: Deploy Main Site
+
+# Builds the Jekyll site from main and pushes it to the gh-pages branch,
+# while preserving any PR preview directories that already exist there.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Build Jekyll site
+        env:
+          JEKYLL_ENV: production
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bundle exec jekyll build
+
+      # Preserve any PR preview directories that already live on gh-pages so
+      # that a main-site redeploy does not wipe them out.
+      - name: Restore previews/ from gh-pages branch (if present)
+        run: |
+          if ! git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
+            echo "gh-pages branch does not exist yet – skipping restore."
+            exit 0
+          fi
+
+          git fetch origin gh-pages --depth=1
+
+          # Copy the previews tree into the freshly built _site so the
+          # subsequent deploy action includes it in the push.
+          if git checkout origin/gh-pages -- previews/ 2>/dev/null; then
+            cp -r previews/ _site/previews/
+            rm -rf previews/
+          else
+            echo "No previews/ directory on gh-pages yet – skipping restore."
+          fi
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          cname: blog.danskingdom.com
+          commit_message: "Deploy main site from ${{ github.sha }}"
