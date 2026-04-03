@@ -46,6 +46,11 @@ jobs:
           source: ./
           destination: ./_site
 
+      # Remove the CNAME file from the build output so the preview is served at
+      # the temporary github.io URL rather than the production custom domain.
+      - name: Remove CNAME from preview build
+        run: rm -f ./_site/CNAME
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
 
