@@ -1,0 +1,114 @@
+# Builds the Jekyll site for the current branch and deploys it to a temporary
+# GitHub Pages preview URL so changes can be reviewed before merging.
+#
+# Prerequisites:
+#   - GitHub Pages must be enabled in the repository settings and configured
+#     to deploy via GitHub Actions (Settings > Pages > Source > GitHub Actions).
+#   - The GitHub Actions "pages" permission must allow deployments from pull requests.
+#
+# The preview URL is posted as a comment on the PR and updated on each new commit.
+# The preview environment is automatically cleaned up when the PR is closed.
+
+name: Deploy PR Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+# Cancel any in-progress preview deployment when a new commit is pushed to the PR.
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  deploy-preview:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    environment:
+      name: pr-preview-${{ github.event.pull_request.number }}
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+
+      - name: Deploy preview to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          preview: true
+
+      - name: Comment PR with preview URL
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const previewUrl = '${{ steps.deployment.outputs.page_url }}';
+            const commentMarker = '<!-- pr-preview-comment -->';
+            const body = `${commentMarker}\n🚀 **Preview deployment is ready!**\n\nView the changes at: ${previewUrl}\n\n_This preview updates automatically as new commits are pushed to the PR._`;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existingComment = comments.find(c => c.body.includes(commentMarker));
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+  cleanup-preview:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove preview comment from PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commentMarker = '<!-- pr-preview-comment -->';
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existingComment = comments.find(c => c.body.includes(commentMarker));
+
+            if (existingComment) {
+              await github.rest.issues.deleteComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+              });
+            }
