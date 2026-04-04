@@ -1,1 +1,1 @@
-Sitemap: https://blog.danskingdom.com/Blog/sitemap.xml
+Sitemap: https://blog.danskingdom.com/sitemap.xml

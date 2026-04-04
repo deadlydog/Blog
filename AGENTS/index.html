@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Daniel Schroeder&#39;s Programming Blog">
 <meta property="og:title" content="Copilot Instructions for Daniel Schroeder’s Programming Blog">
-<meta property="og:url" content="https://blog.danskingdom.com/Blog/AGENTS/">
+<meta property="og:url" content="https://blog.danskingdom.com/AGENTS/">
 
 
   <meta property="og:description" content="Daniel Schroeder’s Programming Blog - Sharing my tips, tricks, and code to help other developers be more productive. https://blog.danskingdom.com">
@@ -34,7 +34,7 @@
   <meta name="twitter:site" content="@deadlydog">
   <meta name="twitter:title" content="Copilot Instructions for Daniel Schroeder’s Programming Blog">
   <meta name="twitter:description" content="Daniel Schroeder’s Programming Blog - Sharing my tips, tricks, and code to help other developers be more productive. https://blog.danskingdom.com">
-  <meta name="twitter:url" content="https://blog.danskingdom.com/Blog/AGENTS/">
+  <meta name="twitter:url" content="https://blog.danskingdom.com/AGENTS/">
 
   
     <meta name="twitter:card" content="summary">
@@ -50,7 +50,7 @@
 
 
 
-<link rel="canonical" href="https://blog.danskingdom.com/Blog/AGENTS/">
+<link rel="canonical" href="https://blog.danskingdom.com/AGENTS/">
 
 
 
@@ -67,7 +67,7 @@
 
 
 
-  <link href="/Blog/feed.xml" type="application/atom+xml" rel="alternate" title="Daniel Schroeder's Programming Blog Feed">
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Daniel Schroeder's Programming Blog Feed">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script>
@@ -76,7 +76,7 @@
 </script>
 
 <!-- For all browsers -->
-<link rel="stylesheet" href="/Blog/assets/css/main.css">
+<link rel="stylesheet" href="/assets/css/main.css">
 <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
 
@@ -85,7 +85,7 @@
     <script>
 function InitializeLightOrDarkModeStylesheet() {
 	let storageKey = 'theme-preference';
-	let darkHref = '/Blog/assets/css/dark.css';
+	let darkHref = '/assets/css/dark.css';
 	let systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
 	let stored = null;
 	let mode = 'system';
@@ -160,31 +160,31 @@ InitializeLightOrDarkModeStylesheet();
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
         
-        <a class="site-title" href="/Blog/">
+        <a class="site-title" href="/">
           Daniel Schroeder&#39;s Programming Blog
           <span class="site-subtitle">Sharing my tips, tricks, and code to help other developers be more productive.</span>
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
               <a
-                href="/Blog/"
+                href="/"
                 
                 
               >Home</a>
             </li><li class="masthead__menu-item">
               <a
-                href="/Blog/posts/"
+                href="/posts/"
                 
                 
               >Posts</a>
             </li><li class="masthead__menu-item">
               <a
-                href="/Blog/categories/"
+                href="/categories/"
                 
                 
               >Categories</a>
             </li><li class="masthead__menu-item">
               <a
-                href="/Blog/about/"
+                href="/about/"
                 
                 
               >About</a>
@@ -222,7 +222,7 @@ InitializeLightOrDarkModeStylesheet();
 
 <ul>
   <li><strong>Theme</strong>: Remote theme via <code class="language-plaintext highlighter-rouge">remote_theme: mmistakes/minimal-mistakes@4.27.3</code> pinned to specific version for stability</li>
-  <li><strong>Comments</strong>: Staticman v2 for static comments (config in <a href="/Blog/staticman.yml">staticman.yml</a>, hosted instance: https://github.com/deadlydog/deadlydog.github.io-staticman)</li>
+  <li><strong>Comments</strong>: Staticman v2 for static comments (config in <a href="/staticman.yml">staticman.yml</a>, hosted instance: https://github.com/deadlydog/deadlydog.github.io-staticman)</li>
   <li><strong>Build</strong>: Jekyll with Bundler, kramdown for markdown, Rouge for syntax highlighting</li>
   <li><strong>Deployment</strong>: GitHub Pages, production builds enable ads and analytics</li>
 </ul>
@@ -326,7 +326,7 @@ bundle <span class="nb">exec </span>jekyll serve <span class="nt">--livereload</
 
 Search for `Dan's Customizations` to find all theme overrides. Custom files use __PascalCase__ naming; theme overrides use __lowercase-kebab-case__.
 
-### Key overridden files (see [ReadMe.md](/Blog/ReadMe.md) for full list)
+### Key overridden files (see [ReadMe.md](/ReadMe.md) for full list)
 
 - [_includes/analytics-providers/google-gtag.html](/_includes/analytics-providers/google-gtag.html): Cookie consent wrapper
 - [_includes/footer/custom.html](/_includes/footer/custom.html): Donations, advertisements
@@ -364,7 +364,7 @@ Open repo in VS Code with DevContainer support—automatic setup via [.devcontai
 
 1. Install [Ruby + Devkit v3.3](https://rubyinstaller.org/downloads/) with MSYS2
 2. `gem update --system`
-3. Handle SSL issues if needed (see [ReadMe.md](/Blog/ReadMe.md) for Cisco Umbrella Root CA fix)
+3. Handle SSL issues if needed (see [ReadMe.md](/ReadMe.md) for Cisco Umbrella Root CA fix)
 4. `gem install jekyll bundler`
 5. `bundle install`
 
@@ -660,7 +660,7 @@ bundle update  # Update all gems periodically
     
 
     
-      <li><a href="/Blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
     
   </ul>
 </div>
@@ -672,14 +672,14 @@ bundle update  # Update all gems periodically
     </div>
 
     
-  <script src="/Blog/assets/js/main.min.js"></script>
+  <script src="/assets/js/main.min.js"></script>
 
 
 
 
-<script src="/Blog/assets/js/lunr/lunr.min.js"></script>
-<script src="/Blog/assets/js/lunr/lunr-store.js"></script>
-<script src="/Blog/assets/js/lunr/lunr-en.js"></script>
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
 
 
 

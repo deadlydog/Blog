@@ -24,7 +24,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Daniel Schroeder&#39;s Programming Blog">
 <meta property="og:title" content="Catch and display unhandled exceptions in your WPF app">
-<meta property="og:url" content="https://blog.danskingdom.com/Blog/Catch-and-display-unhandled-exceptions-in-your-WPF-app/">
+<meta property="og:url" content="https://blog.danskingdom.com/Catch-and-display-unhandled-exceptions-in-your-WPF-app/">
 
 
   <meta property="og:description" content="When creating a WPF application, one of the best things you can do upfront is add some code to catch any unhandled exceptions. There are numerous ways unhandled exceptions can be caught, and this Stack Overflow answer shows how you can nicely handle them. One thing I especially like about that answer is they also capture the application’s assembly name and version in the error message being logged, which can be helpful if there are multiple versions of your app in the wild.">
@@ -36,7 +36,7 @@
   <meta name="twitter:site" content="@deadlydog">
   <meta name="twitter:title" content="Catch and display unhandled exceptions in your WPF app">
   <meta name="twitter:description" content="When creating a WPF application, one of the best things you can do upfront is add some code to catch any unhandled exceptions. There are numerous ways unhandled exceptions can be caught, and this Stack Overflow answer shows how you can nicely handle them. One thing I especially like about that answer is they also capture the application’s assembly name and version in the error message being logged, which can be helpful if there are multiple versions of your app in the wild.">
-  <meta name="twitter:url" content="https://blog.danskingdom.com/Blog/Catch-and-display-unhandled-exceptions-in-your-WPF-app/">
+  <meta name="twitter:url" content="https://blog.danskingdom.com/Catch-and-display-unhandled-exceptions-in-your-WPF-app/">
 
   
     <meta name="twitter:card" content="summary">
@@ -54,7 +54,7 @@
 
 
 
-<link rel="canonical" href="https://blog.danskingdom.com/Blog/Catch-and-display-unhandled-exceptions-in-your-WPF-app/">
+<link rel="canonical" href="https://blog.danskingdom.com/Catch-and-display-unhandled-exceptions-in-your-WPF-app/">
 
 
 
@@ -71,7 +71,7 @@
 
 
 
-  <link href="/Blog/feed.xml" type="application/atom+xml" rel="alternate" title="Daniel Schroeder's Programming Blog Feed">
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Daniel Schroeder's Programming Blog Feed">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script>
@@ -80,7 +80,7 @@
 </script>
 
 <!-- For all browsers -->
-<link rel="stylesheet" href="/Blog/assets/css/main.css">
+<link rel="stylesheet" href="/assets/css/main.css">
 <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
 
@@ -89,7 +89,7 @@
     <script>
 function InitializeLightOrDarkModeStylesheet() {
 	let storageKey = 'theme-preference';
-	let darkHref = '/Blog/assets/css/dark.css';
+	let darkHref = '/assets/css/dark.css';
 	let systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
 	let stored = null;
 	let mode = 'system';
@@ -164,31 +164,31 @@ InitializeLightOrDarkModeStylesheet();
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
         
-        <a class="site-title" href="/Blog/">
+        <a class="site-title" href="/">
           Daniel Schroeder&#39;s Programming Blog
           <span class="site-subtitle">Sharing my tips, tricks, and code to help other developers be more productive.</span>
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
               <a
-                href="/Blog/"
+                href="/"
                 
                 
               >Home</a>
             </li><li class="masthead__menu-item">
               <a
-                href="/Blog/posts/"
+                href="/posts/"
                 
                 
               >Posts</a>
             </li><li class="masthead__menu-item">
               <a
-                href="/Blog/categories/"
+                href="/categories/"
                 
                 
               >Categories</a>
             </li><li class="masthead__menu-item">
               <a
-                href="/Blog/about/"
+                href="/about/"
                 
                 
               >About</a>
@@ -232,15 +232,15 @@ InitializeLightOrDarkModeStylesheet();
 
   
     <div class="author__avatar">
-      <a href="https://blog.danskingdom.com/Blog/">
-        <img src="/Blog/assets/Site/bio-photo.jpg" alt="Daniel Schroeder" itemprop="image" class="u-photo">
+      <a href="https://blog.danskingdom.com/">
+        <img src="/assets/Site/bio-photo.jpg" alt="Daniel Schroeder" itemprop="image" class="u-photo">
       </a>
     </div>
   
 
   <div class="author__content">
     <h3 class="author__name p-name" itemprop="name">
-      <a class="u-url" rel="me" href="https://blog.danskingdom.com/Blog/" itemprop="url">Daniel Schroeder</a>
+      <a class="u-url" rel="me" href="https://blog.danskingdom.com/" itemprop="url">Daniel Schroeder</a>
     </h3>
     
       <div class="author__bio p-note" itemprop="description">
@@ -373,7 +373,7 @@ InitializeLightOrDarkModeStylesheet();
       
         <header>
           <h1 id="page-title" class="page__title" itemprop="headline">
-            <a href="https://blog.danskingdom.com/Blog/Catch-and-display-unhandled-exceptions-in-your-WPF-app/" itemprop="url">Catch and display unhandled exceptions in your WPF app
+            <a href="https://blog.danskingdom.com/Catch-and-display-unhandled-exceptions-in-your-WPF-app/" itemprop="url">Catch and display unhandled exceptions in your WPF app
 </a>
           </h1>
           
@@ -570,13 +570,13 @@ That’s your call depending on the apps target audience and what you feel is be
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
     <span itemprop="keywords">
     
-      <a href="/Blog/tags/#csharp" class="page__taxonomy-item p-category" rel="tag">CSharp</a><span class="sep">, </span>
+      <a href="/tags/#csharp" class="page__taxonomy-item p-category" rel="tag">CSharp</a><span class="sep">, </span>
     
-      <a href="/Blog/tags/#error" class="page__taxonomy-item p-category" rel="tag">Error</a><span class="sep">, </span>
+      <a href="/tags/#error" class="page__taxonomy-item p-category" rel="tag">Error</a><span class="sep">, </span>
     
-      <a href="/Blog/tags/#exception" class="page__taxonomy-item p-category" rel="tag">Exception</a><span class="sep">, </span>
+      <a href="/tags/#exception" class="page__taxonomy-item p-category" rel="tag">Exception</a><span class="sep">, </span>
     
-      <a href="/Blog/tags/#wpf" class="page__taxonomy-item p-category" rel="tag">WPF</a>
+      <a href="/tags/#wpf" class="page__taxonomy-item p-category" rel="tag">WPF</a>
     
     </span>
   </p>
@@ -593,9 +593,9 @@ That’s your call depending on the apps target audience and what you feel is be
     <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
     <span itemprop="keywords">
     
-      <a href="/Blog/categories/#csharp" class="page__taxonomy-item p-category" rel="tag">CSharp</a><span class="sep">, </span>
+      <a href="/categories/#csharp" class="page__taxonomy-item p-category" rel="tag">CSharp</a><span class="sep">, </span>
     
-      <a href="/Blog/categories/#wpf" class="page__taxonomy-item p-category" rel="tag">WPF</a>
+      <a href="/categories/#wpf" class="page__taxonomy-item p-category" rel="tag">WPF</a>
     
     </span>
   </p>
@@ -610,19 +610,19 @@ That’s your call depending on the apps target audience and what you feel is be
       <section class="page__share">
   <h4 class="page__share-title">Share on</h4>
 
-  <a href="https://x.com/intent/tweet?via=deadlydog&text=Catch+and+display+unhandled+exceptions+in+your+WPF+app%20https%3A%2F%2Fblog.danskingdom.com%2FBlog%2FCatch-and-display-unhandled-exceptions-in-your-WPF-app%2F" class="btn btn--x" aria-label="Share on X" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on X">
+  <a href="https://x.com/intent/tweet?via=deadlydog&text=Catch+and+display+unhandled+exceptions+in+your+WPF+app%20https%3A%2F%2Fblog.danskingdom.com%2FCatch-and-display-unhandled-exceptions-in-your-WPF-app%2F" class="btn btn--x" aria-label="Share on X" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on X">
     <i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i><span> X</span>
   </a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.danskingdom.com%2FBlog%2FCatch-and-display-unhandled-exceptions-in-your-WPF-app%2F" class="btn btn--facebook" aria-label="Share on Facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.danskingdom.com%2FCatch-and-display-unhandled-exceptions-in-your-WPF-app%2F" class="btn btn--facebook" aria-label="Share on Facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook">
     <i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span>
   </a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.danskingdom.com/Blog/Catch-and-display-unhandled-exceptions-in-your-WPF-app/" class="btn btn--linkedin" aria-label="Share on LinkedIn" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn">
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.danskingdom.com/Catch-and-display-unhandled-exceptions-in-your-WPF-app/" class="btn btn--linkedin" aria-label="Share on LinkedIn" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn">
     <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span>
   </a>
 
-  <a href="https://bsky.app/intent/compose?text=Catch+and+display+unhandled+exceptions+in+your+WPF+app%20https%3A%2F%2Fblog.danskingdom.com%2FBlog%2FCatch-and-display-unhandled-exceptions-in-your-WPF-app%2F" class="btn btn--bluesky" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Bluesky">
+  <a href="https://bsky.app/intent/compose?text=Catch+and+display+unhandled+exceptions+in+your+WPF+app%20https%3A%2F%2Fblog.danskingdom.com%2FCatch-and-display-unhandled-exceptions-in-your-WPF-app%2F" class="btn btn--bluesky" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Bluesky">
     <i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span> Bluesky</span>
   </a>
 </section>
@@ -631,10 +631,10 @@ That’s your call depending on the apps target audience and what you feel is be
       
   <nav class="pagination">
     
-      <a href="/Blog/A-better-way-to-do-TestCases-when-unit-testing-with-Pester/" class="pagination--pager" title="A better way to do TestCases when unit testing with Pester">Previous</a>
+      <a href="/A-better-way-to-do-TestCases-when-unit-testing-with-Pester/" class="pagination--pager" title="A better way to do TestCases when unit testing with Pester">Previous</a>
     
     
-      <a href="/Blog/Create-and-test-PowerShell-Core-cmdlets-in-CSharp/" class="pagination--pager" title="Create and test PowerShell Core cmdlets in C#">Next</a>
+      <a href="/Create-and-test-PowerShell-Core-cmdlets-in-CSharp/" class="pagination--pager" title="Create and test PowerShell Core cmdlets in C#">Next</a>
     
   </nav>
 
@@ -771,7 +771,7 @@ That’s your call depending on the apps target audience and what you feel is be
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/Blog/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/" rel="permalink">The part of the SDLC nobody talks about, and many companies don’t do properly
+        <a href="/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/" rel="permalink">The part of the SDLC nobody talks about, and many companies don’t do properly
 </a>
       
     </h2>
@@ -819,7 +819,7 @@ An app has reached end-of-life, users are no longer...</p>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/Blog/Easily-capture-terminal-output-from-users-you-help-remotely/" rel="permalink">Easily capture terminal output from users you help remotely
+        <a href="/Easily-capture-terminal-output-from-users-you-help-remotely/" rel="permalink">Easily capture terminal output from users you help remotely
 </a>
       
     </h2>
@@ -867,7 +867,7 @@ The easiest way to do this is to synchronously ...</p>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/Blog/Colour-your-kubectl-output-and-type-less/" rel="permalink">Colour your kubectl output and type less
+        <a href="/Colour-your-kubectl-output-and-type-less/" rel="permalink">Colour your kubectl output and type less
 </a>
       
     </h2>
@@ -915,7 +915,7 @@ Kubecolor is a small utility that adds colour to your kubectl o...</p>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/Blog/Handy-Windows-Command-Prompt-commands/" rel="permalink">Handy Windows Command Prompt commands
+        <a href="/Handy-Windows-Command-Prompt-commands/" rel="permalink">Handy Windows Command Prompt commands
 </a>
       
     </h2>
@@ -1228,7 +1228,7 @@ Kubecolor is a small utility that adds colour to your kubectl o...</p>
     
 
     
-      <li><a href="/Blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
     
   </ul>
 </div>
@@ -1240,14 +1240,14 @@ Kubecolor is a small utility that adds colour to your kubectl o...</p>
     </div>
 
     
-  <script src="/Blog/assets/js/main.min.js"></script>
+  <script src="/assets/js/main.min.js"></script>
 
 
 
 
-<script src="/Blog/assets/js/lunr/lunr.min.js"></script>
-<script src="/Blog/assets/js/lunr/lunr-store.js"></script>
-<script src="/Blog/assets/js/lunr/lunr-en.js"></script>
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
 
 
 
