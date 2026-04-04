@@ -1,7 +1,7 @@
-name: Deploy Main Site
-
 # Builds the Jekyll site from main and pushes it to the gh-pages branch,
 # while preserving any PR preview directories that already exist there.
+
+name: Deploy main to gh-pages
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
           JEKYLL_ENV: production
           JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Override url/baseurl so the github-pages gem does not inject the
+          # Override baseurl so the github-pages gem does not inject the
           # repository name (/Blog) as the baseurl, which would break asset paths.
           @"
           url: "https://blog.danskingdom.com"
@@ -39,7 +39,7 @@ jobs:
 
       # Preserve any PR preview directories that already live on gh-pages so
       # that a main-site redeploy does not wipe them out.
-      - name: Restore previews/ from gh-pages branch (if present)
+      - name: Restore previews directories from gh-pages branch (if present)
         shell: pwsh
         run: |
           git ls-remote --exit-code --heads origin gh-pages *> $null
@@ -58,7 +58,7 @@ jobs:
             Remove-Item -Recurse -Force previews
           }
           else {
-            Write-Host "No previews/ directory on gh-pages yet - skipping restore."
+            Write-Host "No previews directory on gh-pages yet - skipping restore."
           }
 
       - name: Deploy to gh-pages branch

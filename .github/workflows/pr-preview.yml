@@ -1,4 +1,8 @@
-name: PR Preview
+# Builds and deploys the Jekyll site for PRs to the "previews" directory on the
+# gh-pages branch, and posts a comment with the preview URL to the PR.
+# Also removes the preview from gh-pages when the PR is closed (merged or abandoned).
+
+name: Deploy PR preview to gh-pages
 
 on:
   pull_request:
@@ -30,7 +34,7 @@ jobs:
           JEKYLL_ENV: production
           JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Write a temporary config that overrides url/baseurl for the preview path.
+          # Write a temporary config that overrides baseurl for the preview path.
           @"
           url: "https://blog.danskingdom.com"
           baseurl: "/previews/pr-${{ github.event.pull_request.number }}"
@@ -47,7 +51,7 @@ jobs:
           keep_files: true
           commit_message: "Deploy preview for PR #${{ github.event.pull_request.number }} (${{ github.sha }})"
 
-      - name: Post / update preview URL comment on PR
+      - name: Post / Update preview URL comment on PR
         uses: actions/github-script@v7
         with:
           script: |
