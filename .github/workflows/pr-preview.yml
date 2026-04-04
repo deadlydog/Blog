@@ -97,7 +97,7 @@ jobs:
         run: |
           # Guard: if gh-pages doesn't exist yet there is nothing to clean up.
           if ! git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
-            echo "gh-pages branch does not exist – nothing to clean up."
+            echo "gh-pages branch does not exist - nothing to clean up."
             exit 0
           fi
 
@@ -113,5 +113,5 @@ jobs:
             git commit -m "Remove preview for PR #${{ github.event.pull_request.number }}"
             git push --set-upstream origin gh-pages
           else
-            echo "Preview directory '$PR_DIR' not found – nothing to clean up."
+            echo "Preview directory '$PR_DIR' not found - nothing to clean up."
           fi
