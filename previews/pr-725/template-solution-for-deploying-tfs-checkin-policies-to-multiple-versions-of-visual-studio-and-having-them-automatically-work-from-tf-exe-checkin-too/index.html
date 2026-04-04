@@ -1,0 +1,1588 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.27.3 by Michael Rose
+  Copyright 2013-2025 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Template Solution For Deploying TFS Checkin Policies To Multiple Versions Of Visual Studio And Having Them Automatically Work From “TF.exe Checkin” Too - Daniel Schroeder’s Programming Blog</title>
+<meta name="description" content="Get the source code">
+
+
+  <meta name="author" content="Daniel Schroeder">
+  
+  <meta property="article:author" content="Daniel Schroeder">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Daniel Schroeder&#39;s Programming Blog">
+<meta property="og:title" content="Template Solution For Deploying TFS Checkin Policies To Multiple Versions Of Visual Studio And Having Them Automatically Work From “TF.exe Checkin” Too">
+<meta property="og:url" content="https://deadlydog.github.io/Blog/previews/pr-725/template-solution-for-deploying-tfs-checkin-policies-to-multiple-versions-of-visual-studio-and-having-them-automatically-work-from-tf-exe-checkin-too/">
+
+
+  <meta property="og:description" content="Get the source code">
+
+
+
+
+
+  <meta name="twitter:site" content="@deadlydog">
+  <meta name="twitter:title" content="Template Solution For Deploying TFS Checkin Policies To Multiple Versions Of Visual Studio And Having Them Automatically Work From “TF.exe Checkin” Too">
+  <meta name="twitter:description" content="Get the source code">
+  <meta name="twitter:url" content="https://deadlydog.github.io/Blog/previews/pr-725/template-solution-for-deploying-tfs-checkin-policies-to-multiple-versions-of-visual-studio-and-having-them-automatically-work-from-tf-exe-checkin-too/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2014-03-24T16:55:05+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="https://deadlydog.github.io/Blog/previews/pr-725/template-solution-for-deploying-tfs-checkin-policies-to-multiple-versions-of-visual-studio-and-having-them-automatically-work-from-tf-exe-checkin-too/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/Blog/previews/pr-725/feed.xml" type="application/atom+xml" rel="alternate" title="Daniel Schroeder's Programming Blog Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/Blog/previews/pr-725/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <script>
+function InitializeLightOrDarkModeStylesheet() {
+	let storageKey = 'theme-preference';
+	let darkHref = '/Blog/previews/pr-725/assets/css/dark.css';
+	let systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	let stored = null;
+	let mode = 'system';
+
+	try
+	{
+		stored = localStorage.getItem(storageKey);
+		if (stored === 'dark' || stored === 'light')
+		{
+			mode = stored;
+		}
+	}
+	catch (error)
+	{
+		console.warn('Could not access localStorage to get theme preference:', error);
+		mode = 'system';
+	}
+
+	let theme = mode === 'system' ? (systemQuery.matches ? 'dark' : 'light') : mode;
+	let linkMedia = mode === 'system' ? '(prefers-color-scheme: dark)' : (theme === 'dark' ? 'all' : 'not all');
+	let docEl = document.documentElement;
+
+	docEl.dataset.theme = theme;
+	docEl.dataset.themeMode = mode;
+
+	// Need to define colors here (in addition to the colorScheme) to prevent a flash of incorrect colors on each initial page load.
+	// So we need to keep these colors in sync with the ones defined in ThemeToggle.js.
+	if (theme === 'dark')
+	{
+		docEl.style.backgroundColor = '#0f172a';
+		docEl.style.color = '#e5e7eb';
+		docEl.style.colorScheme = 'dark';
+	}
+	else
+	{
+		docEl.style.backgroundColor = '#ffffff';
+		docEl.style.color = '#111827';
+		docEl.style.colorScheme = 'light';
+	}
+
+	let darkStylesheet = document.getElementById('theme-dark');
+
+	if (!darkStylesheet)
+	{
+		darkStylesheet = document.createElement('link');
+		darkStylesheet.id = 'theme-dark';
+		darkStylesheet.rel = 'stylesheet';
+		darkStylesheet.href = darkHref;
+		document.head.appendChild(darkStylesheet);
+	}
+
+	darkStylesheet.media = linkMedia;
+}
+InitializeLightOrDarkModeStylesheet();
+</script>
+
+  </head>
+
+  <body class="layout--single wide" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/Blog/previews/pr-725/">
+          Daniel Schroeder&#39;s Programming Blog
+          <span class="site-subtitle">Sharing my tips, tricks, and code to help other developers be more productive.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/Blog/previews/pr-725/"
+                
+                
+              >Home</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/Blog/previews/pr-725/posts/"
+                
+                
+              >Posts</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/Blog/previews/pr-725/categories/"
+                
+                
+              >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/Blog/previews/pr-725/about/"
+                
+                
+              >About</a>
+            </li></ul>
+				<!--========== Dan's Customizations START ==========-->
+				<button id="ThemeToggleButton" class="theme-toggle" title="Toggle light and dark mode. Alt+Click to follow the system setting again." aria-label="Toggle between light and dark mode" aria-pressed="false">
+					<i class="fas fa-moon theme-toggle__icon" aria-hidden="true"></i>
+				</button>
+				<!--========== Dan's Customizations END ==========-->
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://deadlydog.github.io/Blog/previews/pr-725/">
+        <img src="/Blog/previews/pr-725/assets/Site/bio-photo.jpg" alt="Daniel Schroeder" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://deadlydog.github.io/Blog/previews/pr-725/" itemprop="url">Daniel Schroeder</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>aka deadlydog. Developer and family man. MS MVP. Loves C#, .NET, PowerShell, AutoHotkey. Automate Everything!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Regina, SK, Canada</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://bsky.app/profile/danskingdom.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span class="label">Bluesky</span></a></li>
+          
+        
+          
+            <li><a href="https://hachyderm.io/@deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-mastodon" aria-hidden="true"></i><span class="label">Mastodon</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">X / Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://www.youtube.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i><span class="label">YouTube</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/1danielschroeder/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://stackoverflow.com/users/602585/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i><span class="label">Stack Overflow</span></a></li>
+          
+        
+          
+            <li><a href="mailto:deadlydog@hotmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://blog.danskingdom.com/feed.xml" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i><span class="label">Blog RSS Feed</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Template Solution For Deploying TFS Checkin Policies To Multiple Versions Of Visual Studio And Having Them Automatically Work From “TF.exe Checkin” Too">
+    <meta itemprop="description" content="Get the source code">
+    <meta itemprop="datePublished" content="2014-03-24T16:55:05+00:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+            <a href="https://deadlydog.github.io/Blog/previews/pr-725/template-solution-for-deploying-tfs-checkin-policies-to-multiple-versions-of-visual-studio-and-having-them-automatically-work-from-tf-exe-checkin-too/" itemprop="url">Template Solution For Deploying TFS Checkin Policies To Multiple Versions Of Visual Studio And Having Them Automatically Work From “TF.exe Checkin” Too
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2014-03-24T16:55:05+00:00">March 24, 2014</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+
+				<!--========== Dan's Customizations START ==========-->
+				<div>
+					<!-- Show an advertisement in the blog post content. -->
+					<!-- The advertisement shown at the bottom of a blog post. -->
+<div style="text-align: center; margin-bottom: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com In-Article Ad -->
+		<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid"
+			data-ad-client="ca-pub-0037930831928769" data-ad-slot="6215502013"></ins>
+		<script>
+			function RunGoogleAdsensePostAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+				</div>
+				<!--========== Dan's Customizations END ==========-->
+
+        <h2 id="get-the-source-code">Get the source code</h2>
+
+<p>Let’s get right to it by giving you the source code. You can <a href="http://code.msdn.microsoft.com/windowsdesktop/Deploying-Checkin-Policies-d306493a">get it from the MSDN samples here</a>.</p>
+
+<h2 id="explanation-of-source-code-and-adding-new-checkin-policies">Explanation of source code and adding new checkin policies</h2>
+
+<p>If you open the Visual Studio (VS) solution the first thing you will likely notice is that there are 5 projects. CheckinPolicies.VS2012 simply references all of the files in CheckinPolicies.VS2013 as links (i.e. shortcut files); this is because we need to compile the CheckinPolicies.VS2012 project using TFS 2012 assemblies, and the CheckinPolicies.VS2013 project using TFS2013 assemblies, but want both projects to have all of the same checkin policies. So the projects contain all of the same files; just a few of their references are different. A copy of the references that are different between the two projects are stored in the project’s “Dependencies” folder; these are the Team Foundation assemblies that are specific to VS 2012 and 2013. Having these assemblies stored in the solution allows us to still build the VS 2012 checkin policies, even if you (or a colleague) only has VS 2013 installed.</p>
+
+<p><strong>Update:</strong> To avoid having multiple CheckinPolicy.VS* projects, we could use <a href="http://blogs.msdn.com/b/phkelley/archive/2013/08/12/checkin-policy-multitargeting.aspx">the msbuild targets technique that P. Kelly shows on his blog</a>. However, I believe we would still need multiple deployment projects, as described below, in order to have the checkin policies work outside of Visual Studio.</p>
+
+<p>The other projects are CheckinPolicyDeployment.VS2012 and CheckinPolicyDeployment.VS2013 (both of which are VSPackage projects), and CheckinPolicyDeploymentShared. The CheckinPolicyDeployment.VS2012/VS2013 projects will generate the VSIX files that are used to distribute the checkin policies, and CheckinPolicyDeploymentShared contains files/code that are common to both of the projects (the projects reference the files by linking to them).</p>
+
+<p>Basically everything is ready to go. Just start adding new checkin policy classes to the CheckinPolicy.VS2013 project, and then also add them to the CheckinPolicy.VS2012 project as a link. You can add a file as a link in 2 different ways in the Solution Explorer:</p>
+
+<ol>
+  <li>Right-click on the CheckinPolicies.VS2012 project and choose <strong>Add -&gt; Existing Item…</strong>, and then navigate to the new class file that you added to the CheckinPolicy.VS2013 project. Instead of clicking the Add button though, click the little down arrow on the side of the Add button and then choose <strong>Add As Link</strong>.</li>
+  <li>Drag and drop the file from the CheckinPolicy.VS2013 project to the CheckinPolicy.VS2012 project, but while releasing the left mouse button to drop the file, hold down the <strong>Alt</strong> key; this will change the operation from adding a copy of the file to that project, to adding a shortcut file that links back to the original file.</li>
+</ol>
+
+<p>There is a <strong>DummyCheckinPolicy.cs</strong> file in the CheckinPolicies.VS2013 project that shows you an example of how to create a new checkin policy. Basically you just need to create a new public, serializable class that extends the CheckinPolicyBase class. The actual logic for your checkin policy to perform goes in the Evaluate() function. If there is a policy violation in the code that is trying to be checked in, just add a new PolicyFailure instance to the <strong>failures</strong> list with the message that you want the user to see.</p>
+
+<h2 id="building-a-new-version-of-your-checkin-policies">Building a new version of your checkin policies</h2>
+
+<p>Once you are ready to deploy your policies, you will want to update the version number in the <strong>source.extension.vsixmanifest</strong> file in both the CheckinPolicyDeployment.VS2012 and CheckinPolicyDeployment.VS2013 projects. Since these projects will both contain the same policies, I recommend giving them the same version number as well. Once you have updated the version number, build the solution in Release mode. From there you will find the new VSIX files at “CheckinPolicyDeployment.VS2012\bin\Release\TFS Checkin Policies VS2012.vsix” and “CheckinPolicyDeployment.VS2013\bin\Release\TFS Checkin Policies VS2013.vsix”. You can then distribute them to your team; I recommend <a href="http://blogs.msdn.com/b/visualstudio/archive/2011/10/03/private-extension-galleries-for-the-enterprise.aspx">setting up an internal VS Extension Gallery</a>, but the poor-man’s solution is to just email the vsix file out to everyone on your team.</p>
+
+<h2 id="having-the-policies-automatically-work-outside-of-visual-studio">Having the policies automatically work outside of Visual Studio</h2>
+
+<p>This is already hooked up and working in the template solution, so nothing needs to be changed there, but I will explain how it works here. A while back I blogged about <a href="https://blog.danskingdom.com/getting-custom-tfs-checkin-policies-to-work-when-committing-from-the-command-line-i-e-tf-checkin/">how to get your Team Foundation Server (TFS) checkin polices to still work when checking code in from the command line</a> via the “tf checkin” command; by default when installing your checkin policies via a VSIX package (the MS recommended approach) you can only get them to work in Visual Studio. I hated that I would need to manually run the script I provided each time the checkin policies were updated, so I posted <a href="http://stackoverflow.com/questions/18647866/run-script-during-after-vsix-install">a question on Stack Overflow about how to run a script automatically after the VSIX package installs the extension</a>. So it turns out that you can’t do that, but what you can do is use a VSPackage instead, which still uses VSIX to deploy the extension, but then also allows us to hook into Visual Studio events to run our script when VS starts up or exits.</p>
+
+<p>Here is the VSPackage class code to hook up the events and call our UpdateCheckinPoliciesInRegistry() function:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">/// &lt;summary&gt;</span>
+<span class="c1">/// This is the class that implements the package exposed by this assembly.</span>
+<span class="c1">///</span>
+<span class="c1">/// The minimum requirement for a class to be considered a valid package for Visual Studio</span>
+<span class="c1">/// is to implement the IVsPackage interface and register itself with the shell.</span>
+<span class="c1">/// This package uses the helper classes defined inside the Managed Package Framework (MPF)</span>
+<span class="c1">/// to do it: it derives from the Package class that provides the implementation of the</span>
+<span class="c1">/// IVsPackage interface and uses the registration attributes defined in the framework to</span>
+<span class="c1">/// register itself and its components with the shell.</span>
+<span class="c1">/// &lt;/summary&gt;</span>
+<span class="c1">// This attribute tells the PkgDef creation utility (CreatePkgDef.exe) that this class is</span>
+<span class="c1">// a package.</span>
+<span class="p">[</span><span class="nf">PackageRegistration</span><span class="p">(</span><span class="n">UseManagedResourcesOnly</span> <span class="p">=</span> <span class="k">true</span><span class="p">)]</span>
+<span class="c1">// This attribute is used to register the information needed to show this package</span>
+<span class="c1">// in the Help/About dialog of Visual Studio.</span>
+<span class="p">[</span><span class="nf">InstalledProductRegistration</span><span class="p">(</span><span class="s">"#110"</span><span class="p">,</span> <span class="s">"#112"</span><span class="p">,</span> <span class="s">"1.0"</span><span class="p">,</span> <span class="n">IconResourceID</span> <span class="p">=</span> <span class="m">400</span><span class="p">)]</span>
+<span class="c1">// Auto Load our assembly even when no solution is open (by using the Microsoft.VisualStudio.VSConstants.UICONTEXT_NoSolution guid).</span>
+<span class="p">[</span><span class="nf">ProvideAutoLoad</span><span class="p">(</span><span class="s">"ADFC4E64-0397-11D1-9F4E-00A0C911004F"</span><span class="p">)]</span>
+<span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">CheckinPolicyDeploymentPackage</span> <span class="p">:</span> <span class="n">Package</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="n">EnvDTE</span><span class="p">.</span><span class="n">DTEEvents</span> <span class="n">_dteEvents</span><span class="p">;</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Initialization of the package; this method is called right after the package is sited, so this is the place</span>
+    <span class="c1">/// where you can put all the initialization code that rely on services provided by VisualStudio.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">Initialize</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">base</span><span class="p">.</span><span class="nf">Initialize</span><span class="p">();</span>
+
+        <span class="kt">var</span> <span class="n">dte</span> <span class="p">=</span> <span class="p">(</span><span class="n">DTE2</span><span class="p">)</span><span class="nf">GetService</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">SDTE</span><span class="p">));</span>
+        <span class="n">_dteEvents</span> <span class="p">=</span> <span class="n">dte</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">DTEEvents</span><span class="p">;</span>
+        <span class="n">_dteEvents</span><span class="p">.</span><span class="n">OnBeginShutdown</span> <span class="p">+=</span> <span class="n">OnBeginShutdown</span><span class="p">;</span>
+
+        <span class="nf">UpdateCheckinPoliciesInRegistry</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">OnBeginShutdown</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">_dteEvents</span><span class="p">.</span><span class="n">OnBeginShutdown</span> <span class="p">-=</span> <span class="n">OnBeginShutdown</span><span class="p">;</span>
+        <span class="n">_dteEvents</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+
+        <span class="nf">UpdateCheckinPoliciesInRegistry</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">UpdateCheckinPoliciesInRegistry</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="kt">var</span> <span class="n">dte</span> <span class="p">=</span> <span class="p">(</span><span class="n">DTE2</span><span class="p">)</span><span class="nf">GetService</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">SDTE</span><span class="p">));</span>
+        <span class="kt">string</span> <span class="n">visualStudioVersionNumber</span> <span class="p">=</span> <span class="n">dte</span><span class="p">.</span><span class="n">Version</span><span class="p">;</span>
+        <span class="kt">string</span> <span class="n">customCheckinPolicyEntryName</span> <span class="p">=</span> <span class="s">"CheckinPolicies"</span><span class="p">;</span>
+
+        <span class="c1">// Create the paths to the registry keys that contains the values to inspect.</span>
+        <span class="kt">string</span> <span class="n">desiredRegistryKeyPath</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="nf">Format</span><span class="p">(</span><span class="s">"HKEY_CURRENT_USER\\Software\\Microsoft\\VisualStudio\\{0}_Config\\TeamFoundation\\SourceControl\\Checkin Policies"</span><span class="p">,</span> <span class="n">visualStudioVersionNumber</span><span class="p">);</span>
+        <span class="kt">string</span> <span class="n">currentRegistryKeyPath</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Environment</span><span class="p">.</span><span class="n">Is64BitOperatingSystem</span><span class="p">)</span>
+            <span class="n">currentRegistryKeyPath</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="nf">Format</span><span class="p">(</span><span class="s">"HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Microsoft\\VisualStudio\\{0}\\TeamFoundation\\SourceControl\\Checkin Policies"</span><span class="p">,</span> <span class="n">visualStudioVersionNumber</span><span class="p">);</span>
+        <span class="k">else</span>
+            <span class="n">currentRegistryKeyPath</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="nf">Format</span><span class="p">(</span><span class="s">"HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\VisualStudio\\{0}\\TeamFoundation\\SourceControl\\Checkin Policies"</span><span class="p">,</span> <span class="n">visualStudioVersionNumber</span><span class="p">);</span>
+
+        <span class="c1">// Get the value that the registry should have, and the value that it currently has.</span>
+        <span class="kt">var</span> <span class="n">desiredRegistryValue</span> <span class="p">=</span> <span class="n">Registry</span><span class="p">.</span><span class="nf">GetValue</span><span class="p">(</span><span class="n">desiredRegistryKeyPath</span><span class="p">,</span> <span class="n">customCheckinPolicyEntryName</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+        <span class="kt">var</span> <span class="n">currentRegistryValue</span> <span class="p">=</span> <span class="n">Registry</span><span class="p">.</span><span class="nf">GetValue</span><span class="p">(</span><span class="n">currentRegistryKeyPath</span><span class="p">,</span> <span class="n">customCheckinPolicyEntryName</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+
+        <span class="c1">// If the registry value is already up to date, just exit without updating the registry.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">desiredRegistryValue</span> <span class="p">==</span> <span class="k">null</span> <span class="p">||</span> <span class="n">desiredRegistryValue</span><span class="p">.</span><span class="nf">Equals</span><span class="p">(</span><span class="n">currentRegistryValue</span><span class="p">))</span>
+            <span class="k">return</span><span class="p">;</span>
+
+        <span class="c1">// Get the path to the PowerShell script to run.</span>
+        <span class="kt">string</span> <span class="n">powerShellScriptFilePath</span> <span class="p">=</span> <span class="n">Path</span><span class="p">.</span><span class="nf">Combine</span><span class="p">(</span><span class="n">Path</span><span class="p">.</span><span class="nf">GetDirectoryName</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="nf">GetAssembly</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">CheckinPolicyDeploymentPackage</span><span class="p">)).</span><span class="n">Location</span><span class="p">),</span>
+            <span class="s">"FilesFromShared"</span><span class="p">,</span> <span class="s">"UpdateCheckinPolicyInRegistry.ps1"</span><span class="p">);</span>
+
+        <span class="c1">// Start a new process to execute the batch file script, which calls the PowerShell script to do the actual work.</span>
+        <span class="kt">var</span> <span class="n">process</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Process</span>
+        <span class="p">{</span>
+            <span class="n">StartInfo</span> <span class="p">=</span>
+            <span class="p">{</span>
+                <span class="n">FileName</span> <span class="p">=</span> <span class="s">"PowerShell"</span><span class="p">,</span>
+                <span class="n">Arguments</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="nf">Format</span><span class="p">(</span><span class="s">"-NoProfile -ExecutionPolicy Bypass -File \"{0}\" -VisualStudioVersion \"{1}\" -CustomCheckinPolicyEntryName \"{2}\""</span><span class="p">,</span> <span class="n">powerShellScriptFilePath</span><span class="p">,</span> <span class="n">visualStudioVersionNumber</span><span class="p">,</span> <span class="n">customCheckinPolicyEntryName</span><span class="p">),</span>
+
+                <span class="c1">// Hide the PowerShell window while we run the script.</span>
+                <span class="n">CreateNoWindow</span> <span class="p">=</span> <span class="k">true</span><span class="p">,</span>
+                <span class="n">UseShellExecute</span> <span class="p">=</span> <span class="k">false</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+        <span class="n">process</span><span class="p">.</span><span class="nf">Start</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>All of the attributes on the class are put there by default, except for the “[ProvideAutoLoad(“ADFC4E64-0397-11D1-9F4E-00A0C911004F”)]” one; this attribute is the one that actually allows the Initialize() function to get called when Visual Studio starts. You can see in the Initialize method that we hook up an event so that the UpdateCheckinPoliciesInRegistry() function gets called when VS is closed, and we also call that function from Initialize(), which is called when VS starts up.</p>
+
+<p>You might have noticed that this class is abstract. This is because the VS 2012 and VS 2013 classed need to have a unique ID attribute, so the actual VSPackage class just inherits from this one. Here is what the VS 2013 one looks like:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="nf">Guid</span><span class="p">(</span><span class="n">GuidList</span><span class="p">.</span><span class="n">guidCheckinPolicyDeployment_VS2013PkgString</span><span class="p">)]</span>
+<span class="k">public</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">CheckinPolicyDeployment_VS2013Package</span> <span class="p">:</span> <span class="n">CheckinPolicyDeploymentShared</span><span class="p">.</span><span class="n">CheckinPolicyDeploymentPackage</span>
+<span class="p">{</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The UpdateCheckinPoliciesInRegistry() function checks to see if the appropriate registry key has been updated to allow the checkin policies to run from the “tf checkin” command prompt command. If they have, then it simply exits, otherwise it calls a PowerShell script to set the keys for us. A PowerShell script is used because modifying the registry requires admin permissions, and we can easily run a new PowerShell process as admin (assuming the logged in user is an admin on their local machine, which is the case for everyone in our company).</p>
+
+<p>The one variable to note here is the <strong>customCheckinPolicyEntryName</strong>. This corresponds to the registry key name that I’ve specified in the RegistryKeyToAdd.pkgdef file, so if you change it be sure to change it in both places. This is what the RegistryKeyToAdd.pkgdef file contains:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// We use "\..\" in the value because the projects that include this file place it in a "FilesFromShared" folder, and we want it to look for the dll in the root directory.</span>
+<span class="p">[</span><span class="err">$</span><span class="n">RootKey</span><span class="err">$\</span><span class="n">TeamFoundation</span><span class="err">\</span><span class="n">SourceControl</span><span class="err">\</span><span class="n">Checkin</span> <span class="n">Policies</span><span class="p">]</span>
+<span class="s">"CheckinPolicies"</span><span class="p">=</span><span class="s">"$PackageFolder$\..\CheckinPolicies.dll"</span>
+</code></pre></div></div>
+
+<p>And here are the contents of the UpdateCheckinPolicyInRegistry.ps1 PowerShell file. This is basically just a refactored version of the script I posted on my old blog post:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># This script copies the required registry value so that the checkin policies will work when doing a TFS checkin from the command line.</span><span class="w">
+</span><span class="kr">param</span><span class="w">
+</span><span class="p">(</span><span class="w">
+    </span><span class="p">[</span><span class="n">parameter</span><span class="p">(</span><span class="n">Mandatory</span><span class="o">=</span><span class="bp">$true</span><span class="p">,</span><span class="n">HelpMessage</span><span class="o">=</span><span class="s2">"The version of Visual Studio to update in the registry (i.e. '11.0' for VS 2012, '12.0' for VS 2013)"</span><span class="p">)]</span><span class="w">
+    </span><span class="p">[</span><span class="n">string</span><span class="p">]</span><span class="nv">$VisualStudioVersion</span><span class="p">,</span><span class="w">
+
+    </span><span class="p">[</span><span class="n">parameter</span><span class="p">(</span><span class="n">HelpMessage</span><span class="o">=</span><span class="s2">"The name of the Custom Checkin Policy Entry in the Registry Key."</span><span class="p">)]</span><span class="w">
+    </span><span class="p">[</span><span class="n">string</span><span class="p">]</span><span class="nv">$CustomCheckinPolicyEntryName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'CheckinPolicies'</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="c"># Turn on Strict Mode to help catch syntax-related errors.</span><span class="w">
+</span><span class="c">#   This must come after a script's/function's param section.</span><span class="w">
+</span><span class="c">#   Forces a function to be the first non-comment code to appear in a PowerShell Module.</span><span class="w">
+</span><span class="n">Set-StrictMode</span><span class="w"> </span><span class="nt">-Version</span><span class="w"> </span><span class="nx">Latest</span><span class="w">
+
+</span><span class="nv">$ScriptBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="kr">function</span><span class="w"> </span><span class="nf">UpdateCheckinPolicyInRegistry</span><span class="p">([</span><span class="n">parameter</span><span class="p">(</span><span class="n">Mandatory</span><span class="o">=</span><span class="bp">$true</span><span class="p">)][</span><span class="n">string</span><span class="p">]</span><span class="nv">$VisualStudioVersion</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">string</span><span class="p">]</span><span class="nv">$CustomCheckinPolicyEntryName</span><span class="p">)</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nv">$status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Updating registry to allow checkin policies to work outside of Visual Studio version '</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$VisualStudioVersion</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">'.'</span><span class="w">
+        </span><span class="n">Write-Output</span><span class="w"> </span><span class="nv">$status</span><span class="w">
+
+        </span><span class="c"># Get the Registry Key Entry that holds the path to the Custom Checkin Policy Assembly.</span><span class="w">
+        </span><span class="nv">$HKCUKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'HKCU:\Software\Microsoft\VisualStudio\'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$VisualStudioVersion</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">'_Config\TeamFoundation\SourceControl\Checkin Policies'</span><span class="w">
+        </span><span class="nv">$CustomCheckinPolicyRegistryEntry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-ItemProperty</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="nv">$HKCUKey</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$CustomCheckinPolicyEntryName</span><span class="w">
+        </span><span class="nv">$CustomCheckinPolicyEntryValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$CustomCheckinPolicyRegistryEntry</span><span class="o">.</span><span class="p">(</span><span class="nv">$CustomCheckinPolicyEntryName</span><span class="p">)</span><span class="w">
+
+        </span><span class="c"># Create a new Registry Key Entry for the iQ Checkin Policy Assembly so they will work from the command line (as well as from Visual Studio).</span><span class="w">
+        </span><span class="kr">if</span><span class="w"> </span><span class="p">([</span><span class="n">Environment</span><span class="p">]::</span><span class="n">Is64BitOperatingSystem</span><span class="p">)</span><span class="w">
+        </span><span class="p">{</span><span class="w"> </span><span class="nv">$HKLMKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'HKLM:\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$VisualStudioVersion</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">'\TeamFoundation\SourceControl\Checkin Policies'</span><span class="w"> </span><span class="p">}</span><span class="w">
+        </span><span class="kr">else</span><span class="w">
+        </span><span class="p">{</span><span class="w"> </span><span class="nv">$HKLMKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'HKLM:\SOFTWARE\Microsoft\VisualStudio\'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$VisualStudioVersion</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">'\TeamFoundation\SourceControl\Checkin Policies'</span><span class="w"> </span><span class="p">}</span><span class="w">
+        </span><span class="n">Set-ItemProperty</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="nv">$HKLMKey</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$CustomCheckinPolicyEntryName</span><span class="w"> </span><span class="nt">-Value</span><span class="w"> </span><span class="nv">$CustomCheckinPolicyEntryValue</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># Run the script block as admin so it has permissions to modify the registry.</span><span class="w">
+</span><span class="n">Start-Process</span><span class="w"> </span><span class="nt">-FilePath</span><span class="w"> </span><span class="nx">PowerShell</span><span class="w"> </span><span class="nt">-Verb</span><span class="w"> </span><span class="nx">RunAs</span><span class="w"> </span><span class="nt">-ArgumentList</span><span class="w"> </span><span class="s2">"-NoProfile -ExecutionPolicy Bypass -Command &amp;amp; {</span><span class="nv">$ScriptBlock</span><span class="s2"> UpdateCheckinPolicyInRegistry -VisualStudioVersion ""</span><span class="nv">$VisualStudioVersion</span><span class="s2">"" -CustomCheckinPolicyEntryName ""</span><span class="nv">$CustomCheckinPolicyEntryName</span><span class="s2">""}"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>While I could have just used a much smaller PowerShell script that simply set a given registry key to a given value, I chose to have some code duplication between the C# code and this script so that this script can still be used as a stand-alone script if needed.</p>
+
+<p>The slight downside to using a VSPackage is that this script still won’t get called until the user closes or opens a new instance of Visual Studio, so the checkin policies won’t work immediately from the “tf checkin” command after updating the checkin policies extension, but this still beats having to remember to manually run the script.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So I’ve given you a template solution that you can use without any modification to start creating your VS 2012 and VS 2013 compatible checkin policies; Just add new class files to the CheckinPolicies.VS2013 project, and then add them to the CheckinPolicies.VS2012 project as well <strong>as links</strong>. By using links it allows you to only have to modify checkin policy files once, and have the changes go to both the 2012 and 2013 VSIX packages. Hopefully this template solution helps you to get your TFS checkin policies up and running faster.</p>
+
+<p>Happy Coding!</p>
+
+        
+
+				<!--========== Dan's Customizations START ==========-->
+				<div>
+					<!-- Show an advertisement after the blog post content. -->
+					<!-- The advertisement shown at the bottom of a blog post. -->
+<div style="text-align: center; margin-top: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com Responsive Ad 1 -->
+		<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-0037930831928769" data-ad-slot="7917470839"
+			data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			function RunGoogleAdsensePostAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+				</div>
+				<!--========== Dan's Customizations END ==========-->
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/Blog/previews/pr-725/tags/#checkin" class="page__taxonomy-item p-category" rel="tag">Checkin</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/tags/#checkin-policies" class="page__taxonomy-item p-category" rel="tag">Checkin Policies</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/tags/#powershell" class="page__taxonomy-item p-category" rel="tag">PowerShell</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/tags/#source-code" class="page__taxonomy-item p-category" rel="tag">Source Code</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/tags/#team-foundation" class="page__taxonomy-item p-category" rel="tag">Team Foundation</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/tags/#team-foundation-server" class="page__taxonomy-item p-category" rel="tag">Team Foundation Server</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/tags/#tf" class="page__taxonomy-item p-category" rel="tag">TF</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/tags/#tf-exe" class="page__taxonomy-item p-category" rel="tag">TF.exe</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/tags/#tfs" class="page__taxonomy-item p-category" rel="tag">TFS</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/tags/#visual-studio" class="page__taxonomy-item p-category" rel="tag">Visual Studio</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/tags/#vsix" class="page__taxonomy-item p-category" rel="tag">VSIX</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/Blog/previews/pr-725/categories/#powershell" class="page__taxonomy-item p-category" rel="tag">PowerShell</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/categories/#tfs" class="page__taxonomy-item p-category" rel="tag">TFS</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/categories/#visual-studio" class="page__taxonomy-item p-category" rel="tag">Visual Studio</a><span class="sep">, </span>
+    
+      <a href="/Blog/previews/pr-725/categories/#visual-studio-extensions" class="page__taxonomy-item p-category" rel="tag">Visual Studio Extensions</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2014-03-24T16:55:05+00:00">March 24, 2014</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://x.com/intent/tweet?via=deadlydog&text=Template+Solution+For+Deploying+TFS+Checkin+Policies+To+Multiple+Versions+Of+Visual+Studio+And+Having+Them+Automatically+Work+From+%22TF.exe+Checkin%22+Too%20https%3A%2F%2Fdeadlydog.github.io%2FBlog%2Fpreviews%2Fpr-725%2Ftemplate-solution-for-deploying-tfs-checkin-policies-to-multiple-versions-of-visual-studio-and-having-them-automatically-work-from-tf-exe-checkin-too%2F" class="btn btn--x" aria-label="Share on X" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on X">
+    <i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i><span> X</span>
+  </a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdeadlydog.github.io%2FBlog%2Fpreviews%2Fpr-725%2Ftemplate-solution-for-deploying-tfs-checkin-policies-to-multiple-versions-of-visual-studio-and-having-them-automatically-work-from-tf-exe-checkin-too%2F" class="btn btn--facebook" aria-label="Share on Facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook">
+    <i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span>
+  </a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://deadlydog.github.io/Blog/previews/pr-725/template-solution-for-deploying-tfs-checkin-policies-to-multiple-versions-of-visual-studio-and-having-them-automatically-work-from-tf-exe-checkin-too/" class="btn btn--linkedin" aria-label="Share on LinkedIn" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn">
+    <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span>
+  </a>
+
+  <a href="https://bsky.app/intent/compose?text=Template+Solution+For+Deploying+TFS+Checkin+Policies+To+Multiple+Versions+Of+Visual+Studio+And+Having+Them+Automatically+Work+From+%22TF.exe+Checkin%22+Too%20https%3A%2F%2Fdeadlydog.github.io%2FBlog%2Fpreviews%2Fpr-725%2Ftemplate-solution-for-deploying-tfs-checkin-policies-to-multiple-versions-of-visual-studio-and-having-them-automatically-work-from-tf-exe-checkin-too%2F" class="btn btn--bluesky" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Bluesky">
+    <i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span> Bluesky</span>
+  </a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/Blog/previews/pr-725/saving-and-loading-a-c-objects-data-to-an-xml-json-or-binary-file/" class="pagination--pager" title="Saving And Loading A C# Object’s Data To An Xml, Json, Or Binary File">Previous</a>
+    
+    
+      <a href="/Blog/previews/pr-725/adding-a-wpf-settings-page-to-the-tools-options-dialog-window-for-your-visual-studio-extension/" class="pagination--pager" title="Adding a WPF Settings Page To The Tools Options Dialog Window For Your Visual Studio Extension">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+      
+        <div class="page__comments">
+  
+  
+      <section id="static-comments">
+        
+          <!-- Start static comments -->
+          <div class="js-comments">
+            
+          </div>
+          <!-- End static comments -->
+
+          <!-- Start new comment form -->
+          <div class="page__comments-form">
+            <h4 class="page__comments-title">Leave a Comment</h4>
+            <p class="small">Your email address will not be published. Required fields are marked <span class="required">*</span></p>
+            <form id="new_comment" class="page__comments-form js-form form" method="post" action="https://dansblog-staticman.azurewebsites.net/v3/entry/github/deadlydog/Blog/main/comments">
+              <div class="form__spinner">
+                <i class="fas fa-spinner fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only">Loading...</span>
+              </div>
+
+              <div class="form-group">
+                <label for="comment-form-message">Comment <small class="required">*</small></label>
+                <textarea type="text" rows="3" id="comment-form-message" name="fields[message]" tabindex="1"></textarea>
+                <div class="small help-block"><a href="https://daringfireball.net/projects/markdown/">Markdown is supported.</a></div>
+              </div>
+              <div class="form-group">
+                <label for="comment-form-name">Name <small class="required">*</small></label>
+                <input type="text" id="comment-form-name" name="fields[name]" tabindex="2" />
+              </div>
+              <div class="form-group">
+                <label for="comment-form-email">Email address <small class="required">*</small></label>
+                <input type="email" id="comment-form-email" name="fields[email]" tabindex="3" />
+              </div>
+              <div class="form-group">
+                <label for="comment-form-url">Website (optional)</label>
+                <input type="url" id="comment-form-url" name="fields[url]" tabindex="4"/>
+              </div>
+              <div class="form-group hidden" style="display: none;">
+                <input type="hidden" name="options[slug]" value="template-solution-for-deploying-tfs-checkin-policies-to-multiple-versions-of-visual-studio-and-having-them-automatically-work-from-tf-exe-checkin-too">
+                <label for="comment-form-location">Not used. Leave blank if you are a human.</label>
+                <input type="text" id="comment-form-location" name="fields[hidden]" autocomplete="off"/>
+                <input type="hidden" name="options[reCaptcha][siteKey]" value="6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0">
+                <input type="hidden" name="options[reCaptcha][secret]" value="YDDQ/Zd3cWC5JcTKX5o3OH7tlG8soGbDSnkvg5uv6R7+SkM2ujaeZYCri5ZXUc7l+2L60NPxpRQFvMjlQq6hhjTVi9IJHrHjrmthPjHj1ZM/rNz6/FtWLs4Sm/mHP4z0/ZqwF5bcAn6s4rpnUR5nHJt3M3f1XtPVdgufg9vSxHNeFRUDRWpZxedDOTharP6xf55FRLnVpOchRe/KkIIi+L4MYfAn27esFdbpcP4rnxCujYk3VGvMUXuFT2JMVY9DMDKfE20D1SUR9sleqFwyaHoYlJG+V8oUJVioBPQTq61NoO2Xj3uddbnLN7hqSJ3V2JKCGa7UZvZCyab56/txOg==">
+              </div>
+              <!-- Start comment form alert messaging -->
+              <p class="hidden js-notice">
+                <strong class="js-notice-text"></strong>
+              </p>
+              <!-- End comment form alert messaging -->
+              
+                <div class="form-group">
+                  <div class="g-recaptcha" data-sitekey="6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0"></div>
+                </div>
+              
+              <div class="form-group">
+                <button type="submit" id="comment-form-submit" tabindex="5" class="btn btn--primary btn--large">Submit Comment</button>
+              </div>
+            </form>
+          </div>
+          <!-- End new comment form -->
+          <script async src="https://www.google.com/recaptcha/api.js"></script>
+        
+      </section>
+    
+</div>
+
+      
+    
+  </article>
+
+  
+  
+    
+<div class="page__related">
+  
+  <h2 class="page__related-title">You May Also Enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/Blog/previews/pr-725/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/" rel="permalink">The part of the SDLC nobody talks about, and many companies don’t do properly
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-03-30T00:00:00+00:00">March 30, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">The most neglected phase of the software development lifecycle (SDLC) is often the decommissioning phase.
+An app has reached end-of-life, users are no longer...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/Blog/previews/pr-725/Easily-capture-terminal-output-from-users-you-help-remotely/" rel="permalink">Easily capture terminal output from users you help remotely
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-03-01T00:00:00+00:00">March 1, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">When helping others troubleshoot issues with their PC, you often need to see the output of commands they run.
+The easiest way to do this is to synchronously ...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/Blog/previews/pr-725/Colour-your-kubectl-output-and-type-less/" rel="permalink">Colour your kubectl output and type less
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-02-05T00:00:00+00:00">February 5, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">If you work with Kubernetes on the command line using kubectl, you will appreciate kubecolor.
+Kubecolor is a small utility that adds colour to your kubectl o...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/Blog/previews/pr-725/Handy-Windows-Command-Prompt-commands/" rel="permalink">Handy Windows Command Prompt commands
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-01-25T00:00:00+00:00">January 25, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Below are some handy Windows Command Prompt commands that can help you troubleshoot and manage your system more effectively.
+
+</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!--========== Dan's Customizations START ==========-->
+
+<!-- Show the Donate image button at the bottom of the screen. -->
+<!-- This defines all of the CSS, HTML, and JavaScript needed for the Donate button and modal. -->
+
+<style>
+	 /* Have a fixed donate section on all of the pages (always on-top on bottom-left). */
+	#Donate
+	{
+		position: fixed;
+		width: 100%;
+		max-width: 1300px;	/* Ensure the Donate section doesn't drift too far left on large screens. */
+		bottom: 0;
+		pointer-events: none;	/* Allow clicking through the div to blog content underneath. */
+	}
+
+	#DonateModalOpenButton
+	{
+		z-index: 10;	/* Always on-top, except for modals. */
+		cursor: pointer;
+		pointer-events: auto;	/* Restore allowing clicking this element in the Donate div. */
+	}
+
+	/* Default size for the donate image on large screens. */
+	.donate-button-image
+	{
+		width: 150px;
+	}
+
+	/* Shrink donate image a bit on medium size screens. */
+	@media only screen and (max-width: 64em)
+	{
+		.donate-button-image
+		{
+			width: 100px;
+		}
+	}
+
+	/* Shrink donate images a lot on smaller screens. */
+	@media only screen and (max-width: 32em)
+	{
+		.donate-button-image
+		{
+			width: 80px;
+		}
+
+		.donate-image
+		{
+			width: 120px;
+		}
+	}
+
+	/* Modal background. */
+	.modal-container
+	{
+		display: none;	/* Hidden by default. */
+		position: fixed;
+		z-index: 100;	/* Always on top. */
+
+		/* Center the modal-container div. */
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+
+		width: 85%;
+		max-width: 600px;
+		overflow: auto;	/* Enable scroll if needed. */
+		background-color: rgb(255, 255, 255);
+
+		/* Give the container a nice rounded border */
+		border-radius: 10px;
+		border: 2px solid #235e70;
+		box-shadow: 0 0 10px #235e70;
+	}
+
+	/* The modal's close button. */
+	.modal-close-button
+	{
+		float: right;
+		margin-right: 20px;
+		color: #235e70;
+		font-size: 40px;
+		font-weight: bold;
+	}
+
+	.modal-close-button:hover,
+	.modal-close-button:focus
+	{
+		color: #000000;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	/* Modal content. */
+	.modal-content
+	{
+		margin: auto;
+		display: block;
+		clear: both;	/* Ensure the content appears below the floated close button. */
+		width: 80%;
+		text-align: center;
+		padding-bottom: 30px;
+		color: #235e70;
+	}
+
+	.modal-content a
+	{
+		/* Override the footer's "text-decoration: none;" by using !important. https://stackoverflow.com/a/64637823/602585 */
+		text-decoration: underline !important;
+	}
+</style>
+
+<!-- Show the Donate image button at the bottom of the screen. -->
+<div id="Donate">
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+		alt="Donate button image" />
+</div>
+<div id="DonateModal" class="modal-container">
+	<div id="DonateModalCloseButton" class="modal-close-button">&times;</div>
+	<div class="modal-content">
+		<p>
+			If you've found my blog helpful and would like to show your appreciation, buy me a <a
+				href="https://en.wikipedia.org/wiki/Poutine">poutine</a>! It will encourage me to create more content 😁
+		</p>
+
+		<div>
+			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
+				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
+					alt="Donate payment button image" />
+			</a>
+		</div>
+	</div>
+</div>
+
+<script>
+	var donateModal = document.getElementById("DonateModal");
+	var donateModalOpenButton = document.getElementById("DonateModalOpenButton");
+	var donateModalCloseButton = document.getElementById("DonateModalCloseButton");
+
+	// When the user clicks the open button, open the modal.
+	donateModalOpenButton.onclick = function (event)
+	{
+		if (DonateModalIsOpen())
+		{
+			CloseDonateModal();
+		}
+		else
+		{
+			OpenDonateModal();
+			event.stopPropagation();	// Prevent the window event handler from closing the modal instantly.
+		}
+	}
+
+	// When the user clicks the close button, close the modal.
+	donateModalCloseButton.onclick = function (event)
+	{
+		CloseDonateModal();
+	}
+
+	// When the user clicks anywhere outside the modal, close the modal.
+	window.onclick = function (event)
+	{
+		// Must check both the modal and it's children.
+		var userClickedOutsideOfModal = (event.target !== donateModal && !donateModal.contains(event.target))
+
+		if (DonateModalIsOpen() && userClickedOutsideOfModal)
+		{
+			CloseDonateModal();
+		}
+	}
+
+	function OpenDonateModal()
+	{
+		donateModal.style.display = "block";
+	}
+
+	function CloseDonateModal()
+	{
+		donateModal.style.display = "none";
+	}
+
+	function DonateModalIsOpen()
+	{
+		return donateModal.style.display == "block";
+	}
+</script>
+
+
+<!-- Put an advertisement in the site's footer. -->
+<!-- Put an advertisement in the site's footer. -->
+<div style="text-align: center; margin-bottom: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com Responsive Ad 2 -->
+		<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0037930831928769" data-ad-slot="1591735639"
+			data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			function RunGoogleAdsenseFooterAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+
+<!--========== Dan's Customizations END ==========-->
+
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://bsky.app/profile/danskingdom.com" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-bluesky" aria-hidden="true"></i> Bluesky</a></li>
+        
+      
+        
+          <li><a href="https://hachyderm.io/@deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-mastodon" aria-hidden="true"></i> Mastodon</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> X / Twitter</a></li>
+        
+      
+        
+          <li><a href="https://www.youtube.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> YouTube</a></li>
+        
+      
+        
+          <li><a href="https://github.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/1danielschroeder/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+        
+      
+        
+          <li><a href="https://stackoverflow.com/users/602585/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i> Stack Overflow</a></li>
+        
+      
+    
+
+    
+      <li><a href="/Blog/previews/pr-725/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+
+<div class="page__footer-copyright">&copy; 2026 <a href="https://deadlydog.github.io">Daniel Schroeder&#39;s Programming Blog</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/Blog/previews/pr-725/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/Blog/previews/pr-725/assets/js/lunr/lunr.min.js"></script>
+<script src="/Blog/previews/pr-725/assets/js/lunr/lunr-store.js"></script>
+<script src="/Blog/previews/pr-725/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Replaced entire file with my updated version. Dan's Customizations START and END for entire file.
+	Google Analytics introduced new required consent tags in 2023, so we had to update the code to account for them.
+	More info: https://developers.google.com/tag-platform/security/guides/consent?consentmode=basic#gtag.js
+-->
+
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() { dataLayer.push(arguments); }
+
+	// Consent not granted by default.
+	gtag('consent', 'default', {
+		'ad_user_data': 'denied',
+		'ad_personalization': 'denied',
+		'ad_storage': 'denied',
+		'analytics_storage': 'denied',
+		// Wait 500ms to allow consent function to update consent values before calling Google Analytics.
+		'wait_for_update': 500,
+	});
+
+	gtag('js', new Date());
+	gtag('config', 'G-7CB6XGCWTK', {
+			'anonymize_ip': false
+		});
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CB6XGCWTK"></script>
+<script>
+	function RunGoogleAnalyticsJavaScript()
+	{
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+
+		// Update consent values from denied to granted.
+		gtag('consent', 'update', {
+			ad_user_data: 'granted',
+			ad_personalization: 'granted',
+			ad_storage: 'granted',
+			analytics_storage: 'granted'
+		});
+	}
+</script>
+
+
+
+
+
+
+    
+  <script>
+    (function ($) {
+    $('#new_comment').submit(function () {
+      var form = this;
+
+      $(form).addClass('disabled');
+      $('#comment-form-submit').html('<i class="fas fa-spinner fa-spin fa-fw"></i> Loading...');
+
+      $.ajax({
+        type: $(this).attr('method'),
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        contentType: 'application/x-www-form-urlencoded',
+        success: function (data) {
+          $('#comment-form-submit').html('Submitted');
+          $('.page__comments-form .js-notice').removeClass('notice--danger');
+          $('.page__comments-form .js-notice').addClass('notice--success');
+          showAlert('Thanks for your comment! It will show on the site once it has been approved.');
+        },
+        error: function (err) {
+          console.log(err);
+          $('#comment-form-submit').html('Submit Comment');
+          $('.page__comments-form .js-notice').removeClass('notice--success');
+          $('.page__comments-form .js-notice').addClass('notice--danger');
+          showAlert('Sorry, there was an error with your submission. Please make sure all required fields have been completed and try again.');
+          $(form).removeClass('disabled');
+        }
+      });
+
+      return false;
+    });
+
+    function showAlert(message) {
+      $('.page__comments-form .js-notice').removeClass('hidden');
+      $('.page__comments-form .js-notice-text').html(message);
+    }
+  })(jQuery);
+  </script>
+
+
+  
+
+
+
+
+
+		<!--========== Dan's Customizations START ==========-->
+
+		<!-- Include any custom website level scripts. -->
+		<!--
+	Code in this file is included at the very bottom of every webpage.
+	This file should typically be used for scripts and other invisible
+	things that need to be loaded at the bottom of every page.
+-->
+
+<!-- Microsoft Clarity script for analytics (https://clarity.microsoft.com) -->
+<script type="text/javascript">
+	function RunMsClarityJavaScript()
+	{
+		// Code copied from the MS Clarity website.
+		(function (c, l, a, r, i, t, y)
+		{
+			c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+			t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+			y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+		})(window, document, "clarity", "script", "49915jr5qy");
+
+		// Let MS Clarity know the user consented so it can setup it's cookie tracking.
+		// More info: https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-consent-api-v2
+		window.clarity('consentv2', {
+			ad_storage: "granted",
+			analytics_storage: "granted"
+		});
+	}
+</script>
+
+
+<!-- Add button to toggle between light and dark themes. -->
+<script src="/assets/js/ThemeToggle.js" defer></script>
+
+<!-- Add buttons for copying code snippets to the clipboard. -->
+<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+
+<!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
+<span style="visibility: collapse;">
+	<a rel="me" href="https://hachyderm.io/@deadlydog">Mastodon</a>
+</span>
+
+<!-- Include the cookie notice popup. -->
+<!-- This should be included last to ensure that any functions it calls have been defined already. -->
+<!-- Original code taken from https://jekyllcodex.org/without-plugin/cookie-consent/ then modified. -->
+<style>
+	#cookie-notice {
+		padding: 0.5rem 1rem;
+		display: none;
+		text-align: center;
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		background: #222;
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	#cookie-notice a {
+		display: inline-block;
+		cursor: pointer;
+		margin-left: 0.5rem;
+	}
+
+	#cookie-notice-accept {
+		background: #07a21c;
+		color: white;
+	}
+
+	#cookie-notice-more-info {
+		background: #007bff;
+		color: white;
+	}
+
+	#cookie-notice-reject {
+		background: #dc3545;
+		color: white;
+	}
+
+	#cookie-notice-buttons {
+		display: inline-block;
+	}
+</style>
+
+<div id="cookie-notice">
+	<span>This website uses cookies to ensure you get the best experience.</span>
+	<span id="cookie-notice-buttons">
+		<a id="cookie-notice-more-info" class="btn btn-primary btn-sm" href="/privacy">More info</a>
+		<a id="cookie-notice-accept" class="btn btn-primary btn-sm">OK</a>
+	</span>
+</div>
+
+<script>
+	function createCookie(name, value, days)
+	{
+		var expires = "";
+		if (days)
+		{
+			var date = new Date();
+			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+			expires = "; expires=" + date.toUTCString();
+		}
+		document.cookie = name + "=" + value + expires + "; path=/";
+	}
+
+	function readCookie(name)
+	{
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0; i < ca.length; i++)
+		{
+			var c = ca[i];
+			while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+		}
+		return null;
+	}
+
+	function eraseCookie(name)
+	{
+		createCookie(name, "", -1);
+	}
+
+	function RunThirdPartyCodeThatUsesCookies()
+	{
+		// Call the functions that should not be ran until the user has accepted cookies.
+
+// If the user is not viewing a post, the Post Ad function will not be defined, so only call it if it is defined.
+if (typeof(RunGoogleAdsensePostAdvertisementJavaScript) === typeof(Function))
+{
+	RunGoogleAdsensePostAdvertisementJavaScript()
+}
+
+RunGoogleAdsenseFooterAdvertisementJavaScript()
+RunMsClarityJavaScript()
+
+// Google Analytics are not included when running locally/debugging, so to avoid an error only call this function if it is defined.
+if (typeof (RunGoogleAnalyticsJavaScript) === typeof(Function))
+{
+	RunGoogleAnalyticsJavaScript()
+}
+
+	}
+
+	// Rather than requiring consent, we just display a notice and assume consent if the user continues to use the website.
+	// Google displays its own consent automatically for countries that require it: https://umbracocommunity.social/@steve_gibe/111925508834045878
+	RunThirdPartyCodeThatUsesCookies()
+
+	if (readCookie('cookie-notice-response') != 'accepted')
+	{
+		// Display the cookie notice.
+		document.getElementById('cookie-notice').style.display = 'block';
+	}
+
+	document.getElementById('cookie-notice-accept').addEventListener("click", function ()
+	{
+		// Persist cookie acceptance for 180 days and hide the cookie notice.
+		createCookie('cookie-notice-response', 'accepted', 180);
+		document.getElementById('cookie-notice').style.display = 'none';
+
+		// Reload the page so the analytics scripts, etc. are ran on this page, not just future pages.
+		// I considered just calling the RunThirdPartyCodeThatUsesCookies() function here, but was
+		// not sure how that would affect some analytics metrics, like the time to load the page, etc.
+		location.reload();
+	});
+</script>
+
+
+
+		<!--========== Dan's Customizations END ==========-->
+  </body>
+</html>
