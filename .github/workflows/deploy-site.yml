@@ -23,39 +23,43 @@ jobs:
           bundler-cache: true
 
       - name: Build Jekyll site
+        shell: pwsh
         env:
           JEKYLL_ENV: production
           JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Override url/baseurl so the github-pages gem does not inject the
           # repository name (/Blog) as the baseurl, which would break asset paths.
-          cat > /tmp/_config_deploy.yml <<EOF
+          @"
           url: "https://blog.danskingdom.com"
           baseurl: ""
-          EOF
+          "@ | Set-Content -Path /tmp/_config_deploy.yml
 
-          bundle exec jekyll build \
-            --config _config.yml,/tmp/_config_deploy.yml
+          bundle exec jekyll build --config _config.yml,/tmp/_config_deploy.yml
 
       # Preserve any PR preview directories that already live on gh-pages so
       # that a main-site redeploy does not wipe them out.
       - name: Restore previews/ from gh-pages branch (if present)
+        shell: pwsh
         run: |
-          if ! git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
-            echo "gh-pages branch does not exist yet – skipping restore."
+          git ls-remote --exit-code --heads origin gh-pages *> $null
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "gh-pages branch does not exist yet - skipping restore."
             exit 0
-          fi
+          }
 
           git fetch origin gh-pages --depth=1
 
           # Copy the previews tree into the freshly built _site so the
           # subsequent deploy action includes it in the push.
-          if git checkout origin/gh-pages -- previews/ 2>/dev/null; then
-            cp -r previews/ _site/previews/
-            rm -rf previews/
-          else
-            echo "No previews/ directory on gh-pages yet – skipping restore."
-          fi
+          git checkout origin/gh-pages -- previews/ 2>$null
+          if ($LASTEXITCODE -eq 0) {
+            Copy-Item -Recurse -Force previews _site/previews
+            Remove-Item -Recurse -Force previews
+          }
+          else {
+            Write-Host "No previews/ directory on gh-pages yet - skipping restore."
+          }
 
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
