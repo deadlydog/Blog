@@ -31,8 +31,8 @@ jobs:
         run: |
           # Write a temporary config that overrides url/baseurl for the preview path.
           cat > /tmp/_config_preview.yml <<EOF
-          url: "https://deadlydog.github.io"
-          baseurl: "/${{ github.event.repository.name }}/previews/pr-${{ github.event.pull_request.number }}"
+          url: "https://blog.danskingdom.com"
+          baseurl: "/previews/pr-${{ github.event.pull_request.number }}"
           EOF
 
           bundle exec jekyll build \
