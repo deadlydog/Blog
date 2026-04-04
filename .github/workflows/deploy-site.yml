@@ -59,6 +59,7 @@ jobs:
           }
           else {
             Write-Host "No previews directory on gh-pages yet - skipping restore."
+            exit 0
           }
 
       - name: Deploy to gh-pages branch
