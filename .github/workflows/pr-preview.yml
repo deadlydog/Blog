@@ -1,0 +1,117 @@
+name: PR Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  # ─── Deploy preview on PR open / update ──────────────────────────────────
+  deploy-preview:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pr-preview-deploy-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Build Jekyll preview site
+        env:
+          JEKYLL_ENV: production
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Write a temporary config that overrides url/baseurl for the preview path.
+          cat > /tmp/_config_preview.yml <<EOF
+          url: "https://deadlydog.github.io"
+          baseurl: "/${{ github.event.repository.name }}/previews/pr-${{ github.event.pull_request.number }}"
+          EOF
+
+          bundle exec jekyll build \
+            --config _config.yml,/tmp/_config_preview.yml \
+            --destination ./_site_preview
+
+      - name: Deploy preview to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site_preview
+          destination_dir: previews/pr-${{ github.event.pull_request.number }}
+          keep_files: true
+          commit_message: "Deploy preview for PR #${{ github.event.pull_request.number }} (${{ github.sha }})"
+
+      - name: Post / update preview URL comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const previewUrl = `https://${context.repo.owner}.github.io/${context.repo.repo}/previews/pr-${prNumber}/`;
+            const marker = '<!-- pr-preview-bot -->';
+            const body =
+              `${marker}\n` +
+              `🔍 **PR Preview deployed:** ${previewUrl}\n\n` +
+              `_This preview is updated on every commit and will be removed when the PR is closed._`;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+
+            const existing = comments.find(c => c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body,
+              });
+            }
+
+  # ─── Clean up preview when PR is closed (merged or abandoned) ────────────
+  cleanup-preview:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pr-preview-cleanup-${{ github.event.pull_request.number }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove preview directory from gh-pages branch
+        run: |
+          # Guard: if gh-pages doesn't exist yet there is nothing to clean up.
+          if ! git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
+            echo "gh-pages branch does not exist – nothing to clean up."
+            exit 0
+          fi
+
+          # Fetch and create a local tracking branch so 'git checkout' works.
+          git fetch origin gh-pages:gh-pages --depth=1
+          git checkout gh-pages
+
+          PR_DIR="previews/pr-${{ github.event.pull_request.number }}"
+          if [ -d "$PR_DIR" ]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git rm -rf "$PR_DIR"
+            git commit -m "Remove preview for PR #${{ github.event.pull_request.number }}"
+            git push
+          else
+            echo "Preview directory '$PR_DIR' not found – nothing to clean up."
+          fi
