@@ -1,3 +1,5 @@
 # Prevent all web crawlers from indexing PR previews.
 User-agent: *
 Disallow: /previews/
+
+Sitemap: https://blog.danskingdom.com/sitemap.xml
