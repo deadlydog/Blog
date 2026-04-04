@@ -1,0 +1,3 @@
+# Prevent all web crawlers from indexing PR previews.
+User-agent: *
+Disallow: /previews/
