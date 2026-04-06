@@ -5,9 +5,10 @@ permalink: /You-do-not-scale-so-do-not-be-a-hero/
 last_modified_at: 2019-10-27
 comments_locked: false
 categories:
-  - Software Development
+  - Software Engineering
+  - Soft skills
 tags:
-  - Software Development
+  - Software Engineering
   - Soft skills
 ---
 

@@ -5,7 +5,7 @@ permalink: /2022-01-23-Conventional-Commit-and-Comment-messages/
 #last_modified_at: 2099-01-22T00:00:00-06:00
 comments_locked: false
 categories:
-  - Software Development
+  - Software Engineering
 tags:
   - Comment
   - Commit

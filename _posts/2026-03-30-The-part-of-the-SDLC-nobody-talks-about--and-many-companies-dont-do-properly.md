@@ -6,9 +6,9 @@ permalink: /The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-
 comments_locked: false
 toc: false
 categories:
-  - Software Development
+  - Software Engineering
 tags:
-  - Software Development
+  - Software Engineering
 ---
 
 The most neglected phase of the software development lifecycle (SDLC) is often the decommissioning phase.

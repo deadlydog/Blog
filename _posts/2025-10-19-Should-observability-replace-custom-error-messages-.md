@@ -6,9 +6,9 @@ permalink: /Should-observability-replace-custom-error-messages-/
 comments_locked: false
 toc: false
 categories:
-  - Software Development
+  - Software Engineering
 tags:
-  - Software Development
+  - Software Engineering
 ---
 
 Open Telemetry (OTEL) and observability tools have come a long way in recent years.
