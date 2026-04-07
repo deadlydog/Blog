@@ -38,6 +38,8 @@ Essentially, your PR previews can be hosted inside your production website, just
 
 So to visit your production site you would go to `https://<username>.github.io/<repository>/`, and to visit your PR preview site you might go to `https://<username>.github.io/<repository>/previews/pr-123/`, where `123` is the PR number.
 
+### Caveats
+
 There are some caveats with this approach:
 
 - For non-generated sites, assets must be referenced with relative paths so they work in both the production and preview sites.
