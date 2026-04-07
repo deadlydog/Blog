@@ -24,8 +24,10 @@ I can run the site locally on my PC, but wanted to preview it from my phone, and
 
 Since GitHub Pages only gives you one URL per repo, the typical advice is to use a 3rd party hosting service like Netlify, Vercel, AWS, or Azure to host PR preview sites.
 You can use a GitHub Actions workflow to deploy the preview version of your site to the external service when a PR is opened, and it will get a unique URL that you can share with others.
+GitHub even has official documentation on how to [deploy PRs to services like Azure Static Web Apps](https://docs.github.com/en/actions/how-tos/deploy/deploy-to-third-party-platforms/azure-static-web-app).
 
-Even though some of these services have free tiers, I didn't want to sign up for another service, deal with API keys, or depend on a 3rd party service just for PR previews.
+Even though some of these services have free tiers, I didn't want to sign up for another hosting platform, deal with API keys, or depend on a 3rd party service just for PR previews.
+I wanted everything to remain in GitHub.
 
 There are long-standing issues asking GitHub to allow hosting PR previews directly on GitHub Pages, such as [this one](https://github.com/orgs/community/discussions/7730).
 Unfortunately, it doesn't look like it will be implemented anytime soon.
