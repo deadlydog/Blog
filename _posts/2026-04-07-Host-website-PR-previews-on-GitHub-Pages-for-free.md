@@ -1,6 +1,6 @@
 ---
-title: "Hosting PR previews on GitHub Pages for free"
-permalink: /Hosting-PR-previews-on-GitHub-Pages-for-free/
+title: "Host website PR previews on GitHub Pages for free"
+permalink: /Host-website-PR-previews-on-GitHub-Pages-for-free/
 #date: 2099-01-15T00:00:00-06:00
 #last_modified_at: 2099-01-22
 comments_locked: false
@@ -73,7 +73,7 @@ In your GitHub repo settings:
    - This will require some DNS configuration to point your custom domain to GitHub Pages.
    I will not cover it here, as you can read the GitHub documentation on how to set that up.
 
-![GitHub Pages settings screenshot](/assets/Posts/2026-04-06-Hosting-PR-previews-on-GitHub-Pages-for-free/github-pages-settings-screenshot.png)
+![GitHub Pages settings screenshot](/assets/Posts/2026-04-07-Host-website-PR-previews-on-GitHub-Pages-for-free/github-pages-settings-screenshot.png)
 
 Now whenever changes are pushed to the `gh-pages` branch, GitHub Pages will automatically build and deploy the site, and it will be available at the URL specified in the settings.
 
