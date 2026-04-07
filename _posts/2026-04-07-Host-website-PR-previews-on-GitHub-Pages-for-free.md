@@ -226,6 +226,7 @@ jobs:
           }
           else {
             Write-Host "Preview directory '$prDir' not found - nothing to clean up."
+            exit 0
           }
 ```
 
