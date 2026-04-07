@@ -225,6 +225,10 @@ jobs:
           }
 ```
 
+Here is a screenshot of the PR comment with the preview URL that gets posted by the workflow:
+
+![PR comment with preview URL screenshot](/assets/Posts/2026-04-07-Host-website-PR-previews-on-GitHub-Pages-for-free/pr-comment-screenshot.png)
+
 #### Main branch to gh-pages workflow
 
 Below is an example workflow for deploying the production site to the `gh-pages` branch when changes are merged into the main branch.
