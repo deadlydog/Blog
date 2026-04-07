@@ -557,7 +557,7 @@ When the PR is closed, the workflow deletes the preview site from the <code clas
     <span class="na">if</span><span class="pi">:</span> <span class="s">github.event.action != 'closed'</span>
     <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
     <span class="na">concurrency</span><span class="pi">:</span>
-      <span class="na">group</span><span class="pi">:</span> <span class="s">pr-preview-deploy-$</span>
+      <span class="na">group</span><span class="pi">:</span> <span class="s">pr-preview-deploy-${{ github.event.pull_request.number }}</span>
       <span class="na">cancel-in-progress</span><span class="pi">:</span> <span class="no">true</span>
     <span class="na">steps</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
@@ -571,12 +571,12 @@ When the PR is closed, the workflow deletes the preview site from the <code clas
         <span class="na">shell</span><span class="pi">:</span> <span class="s">pwsh</span>
         <span class="na">env</span><span class="pi">:</span>
           <span class="na">JEKYLL_ENV</span><span class="pi">:</span> <span class="s">production</span>
-          <span class="na">JEKYLL_GITHUB_TOKEN</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">JEKYLL_GITHUB_TOKEN</span><span class="pi">:</span> <span class="s">${{ secrets.GITHUB_TOKEN }}</span>
         <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
           <span class="s"># Write a temporary config that overrides baseurl for the preview path.</span>
           <span class="s">@"</span>
           <span class="s">url: "https://blog.danskingdom.com"</span>
-          <span class="s">baseurl: "/previews/pr-$"</span>
+          <span class="s">baseurl: "/previews/pr-${{ github.event.pull_request.number }}"</span>
           <span class="s">"@ | Set-Content -Path /tmp/_config_preview.yml</span>
 
           <span class="s">bundle exec jekyll build --config _config.yml,/tmp/_config_preview.yml --destination ./_site_preview</span>
@@ -584,11 +584,11 @@ When the PR is closed, the workflow deletes the preview site from the <code clas
       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy preview to gh-pages branch previews subdirectory</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">peaceiris/actions-gh-pages@v4</span>
         <span class="na">with</span><span class="pi">:</span>
-          <span class="na">github_token</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">github_token</span><span class="pi">:</span> <span class="s">${{ secrets.GITHUB_TOKEN }}</span>
           <span class="na">publish_dir</span><span class="pi">:</span> <span class="s">./_site_preview</span>
-          <span class="na">destination_dir</span><span class="pi">:</span> <span class="s">previews/pr-$</span>
+          <span class="na">destination_dir</span><span class="pi">:</span> <span class="s">previews/pr-${{ github.event.pull_request.number }}</span>
           <span class="na">keep_files</span><span class="pi">:</span> <span class="no">true</span>
-          <span class="na">commit_message</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Deploy</span><span class="nv"> </span><span class="s">preview</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">PR</span><span class="nv"> </span><span class="s">#$</span><span class="nv"> </span><span class="s">($)"</span>
+          <span class="na">commit_message</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Deploy</span><span class="nv"> </span><span class="s">preview</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">PR</span><span class="nv"> </span><span class="s">#${{</span><span class="nv"> </span><span class="s">github.event.pull_request.number</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">(${{</span><span class="nv"> </span><span class="s">github.sha</span><span class="nv"> </span><span class="s">}})"</span>
 
       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Post / Update preview URL comment on PR</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/github-script@v7</span>
@@ -630,7 +630,7 @@ When the PR is closed, the workflow deletes the preview site from the <code clas
     <span class="na">if</span><span class="pi">:</span> <span class="s">github.event.action == 'closed'</span>
     <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
     <span class="na">concurrency</span><span class="pi">:</span>
-      <span class="na">group</span><span class="pi">:</span> <span class="s">pr-preview-cleanup-$</span>
+      <span class="na">group</span><span class="pi">:</span> <span class="s">pr-preview-cleanup-${{ github.event.pull_request.number }}</span>
       <span class="na">cancel-in-progress</span><span class="pi">:</span> <span class="no">false</span>
     <span class="na">steps</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
@@ -649,12 +649,12 @@ When the PR is closed, the workflow deletes the preview site from the <code clas
           <span class="s">git fetch origin gh-pages:gh-pages --depth=1</span>
           <span class="s">git checkout gh-pages</span>
 
-          <span class="s">$prDir = "previews/pr-$"</span>
+          <span class="s">$prDir = "previews/pr-${{ github.event.pull_request.number }}"</span>
           <span class="s">if (Test-Path $prDir) {</span>
             <span class="s">git config user.name "github-actions[bot]"</span>
             <span class="s">git config user.email "github-actions[bot]@users.noreply.github.com"</span>
             <span class="s">git rm -r -f $prDir</span>
-            <span class="s">git commit -m "Remove preview for PR #$"</span>
+            <span class="s">git commit -m "Remove preview for PR #${{ github.event.pull_request.number }}"</span>
             <span class="s">git push --set-upstream origin gh-pages</span>
           <span class="s">}</span>
           <span class="s">else {</span>
@@ -698,7 +698,7 @@ A key part of the workflow is preserving the <code class="language-plaintext hig
         <span class="na">shell</span><span class="pi">:</span> <span class="s">pwsh</span>
         <span class="na">env</span><span class="pi">:</span>
           <span class="na">JEKYLL_ENV</span><span class="pi">:</span> <span class="s">production</span>
-          <span class="na">JEKYLL_GITHUB_TOKEN</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">JEKYLL_GITHUB_TOKEN</span><span class="pi">:</span> <span class="s">${{ secrets.GITHUB_TOKEN }}</span>
         <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
           <span class="s"># Override baseurl so the github-pages gem does not inject the</span>
           <span class="s"># repository name (/Blog) as the baseurl, which would break asset paths.</span>
@@ -737,10 +737,10 @@ A key part of the workflow is preserving the <code class="language-plaintext hig
       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy to gh-pages branch</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">peaceiris/actions-gh-pages@v4</span>
         <span class="na">with</span><span class="pi">:</span>
-          <span class="na">github_token</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">github_token</span><span class="pi">:</span> <span class="s">${{ secrets.GITHUB_TOKEN }}</span>
           <span class="na">publish_dir</span><span class="pi">:</span> <span class="s">./_site</span>
           <span class="na">cname</span><span class="pi">:</span> <span class="s">blog.danskingdom.com</span>
-          <span class="na">commit_message</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Deploy</span><span class="nv"> </span><span class="s">main</span><span class="nv"> </span><span class="s">site</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">$"</span>
+          <span class="na">commit_message</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Deploy</span><span class="nv"> </span><span class="s">main</span><span class="nv"> </span><span class="s">site</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">${{</span><span class="nv"> </span><span class="s">github.sha</span><span class="nv"> </span><span class="s">}}"</span>
 </code></pre></div></div>
 
 <h3 id="update-robotstxt-to-ignore-preview-sites">Update robots.txt to ignore preview sites</h3>
