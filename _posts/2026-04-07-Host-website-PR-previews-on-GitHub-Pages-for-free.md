@@ -124,7 +124,7 @@ jobs:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     concurrency:
-      group: pr-preview-deploy-${{ github.event.pull_request.number }}
+      group: pr-preview-deploy-${% raw %}{{ github.event.pull_request.number }}{% endraw %}
       cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
@@ -138,12 +138,12 @@ jobs:
         shell: pwsh
         env:
           JEKYLL_ENV: production
-          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JEKYLL_GITHUB_TOKEN: ${% raw %}{{ secrets.GITHUB_TOKEN }}{% endraw %}
         run: |
           # Write a temporary config that overrides baseurl for the preview path.
           @"
           url: "https://blog.danskingdom.com"
-          baseurl: "/previews/pr-${{ github.event.pull_request.number }}"
+          baseurl: "/previews/pr-${% raw %}{{ github.event.pull_request.number }}{% endraw %}"
           "@ | Set-Content -Path /tmp/_config_preview.yml
 
           bundle exec jekyll build --config _config.yml,/tmp/_config_preview.yml --destination ./_site_preview
@@ -151,11 +151,11 @@ jobs:
       - name: Deploy preview to gh-pages branch previews subdirectory
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${% raw %}{{ secrets.GITHUB_TOKEN }}{% endraw %}
           publish_dir: ./_site_preview
-          destination_dir: previews/pr-${{ github.event.pull_request.number }}
+          destination_dir: previews/pr-${% raw %}{{ github.event.pull_request.number }}{% endraw %}
           keep_files: true
-          commit_message: "Deploy preview for PR #${{ github.event.pull_request.number }} (${{ github.sha }})"
+          commit_message: "Deploy preview for PR #${% raw %}{{ github.event.pull_request.number }}{% endraw %} (${% raw %}{{ github.sha }}{% endraw %})"
 
       - name: Post / Update preview URL comment on PR
         uses: actions/github-script@v7
@@ -197,7 +197,7 @@ jobs:
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
     concurrency:
-      group: pr-preview-cleanup-${{ github.event.pull_request.number }}
+      group: pr-preview-cleanup-${% raw %}{{ github.event.pull_request.number }}{% endraw %}
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
@@ -216,12 +216,12 @@ jobs:
           git fetch origin gh-pages:gh-pages --depth=1
           git checkout gh-pages
 
-          $prDir = "previews/pr-${{ github.event.pull_request.number }}"
+          $prDir = "previews/pr-${% raw %}{{ github.event.pull_request.number }}{% endraw %}"
           if (Test-Path $prDir) {
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git rm -r -f $prDir
-            git commit -m "Remove preview for PR #${{ github.event.pull_request.number }}"
+            git commit -m "Remove preview for PR #${% raw %}{{ github.event.pull_request.number }}{% endraw %}"
             git push --set-upstream origin gh-pages
           }
           else {
@@ -266,7 +266,7 @@ jobs:
         shell: pwsh
         env:
           JEKYLL_ENV: production
-          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JEKYLL_GITHUB_TOKEN: ${% raw %}{{ secrets.GITHUB_TOKEN }}{% endraw %}
         run: |
           # Override baseurl so the github-pages gem does not inject the
           # repository name (/Blog) as the baseurl, which would break asset paths.
@@ -305,10 +305,10 @@ jobs:
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${% raw %}{{ secrets.GITHUB_TOKEN }}{% endraw %}
           publish_dir: ./_site
           cname: blog.danskingdom.com
-          commit_message: "Deploy main site from ${{ github.sha }}"
+          commit_message: "Deploy main site from ${% raw %}{{ github.sha }}{% endraw %}"
 ```
 
 ### Update robots.txt to ignore preview sites
