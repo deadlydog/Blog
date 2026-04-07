@@ -59,7 +59,7 @@ The basic workflow is as follows:
 1. If the PR is updated, redeploy the preview site with the latest changes.
 1. When the PR is closed, delete the preview site.
 
-Here's an example screenshot of a PR comment with the preview URL that can get posted by the workflow:
+Here's an example PR comment with the preview URL that can get posted by the workflow:
 
 ![PR comment with preview URL screenshot](/assets/Posts/2026-04-07-Host-website-PR-previews-on-GitHub-Pages-for-free/pr-comment-screenshot.png)
 
