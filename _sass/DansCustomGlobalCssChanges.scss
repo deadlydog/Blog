@@ -66,6 +66,13 @@ html[data-theme="dark"] .page__content h6 {
 	font-size: 0.7rem;
 }
 
+// Make the search textbox more noticeable.
+#search {
+	border: 1px solid #aaa;
+	border-radius: 10px;
+	padding: 0.25rem 0.5rem;
+}
+
 // Reduce the amount of whitespace above and below the 'Recent Posts' heading on the home page.
 #home-page-recent-posts {
 	margin-top: -1rem;
