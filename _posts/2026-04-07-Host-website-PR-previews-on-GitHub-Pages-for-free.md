@@ -22,7 +22,7 @@ I use it to host this blog for free, along with a custom domain name.
 Recently, I wanted to preview some changes I was making to my blog before merging them into the main branch.
 I can run the site locally on my PC, but wanted to preview it from my phone, and share the link with my wife to get her feedback.
 
-Since GitHub Pages only gives you one URL per repo, the typical advice is to use a 3rd party hosting service like Netlify, Vercel, or Azure to host PR preview sites.
+Since GitHub Pages only gives you one URL per repo, the typical advice is to use a 3rd party hosting service like Netlify, Vercel, AWS, or Azure to host PR preview sites.
 You can use a GitHub Actions workflow to deploy the preview version of your site to the external service when a PR is opened, and it will get a unique URL that you can share with others.
 
 Even though some of these services have free tiers, I didn't want to sign up for another service, deal with API keys, or depend on a 3rd party service just for PR previews.
