@@ -42,7 +42,7 @@ jobs:
 
           bundle exec jekyll build --config _config.yml,/tmp/_config_preview.yml --destination ./_site_preview
 
-      - name: Deploy preview to gh-pages branch
+      - name: Deploy preview to gh-pages branch previews subdirectory
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
