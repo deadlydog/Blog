@@ -89,7 +89,7 @@ You will need to set up 2 GitHub Actions workflows:
 1. One to deploy the PR preview site when a PR is opened or updated, and to delete it when the PR is closed.
 1. Another to deploy the production site to the `gh-pages` branch when changes are merged into the main branch.
 
-#### PR preview workflow
+#### PR preview to gh-pages workflow
 
 Below is an example workflow for deploying PR previews to a `previews` subdirectory within the `gh-pages` branch.
 It also updates the PR with a comment containing the URL to the preview site.
@@ -228,7 +228,7 @@ jobs:
 #### Main branch to gh-pages workflow
 
 Below is an example workflow for deploying the production site to the `gh-pages` branch when changes are merged into the main branch.
-A key part of the workflow is preserving the `previews` subdirectory on the `gh-pages` branch, which contains the PR previews, so that they are not wiped out when the main site is redeployed.
+A key part of the workflow is preserving the `previews` subdirectory on the `gh-pages` branch, which contains the PR previews, so that they are not wiped out when the main production site is redeployed.
 
 You can [view the latest version of this deploy-site.yml workflow here](https://github.com/deadlydog/Blog/blob/main/.github/workflows/deploy-site.yml).
 
