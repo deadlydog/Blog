@@ -41,7 +41,7 @@ So to visit your production site you would go to `https://<username>.github.io/<
 There are some caveats with this approach:
 
 - For non-generated sites, assets must be referenced with relative paths so they work in both the production and preview sites.
-  - I use Jekyll as my static site generator and simply set the `baseurl` in the config accordingly.
+  - I use Jekyll as my static site generator and simply set the `baseurl` in the config when building the site.
   All asset references are relative to the base URL.
 - The PR preview site is publicly accessible by default, which may not be desirable, especially for closed-source projects where you don't want to expose unfinished work.
 - To prevent web crawlers from indexing the PR previews, you should update your `robots.txt` file to disallow crawling of the previews subdirectory.
