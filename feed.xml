@@ -1,4 +1,330 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="https://blog.danskingdom.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.danskingdom.com/" rel="alternate" type="text/html" /><updated>2026-04-06T15:34:22+00:00</updated><id>https://blog.danskingdom.com/feed.xml</id><title type="html">Daniel Schroeder’s Programming Blog</title><subtitle>Daniel Schroeder&apos;s Programming Blog - Sharing my tips, tricks, and code to help other developers be more productive. https://blog.danskingdom.com</subtitle><author><name>Daniel Schroeder</name></author><entry><title type="html">The part of the SDLC nobody talks about, and many companies don’t do properly</title><link href="https://blog.danskingdom.com/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/" rel="alternate" type="text/html" title="The part of the SDLC nobody talks about, and many companies don’t do properly" /><published>2026-03-30T00:00:00+00:00</published><updated>2026-03-30T00:00:00+00:00</updated><id>https://blog.danskingdom.com/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly</id><content type="html" xml:base="https://blog.danskingdom.com/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/"><![CDATA[<p>The most neglected phase of the software development lifecycle (SDLC) is often the decommissioning phase.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="https://blog.danskingdom.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://blog.danskingdom.com/" rel="alternate" type="text/html" /><updated>2026-04-07T06:29:47+00:00</updated><id>https://blog.danskingdom.com/feed.xml</id><title type="html">Daniel Schroeder’s Programming Blog</title><subtitle>Daniel Schroeder&apos;s Programming Blog - Sharing my tips, tricks, and code to help other developers be more productive. https://blog.danskingdom.com</subtitle><author><name>Daniel Schroeder</name></author><entry><title type="html">Hosting PR previews on GitHub Pages for free</title><link href="https://blog.danskingdom.com/Hosting-PR-previews-on-GitHub-Pages-for-free/" rel="alternate" type="text/html" title="Hosting PR previews on GitHub Pages for free" /><published>2026-04-06T00:00:00+00:00</published><updated>2026-04-06T00:00:00+00:00</updated><id>https://blog.danskingdom.com/Hosting-PR-previews-on-GitHub-Pages-for-free</id><content type="html" xml:base="https://blog.danskingdom.com/Hosting-PR-previews-on-GitHub-Pages-for-free/"><![CDATA[<p>GitHub Pages allows you to host one static website per repository for free.
+The URL is typically in the format <code class="language-plaintext highlighter-rouge">https://&lt;username&gt;.github.io/&lt;repository&gt;/</code>, and you can use it to host your project’s documentation, portfolio, or any static content.
+I use it to host this blog for free, along with a custom domain name.</p>
+
+<h2 id="the-problem-hosting-pr-previews">The problem; hosting PR previews</h2>
+
+<p>Recently, I wanted to preview some changes I was making to my blog before merging them into the main branch.
+I can run the site locally on my PC, but wanted to preview it from my phone, and share the link with my wife to get her feedback.</p>
+
+<p>Since GitHub Pages only gives you one URL per repo, the typical advice is to use a 3rd party hosting service like Netlify, Vercel, or Azure to host PR preview sites.
+You can use a GitHub Actions workflow to deploy the preview version of your site to the external service when a PR is opened, and it will get a unique URL that you can share with others.</p>
+
+<p>Even though some of these services have free tiers, I didn’t want to sign up for another service, deal with API keys, or depend on a 3rd party service just for PR previews.</p>
+
+<p>There are long-standing issues asking GitHub to allow hosting PR previews directly on GitHub Pages, such as <a href="https://github.com/orgs/community/discussions/7730">this one</a>.
+Unfortunately, it doesn’t look like it will be implemented anytime soon.
+Luckily, I found a workaround.</p>
+
+<h2 id="a-simple-solution">A simple solution</h2>
+
+<p>Rather than hosting multiple static websites on different subdomains, simply host them all on the same domain, but in different subdirectories.
+Essentially, your PR previews can be hosted inside your production website, just in a deeper path.</p>
+
+<p>So to visit your production site you would go to <code class="language-plaintext highlighter-rouge">https://&lt;username&gt;.github.io/&lt;repository&gt;/</code>, and to visit your PR preview site you might go to <code class="language-plaintext highlighter-rouge">https://&lt;username&gt;.github.io/&lt;repository&gt;/previews/pr-123/</code>, where <code class="language-plaintext highlighter-rouge">123</code> is the PR number.</p>
+
+<p>There are some caveats with this approach:</p>
+
+<ul>
+  <li>For non-generated sites, assets must be referenced with relative paths so they work in both the production and preview sites.
+    <ul>
+      <li>I use Jekyll as my static site generator and simply set the <code class="language-plaintext highlighter-rouge">baseurl</code> in the config when building the site.
+All asset references are relative to the base URL.</li>
+    </ul>
+  </li>
+  <li>The PR preview site is publicly accessible by default, which may not be desirable, especially for closed-source projects where you don’t want to expose unfinished work.</li>
+  <li>To prevent web crawlers from indexing the PR previews, you should update your <code class="language-plaintext highlighter-rouge">robots.txt</code> file to disallow crawling of the previews subdirectory.</li>
+  <li>Your production site analytics may be skewed by traffic to the PR previews.</li>
+</ul>
+
+<p>Since my use case is simply my public open-source blog, these caveats are not a concern for me.</p>
+
+<h2 id="an-example-workflow">An example workflow</h2>
+
+<p>The basic workflow is as follows:</p>
+
+<ol>
+  <li>When a PR is opened, deploy the preview version of the site to a subdirectory named after the PR number, and post a comment in the PR with the URL to the preview site.</li>
+  <li>If the PR is updated, redeploy the preview site with the latest changes.</li>
+  <li>When the PR is closed, delete the preview site.</li>
+</ol>
+
+<p>Let’s see how to configure the GitHub repo and set up GitHub Actions workflows to take care of this for us.
+The examples shown are from my blog GitHub repo, for reference: <a href="https://github.com/deadlydog/Blog">https://github.com/deadlydog/Blog</a></p>
+
+<h3 id="configuring-the-github-repo">Configuring the GitHub repo</h3>
+
+<p>You will need to configure your GitHub repo settings to enable GitHub Pages and to deploy from a branch, typically the <code class="language-plaintext highlighter-rouge">gh-pages</code> branch.</p>
+
+<p>In your GitHub repo settings:</p>
+
+<ol>
+  <li>Go to the <code class="language-plaintext highlighter-rouge">Pages</code> section.</li>
+  <li>Ensure the build and deployment Source is set to <code class="language-plaintext highlighter-rouge">Deploy from a branch</code>.</li>
+  <li>For the Branch, select <code class="language-plaintext highlighter-rouge">gh-pages</code> and the root folder.</li>
+  <li>Optionally, if you have a custom domain name, you can set it up here as well.
+    <ul>
+      <li>This will require some DNS configuration to point your custom domain to GitHub Pages.
+I will not cover it here, as you can read the GitHub documentation on how to set that up.</li>
+    </ul>
+  </li>
+</ol>
+
+<p><img src="/assets/Posts/2026-04-06-Hosting-PR-previews-on-GitHub-Pages-for-free/github-pages-settings-screenshot.png" alt="GitHub Pages settings screenshot" /></p>
+
+<p>Now whenever changes are pushed to the <code class="language-plaintext highlighter-rouge">gh-pages</code> branch, GitHub Pages will automatically build and deploy the site, and it will be available at the URL specified in the settings.</p>
+
+<p>This is how you host your production site.
+The next step is to have PR previews automatically deployed to subdirectories within it.</p>
+
+<h3 id="setting-up-github-actions-workflows">Setting up GitHub Actions workflows</h3>
+
+<p>You will need to set up 2 GitHub Actions workflows:</p>
+
+<ol>
+  <li>One to deploy the PR preview site when a PR is opened or updated, and to delete it when the PR is closed.</li>
+  <li>Another to deploy the production site to the <code class="language-plaintext highlighter-rouge">gh-pages</code> branch when changes are merged into the main branch.</li>
+</ol>
+
+<h4 id="pr-preview-workflow">PR preview workflow</h4>
+
+<p>Below is an example workflow for deploying PR previews to a <code class="language-plaintext highlighter-rouge">previews</code> subdirectory within the <code class="language-plaintext highlighter-rouge">gh-pages</code> branch.
+It also updates the PR with a comment containing the URL to the preview site.
+When the PR is closed, the workflow deletes the preview site from the <code class="language-plaintext highlighter-rouge">gh-pages</code> branch.</p>
+
+<p>You can <a href="https://github.com/deadlydog/Blog/blob/main/.github/workflows/pr-preview.yml">view the latest version of this pr-preview.yml workflow here</a>.</p>
+
+<p>This workflow has some Jekyll-specific steps, but the general idea can be adapted to your needs.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Builds and deploys the Jekyll site for PRs to the "previews" directory on the</span>
+<span class="c1"># gh-pages branch, and posts a comment with the preview URL to the PR.</span>
+<span class="c1"># Also removes the preview from gh-pages when the PR is closed (merged or abandoned).</span>
+
+<span class="na">name</span><span class="pi">:</span> <span class="s">Deploy PR preview to gh-pages</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">types</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">opened</span><span class="pi">,</span> <span class="nv">synchronize</span><span class="pi">,</span> <span class="nv">reopened</span><span class="pi">,</span> <span class="nv">closed</span><span class="pi">]</span>
+
+<span class="na">permissions</span><span class="pi">:</span>
+  <span class="na">contents</span><span class="pi">:</span> <span class="s">write</span>
+  <span class="na">pull-requests</span><span class="pi">:</span> <span class="s">write</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="c1"># ─── Deploy preview on PR open / update ──────────────────────────────────</span>
+  <span class="na">deploy-preview</span><span class="pi">:</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="s">github.event.action != 'closed'</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">concurrency</span><span class="pi">:</span>
+      <span class="na">group</span><span class="pi">:</span> <span class="s">pr-preview-deploy-$</span>
+      <span class="na">cancel-in-progress</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">ruby/setup-ruby@v1</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">ruby-version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.3'</span>
+          <span class="na">bundler-cache</span><span class="pi">:</span> <span class="no">true</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build Jekyll preview site</span>
+        <span class="na">shell</span><span class="pi">:</span> <span class="s">pwsh</span>
+        <span class="na">env</span><span class="pi">:</span>
+          <span class="na">JEKYLL_ENV</span><span class="pi">:</span> <span class="s">production</span>
+          <span class="na">JEKYLL_GITHUB_TOKEN</span><span class="pi">:</span> <span class="s">$</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s"># Write a temporary config that overrides baseurl for the preview path.</span>
+          <span class="s">@"</span>
+          <span class="s">url: "https://blog.danskingdom.com"</span>
+          <span class="s">baseurl: "/previews/pr-$"</span>
+          <span class="s">"@ | Set-Content -Path /tmp/_config_preview.yml</span>
+
+          <span class="s">bundle exec jekyll build --config _config.yml,/tmp/_config_preview.yml --destination ./_site_preview</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy preview to gh-pages branch previews subdirectory</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">peaceiris/actions-gh-pages@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">github_token</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">publish_dir</span><span class="pi">:</span> <span class="s">./_site_preview</span>
+          <span class="na">destination_dir</span><span class="pi">:</span> <span class="s">previews/pr-$</span>
+          <span class="na">keep_files</span><span class="pi">:</span> <span class="no">true</span>
+          <span class="na">commit_message</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Deploy</span><span class="nv"> </span><span class="s">preview</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">PR</span><span class="nv"> </span><span class="s">#$</span><span class="nv"> </span><span class="s">($)"</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Post / Update preview URL comment on PR</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/github-script@v7</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">script</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">const prNumber = context.payload.pull_request.number;</span>
+            <span class="s">const previewUrl = `https://${context.repo.owner}.github.io/${context.repo.repo}/previews/pr-${prNumber}/`;</span>
+            <span class="s">const marker = '&lt;!-- pr-preview-bot --&gt;';</span>
+            <span class="s">const body =</span>
+              <span class="s">`${marker}\n` +</span>
+              <span class="s">`🔍 **PR Preview deployed:** ${previewUrl}\n\n` +</span>
+              <span class="s">`_This preview is updated on every commit and will be removed when the PR is closed._`;</span>
+
+            <span class="s">const { data: comments } = await github.rest.issues.listComments({</span>
+              <span class="s">owner: context.repo.owner,</span>
+              <span class="s">repo: context.repo.repo,</span>
+              <span class="s">issue_number: prNumber,</span>
+            <span class="s">});</span>
+
+            <span class="s">const existing = comments.find(c =&gt; c.body.includes(marker));</span>
+            <span class="s">if (existing) {</span>
+              <span class="s">await github.rest.issues.updateComment({</span>
+                <span class="s">owner: context.repo.owner,</span>
+                <span class="s">repo: context.repo.repo,</span>
+                <span class="s">comment_id: existing.id,</span>
+                <span class="s">body,</span>
+              <span class="s">});</span>
+            <span class="s">} else {</span>
+              <span class="s">await github.rest.issues.createComment({</span>
+                <span class="s">owner: context.repo.owner,</span>
+                <span class="s">repo: context.repo.repo,</span>
+                <span class="s">issue_number: prNumber,</span>
+                <span class="s">body,</span>
+              <span class="s">});</span>
+            <span class="s">}</span>
+
+  <span class="c1"># ─── Clean up preview when PR is closed (merged or abandoned) ────────────</span>
+  <span class="na">cleanup-preview</span><span class="pi">:</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="s">github.event.action == 'closed'</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">concurrency</span><span class="pi">:</span>
+      <span class="na">group</span><span class="pi">:</span> <span class="s">pr-preview-cleanup-$</span>
+      <span class="na">cancel-in-progress</span><span class="pi">:</span> <span class="no">false</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Remove preview directory from gh-pages branch</span>
+        <span class="na">shell</span><span class="pi">:</span> <span class="s">pwsh</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s"># Guard: if gh-pages doesn't exist yet there is nothing to clean up.</span>
+          <span class="s">git ls-remote --exit-code --heads origin gh-pages *&gt; $null</span>
+          <span class="s">if ($LASTEXITCODE -ne 0) {</span>
+            <span class="s">Write-Host "gh-pages branch does not exist - nothing to clean up."</span>
+            <span class="s">exit 0</span>
+          <span class="s">}</span>
+
+          <span class="s"># Fetch and create a local tracking branch so 'git checkout' works.</span>
+          <span class="s">git fetch origin gh-pages:gh-pages --depth=1</span>
+          <span class="s">git checkout gh-pages</span>
+
+          <span class="s">$prDir = "previews/pr-$"</span>
+          <span class="s">if (Test-Path $prDir) {</span>
+            <span class="s">git config user.name "github-actions[bot]"</span>
+            <span class="s">git config user.email "github-actions[bot]@users.noreply.github.com"</span>
+            <span class="s">git rm -r -f $prDir</span>
+            <span class="s">git commit -m "Remove preview for PR #$"</span>
+            <span class="s">git push --set-upstream origin gh-pages</span>
+          <span class="s">}</span>
+          <span class="s">else {</span>
+            <span class="s">Write-Host "Preview directory '$prDir' not found - nothing to clean up."</span>
+          <span class="s">}</span>
+</code></pre></div></div>
+
+<h4 id="main-branch-to-gh-pages-workflow">Main branch to gh-pages workflow</h4>
+
+<p>Below is an example workflow for deploying the production site to the <code class="language-plaintext highlighter-rouge">gh-pages</code> branch when changes are merged into the main branch.
+A key part of the workflow is preserving the <code class="language-plaintext highlighter-rouge">previews</code> subdirectory on the <code class="language-plaintext highlighter-rouge">gh-pages</code> branch, which contains the PR previews, so that they are not wiped out when the main site is redeployed.</p>
+
+<p>You can <a href="https://github.com/deadlydog/Blog/blob/main/.github/workflows/deploy-site.yml">view the latest version of this deploy-site.yml workflow here</a>.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Builds the Jekyll site from main and pushes it to the gh-pages branch,</span>
+<span class="c1"># while preserving any PR preview directories that already exist there.</span>
+
+<span class="na">name</span><span class="pi">:</span> <span class="s">Deploy main to gh-pages</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+
+<span class="na">permissions</span><span class="pi">:</span>
+  <span class="na">contents</span><span class="pi">:</span> <span class="s">write</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">deploy</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">ruby/setup-ruby@v1</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">ruby-version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.3'</span>
+          <span class="na">bundler-cache</span><span class="pi">:</span> <span class="no">true</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build Jekyll site</span>
+        <span class="na">shell</span><span class="pi">:</span> <span class="s">pwsh</span>
+        <span class="na">env</span><span class="pi">:</span>
+          <span class="na">JEKYLL_ENV</span><span class="pi">:</span> <span class="s">production</span>
+          <span class="na">JEKYLL_GITHUB_TOKEN</span><span class="pi">:</span> <span class="s">$</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s"># Override baseurl so the github-pages gem does not inject the</span>
+          <span class="s"># repository name (/Blog) as the baseurl, which would break asset paths.</span>
+          <span class="s">@"</span>
+          <span class="s">url: "https://blog.danskingdom.com"</span>
+          <span class="s">baseurl: ""</span>
+          <span class="s">"@ | Set-Content -Path /tmp/_config_deploy.yml</span>
+
+          <span class="s">bundle exec jekyll build --config _config.yml,/tmp/_config_deploy.yml</span>
+
+      <span class="c1"># Preserve any PR preview directories that already live on gh-pages so</span>
+      <span class="c1"># that a main-site redeploy does not wipe them out.</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Restore previews directories from gh-pages branch (if present)</span>
+        <span class="na">shell</span><span class="pi">:</span> <span class="s">pwsh</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">git ls-remote --exit-code --heads origin gh-pages *&gt; $null</span>
+          <span class="s">if ($LASTEXITCODE -ne 0) {</span>
+            <span class="s">Write-Host "gh-pages branch does not exist yet - skipping restore."</span>
+            <span class="s">exit 0</span>
+          <span class="s">}</span>
+
+          <span class="s">git fetch origin gh-pages --depth=1</span>
+
+          <span class="s"># Copy the previews tree into the freshly built _site so the</span>
+          <span class="s"># subsequent deploy action includes it in the push.</span>
+          <span class="s">git checkout origin/gh-pages -- previews/ 2&gt;$null</span>
+          <span class="s">if ($LASTEXITCODE -eq 0) {</span>
+            <span class="s">Copy-Item -Recurse -Force previews _site/previews</span>
+            <span class="s">Remove-Item -Recurse -Force previews</span>
+          <span class="s">}</span>
+          <span class="s">else {</span>
+            <span class="s">Write-Host "No previews directory on gh-pages yet - skipping restore."</span>
+            <span class="s">exit 0</span>
+          <span class="s">}</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy to gh-pages branch</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">peaceiris/actions-gh-pages@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">github_token</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">publish_dir</span><span class="pi">:</span> <span class="s">./_site</span>
+          <span class="na">cname</span><span class="pi">:</span> <span class="s">blog.danskingdom.com</span>
+          <span class="na">commit_message</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Deploy</span><span class="nv"> </span><span class="s">main</span><span class="nv"> </span><span class="s">site</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">$"</span>
+</code></pre></div></div>
+
+<h3 id="update-robotstxt-to-ignore-preview-sites">Update robots.txt to ignore preview sites</h3>
+
+<p>One optional, but recommended step, is to update your <code class="language-plaintext highlighter-rouge">robots.txt</code> file to disallow web crawlers from indexing the PR preview sites.
+This will prevent the previews from showing up in search engine results, and users getting 404 errors when the previews are eventually removed after the PR is closed.</p>
+
+<p>In your site’s <code class="language-plaintext highlighter-rouge">robots.txt</code> file, add:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Prevent all web crawlers from indexing PR previews.
+User-agent: *
+Disallow: /previews/
+</code></pre></div></div>
+
+<p>If the file is typically generated by your static site generator, you may need to include the lines that it would typically generate, such as the link to your sitemap file.
+You can <a href="https://github.com/deadlydog/Blog/blob/main/robots.txt">view my site’s robots.txt file here</a> as an example.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>By hosting PR previews in subdirectories on the same GitHub Pages site, you can have free and easy PR previews without needing to set up an external hosting service.</p>
+
+<p>I’ve shown how to configure your GitHub repo, and provided example GitHub Actions workflows to automate the deployment of PR previews and the main site.</p>
+
+<p>I hope you found this helpful, and that it inspires you to set up PR previews for your own GitHub Pages sites!</p>
+
+<p>Happy coding!</p>]]></content><author><name>Daniel Schroeder</name></author><category term="DevOps" /><category term="GitHub Pages" /><category term="DevOps" /><category term="GitHub Pages" /><summary type="html"><![CDATA[GitHub Pages allows you to host one static website per repository for free. The URL is typically in the format https://&lt;username&gt;.github.io/&lt;repository&gt;/, and you can use it to host your project’s documentation, portfolio, or any static content. I use it to host this blog for free, along with a custom domain name.]]></summary></entry><entry><title type="html">The part of the SDLC nobody talks about, and many companies don’t do properly</title><link href="https://blog.danskingdom.com/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/" rel="alternate" type="text/html" title="The part of the SDLC nobody talks about, and many companies don’t do properly" /><published>2026-03-30T00:00:00+00:00</published><updated>2026-03-30T00:00:00+00:00</updated><id>https://blog.danskingdom.com/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly</id><content type="html" xml:base="https://blog.danskingdom.com/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/"><![CDATA[<p>The most neglected phase of the software development lifecycle (SDLC) is often the decommissioning phase.
 An app has reached end-of-life, users are no longer using it, and everything should be shut down and deleted.
 It seems straightforward enough, but many companies overlook this phase, or do it poorly.</p>
 
