@@ -59,6 +59,10 @@ The basic workflow is as follows:
 1. If the PR is updated, redeploy the preview site with the latest changes.
 1. When the PR is closed, delete the preview site.
 
+Here's an example screenshot of a PR comment with the preview URL that can get posted by the workflow:
+
+![PR comment with preview URL screenshot](/assets/Posts/2026-04-07-Host-website-PR-previews-on-GitHub-Pages-for-free/pr-comment-screenshot.png)
+
 Let's see how to configure the GitHub repo and set up GitHub Actions workflows to take care of this for us.
 The examples shown are from my blog GitHub repo, for reference: <https://github.com/deadlydog/Blog>
 
@@ -224,10 +228,6 @@ jobs:
             Write-Host "Preview directory '$prDir' not found - nothing to clean up."
           }
 ```
-
-Here is a screenshot of the PR comment with the preview URL that gets posted by the workflow:
-
-![PR comment with preview URL screenshot](/assets/Posts/2026-04-07-Host-website-PR-previews-on-GitHub-Pages-for-free/pr-comment-screenshot.png)
 
 #### Main branch to gh-pages workflow
 
