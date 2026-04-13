@@ -17,7 +17,7 @@ tags:
 
 Ever since I got the [Logitech MX Master 3s](https://www.logitech.com/en-ca/shop/p/mx-master-3s) in December 2023, it's been my favourite mouse of all time, beating out my previous favourites from the 2000s, [the Logitech MX510](https://www.reddit.com/r/MouseReview/comments/1egvuwg/in_light_of_logitechs_forever_mouse_my_mx510_i/) and later [the Logitech MX518](https://www.amazon.co.uk/Logitech-MX518-Optical-Gaming-Mouse/dp/B0015R8M7U), both discontinued (although there's [a newer reincarnated MX518 now](https://www.amazon.ca/dp/B07P32PJZD)).
 
-But this isn't about those mice; it's about the [Logitech MX Master 4](https://www.logitech.com/en-ca/shop/p/mx-master-4), which was released in October 2024, and how I found it compared to the MX Master 3s.
+But this isn't about those mice; it's about the [Logitech MX Master 4](https://www.logitech.com/en-ca/shop/p/mx-master-4), which was released in October 2025, and how I found it compared to the MX Master 3s.
 
 This is not meant to be a comprehensive review; just my personal experience and what stood out to me.
 
