@@ -1,0 +1,21 @@
+Windows Registry Editor Version 5.00
+
+; Disable web search in the Start Menu search.
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Search]
+"BingSearchEnabled"=dword:00000000
+
+; Always show the full right-click context menu.
+[HKEY_CURRENT_USER\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32]
+@=""
+
+; Reduce delay before opening context menu from 400 to 50 milliseconds.
+[HKEY_CURRENT_USER\Control Panel\Desktop]
+"MenuShowDelay"="50"
+
+; Do not enumerate the Sent To menu before opening the right-click context menu, to speed it up.
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer]
+"DelaySendToMenuBuild"=dword:00000001
+
+; Disable delay before launching startup applications.
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize]
+"Startupdelayinmsec"=dword:00000000
