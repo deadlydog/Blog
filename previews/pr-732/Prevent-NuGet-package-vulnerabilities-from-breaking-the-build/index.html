@@ -1,0 +1,1497 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.27.3 by Michael Rose
+  Copyright 2013-2025 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Prevent NuGet package vulnerabilities from breaking the build - Daniel Schroeder’s Programming Blog</title>
+<meta name="description" content="TL;DR: If you enable “Treat warnings as errors” in your .NET projects, NuGet audit warnings for security vulnerabilities may break your build, but there are ways to work around it if needed.">
+
+
+  <meta name="author" content="Daniel Schroeder">
+  
+  <meta property="article:author" content="Daniel Schroeder">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Daniel Schroeder&#39;s Programming Blog">
+<meta property="og:title" content="Prevent NuGet package vulnerabilities from breaking the build">
+<meta property="og:url" content="https://blog.danskingdom.com/previews/pr-732/Prevent-NuGet-package-vulnerabilities-from-breaking-the-build/">
+
+
+  <meta property="og:description" content="TL;DR: If you enable “Treat warnings as errors” in your .NET projects, NuGet audit warnings for security vulnerabilities may break your build, but there are ways to work around it if needed.">
+
+
+
+
+
+  <meta name="twitter:site" content="@deadlydog">
+  <meta name="twitter:title" content="Prevent NuGet package vulnerabilities from breaking the build">
+  <meta name="twitter:description" content="TL;DR: If you enable “Treat warnings as errors” in your .NET projects, NuGet audit warnings for security vulnerabilities may break your build, but there are ways to work around it if needed.">
+  <meta name="twitter:url" content="https://blog.danskingdom.com/previews/pr-732/Prevent-NuGet-package-vulnerabilities-from-breaking-the-build/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2024-11-16T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="https://blog.danskingdom.com/previews/pr-732/Prevent-NuGet-package-vulnerabilities-from-breaking-the-build/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/previews/pr-732/feed.xml" type="application/atom+xml" rel="alternate" title="Daniel Schroeder's Programming Blog Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/previews/pr-732/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <script>
+function InitializeLightOrDarkModeStylesheet() {
+	let storageKey = 'theme-preference';
+	let darkHref = '/previews/pr-732/assets/css/dark.css';
+	let systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	let stored = null;
+	let mode = 'system';
+
+	try
+	{
+		stored = localStorage.getItem(storageKey);
+		if (stored === 'dark' || stored === 'light')
+		{
+			mode = stored;
+		}
+	}
+	catch (error)
+	{
+		console.warn('Could not access localStorage to get theme preference:', error);
+		mode = 'system';
+	}
+
+	let theme = mode === 'system' ? (systemQuery.matches ? 'dark' : 'light') : mode;
+	let linkMedia = mode === 'system' ? '(prefers-color-scheme: dark)' : (theme === 'dark' ? 'all' : 'not all');
+	let docEl = document.documentElement;
+
+	docEl.dataset.theme = theme;
+	docEl.dataset.themeMode = mode;
+
+	// Need to define colors here (in addition to the colorScheme) to prevent a flash of incorrect colors on each initial page load.
+	// So we need to keep these colors in sync with the ones defined in ThemeToggle.js.
+	if (theme === 'dark')
+	{
+		docEl.style.backgroundColor = '#0f172a';
+		docEl.style.color = '#e5e7eb';
+		docEl.style.colorScheme = 'dark';
+	}
+	else
+	{
+		docEl.style.backgroundColor = '#ffffff';
+		docEl.style.color = '#111827';
+		docEl.style.colorScheme = 'light';
+	}
+
+	let darkStylesheet = document.getElementById('theme-dark');
+
+	if (!darkStylesheet)
+	{
+		darkStylesheet = document.createElement('link');
+		darkStylesheet.id = 'theme-dark';
+		darkStylesheet.rel = 'stylesheet';
+		darkStylesheet.href = darkHref;
+		document.head.appendChild(darkStylesheet);
+	}
+
+	darkStylesheet.media = linkMedia;
+}
+InitializeLightOrDarkModeStylesheet();
+</script>
+
+  </head>
+
+  <body class="layout--single wide" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/previews/pr-732/">
+          Daniel Schroeder&#39;s Programming Blog
+          <span class="site-subtitle">Sharing my tips, tricks, and code to help other developers be more productive.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-732/"
+                
+                
+              >Home</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-732/posts/"
+                
+                
+              >Posts</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-732/categories/"
+                
+                
+              >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-732/about/"
+                
+                
+              >About</a>
+            </li></ul>
+				<!--========== Dan's Customizations START ==========-->
+				<button id="ThemeToggleButton" class="theme-toggle" title="Toggle light and dark mode. Alt+Click to follow the system setting again." aria-label="Toggle between light and dark mode" aria-pressed="false">
+					<i class="fas fa-moon theme-toggle__icon" aria-hidden="true"></i>
+				</button>
+				<!--========== Dan's Customizations END ==========-->
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://blog.danskingdom.com/previews/pr-732/">
+        <img src="/previews/pr-732/assets/Site/bio-photo.jpg" alt="Daniel Schroeder" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://blog.danskingdom.com/previews/pr-732/" itemprop="url">Daniel Schroeder</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>aka deadlydog. Developer and family man. MS MVP. Loves C#, .NET, PowerShell, AutoHotkey. Automate Everything!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Regina, SK, Canada</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://bsky.app/profile/danskingdom.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span class="label">Bluesky</span></a></li>
+          
+        
+          
+            <li><a href="https://hachyderm.io/@deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-mastodon" aria-hidden="true"></i><span class="label">Mastodon</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">X / Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://www.youtube.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i><span class="label">YouTube</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/1danielschroeder/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://stackoverflow.com/users/602585/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i><span class="label">Stack Overflow</span></a></li>
+          
+        
+          
+            <li><a href="mailto:deadlydog@hotmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://blog.danskingdom.com/feed.xml" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i><span class="label">Blog RSS Feed</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Prevent NuGet package vulnerabilities from breaking the build">
+    <meta itemprop="description" content="TL;DR: If you enable “Treat warnings as errors” in your .NET projects, NuGet audit warnings for security vulnerabilities may break your build, but there are ways to work around it if needed.">
+    <meta itemprop="datePublished" content="2024-11-16T00:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+            <a href="https://blog.danskingdom.com/previews/pr-732/Prevent-NuGet-package-vulnerabilities-from-breaking-the-build/" itemprop="url">Prevent NuGet package vulnerabilities from breaking the build
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2024-11-16T00:00:00+00:00">November 16, 2024</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+
+				<!--========== Dan's Customizations START ==========-->
+				<div>
+					<!-- Show an advertisement in the blog post content. -->
+					<!-- The advertisement shown at the bottom of a blog post. -->
+<div style="text-align: center; margin-bottom: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com In-Article Ad -->
+		<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid"
+			data-ad-client="ca-pub-0037930831928769" data-ad-slot="6215502013"></ins>
+		<script>
+			function RunGoogleAdsensePostAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+				</div>
+				<!--========== Dan's Customizations END ==========-->
+
+        <p><strong>TL;DR</strong>: If you enable “Treat warnings as errors” in your .NET projects, NuGet audit warnings for security vulnerabilities may break your build, but there are ways to work around it if needed.</p>
+
+<p>Visual Studio 2022 v17.8 and NuGet 6.8 introduced a wonderful security feature that will generate warnings for NuGet packages that your projects reference that have known security vulnerabilities.
+Visual Studio v17.12 and NuGet v6.12 took this further by also generating warnings for vulnerable transitive dependencies those packages depend on (<a href="https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes#net">see the VS release notes</a>).
+This gives developers better insight into potential security risks in their software, and can prompt them to update NuGet packages to a more secure version.
+Read more about <a href="https://learn.microsoft.com/en-us/nuget/concepts/auditing-packages">the NuGet audit features on the MS docs here</a>.</p>
+
+<p>Here’s an example of a NuGet audit warning message for a package with a known vulnerability:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NU1904: Warning As Error: Package 'log4net' 2.0.8 has a known critical severity vulnerability, https://github.com/advisories/GHSA-2cwj-8chv-9pp9
+</code></pre></div></div>
+
+<h2 id="the-problem">The problem</h2>
+
+<p>NuGet generating warnings for security vulnerabilities in direct and transitive dependencies is great, but it can have an unintended side-effect of breaking the build if your projects are configured to treat warnings as errors.
+Treating warnings as errors is not on by default, but enabling it is a common practice to help ensure code quality and security.</p>
+
+<p>This new NuGet audit feature means that if you have <code class="language-plaintext highlighter-rouge">TreatWarningsAsErrors</code> enabled, your code may no longer compile, even if you haven’t changed the code.
+Some examples of when this could happen include:</p>
+
+<ul>
+  <li>You update Visual Studio / NuGet on your local machine to a version that generates new vulnerability warnings, so you can no longer build the code locally.</li>
+  <li>Your build server updates Visual Studio / NuGet, so the build server can no longer build the code.
+Hosted platforms like GitHub and Azure DevOps agents often install new versions without any notice.</li>
+  <li>A vulnerability is discovered in a NuGet package that your project uses and it is added to <a href="https://github.com/advisories/">https://github.com/advisories/</a>.</li>
+</ul>
+
+<p>A common problem developers encounter sooner or later is when code compiles one day, but not the next, even though you haven’t changed the code.
+It can be very frustrating.</p>
+
+<h2 id="the-solutions">The solutions</h2>
+
+<p>There are a few ways to work around the problem of NuGet audit warnings breaking the build.</p>
+
+<p>The best solution is to:</p>
+
+<ul>
+  <li>Update your NuGet package reference to a version that doesn’t have a vulnerability.</li>
+</ul>
+
+<p>While this is the simplest and best solution, it may not always be possible.
+A few reasons why include:</p>
+
+<ul>
+  <li>The latest version of the NuGet package (or one of its dependencies) has a vulnerability.</li>
+  <li>The NuGet package is no longer maintained, so there is no new version to update to.</li>
+  <li>Newer versions of the NuGet package (or one of its dependencies) have a breaking change that would require significant code changes, and you do not have the time or resources to dedicate to making and testing those changes right now.</li>
+</ul>
+
+<h3 id="when-updating-the-nuget-package-is-not-a-viable-solution">When updating the NuGet package is not a viable solution</h3>
+
+<p>If updating the NuGet package is not possible, there are a few other solutions you can try.
+These are listed in order of most recommended to least recommended:</p>
+
+<ul>
+  <li><strong>Do not treat NuGet audit warnings as errors by using WarningsNotAsErrors</strong>: This is the best solution, as it will allow your code to compile, and you will still be notified of the security vulnerabilities as a warning.
+<a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errors-warnings#warningsaserrors-and-warningsnotaserrors">See the MS docs here for how to enable or disable it</a>
+    <ul>
+      <li>
+        <p>Add the following to your project file (.csproj) to treat the NuGet audit warnings as warnings instead of errors:</p>
+
+        <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;WarningsNotAsErrors&gt;</span>NU1901,NU1902,NU1903,NU1904<span class="nt">&lt;/WarningsNotAsErrors&gt;</span>
+</code></pre></div>        </div>
+
+        <p>These are the 3 NuGet audit warning codes that I encountered, but there may be others.</p>
+
+        <p>If you are editing the .csproj file by hand, you will want to add it to the <code class="language-plaintext highlighter-rouge">&lt;PropertyGroup&gt;</code> section of both your <code class="language-plaintext highlighter-rouge">Debug</code> and <code class="language-plaintext highlighter-rouge">Release</code> configurations.</p>
+
+        <p>Here is a screenshot of modifying the project properties in Visual Studio to enable “Treat warnings as errors” and prevent NuGet audit warnings from being treated as errors (I forgot to add NU1901 in the screenshot):</p>
+
+        <p><img src="/assets/Posts/2024-11-16-Prevent-NuGet-package-vulnerabilities-from-breaking-the-build/enable-treat-warnings-as-errors-and-ignore-nuget-audit-warnings-in-visual-studio.png" alt="Screenshot of modifying the .csproj file in Visual Studio" /></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Suppress specific NuGet audit advisories</strong>: The next best solution is to ignore just the specific NuGet package advisory that you are not able to workaround.
+A potential downside is that because you will no longer get a warning, you may forget the package has a vulnerability.
+Here is an example of the code to add to your .csproj file to exclude the specific log4net advisory mentioned earlier:</p>
+
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;Project</span> <span class="na">Sdk=</span><span class="s">"Microsoft.NET.Sdk"</span><span class="nt">&gt;</span>
+  <span class="c">&lt;!--  other parts of the project left out of this example --&gt;</span>
+  <span class="nt">&lt;ItemGroup&gt;</span>
+    <span class="nt">&lt;NuGetAuditSuppress</span> <span class="na">Include=</span><span class="s">"https://github.com/advisories/GHSA-2cwj-8chv-9pp9"</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/ItemGroup&gt;</span>
+<span class="nt">&lt;/Project&gt;</span>
+</code></pre></div>    </div>
+
+    <p>See <a href="https://learn.microsoft.com/en-us/nuget/concepts/auditing-packages#excluding-advisories">the NuGet audit docs</a> for more information.</p>
+  </li>
+  <li><strong>Disable TreatWarningsAsErrors</strong>: This is not ideal, as it will prevent you from being <em>forced</em> to fix code quality issues and security vulnerabilities, which some people and companies prefer.
+<a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errors-warnings#treatwarningsaserrors">See the MS docs for how to enable or disable it</a></li>
+  <li><strong>Disable the NuGet audit feature</strong>: This is not recommended, as it will prevent you from being notified of security vulnerabilities.
+<a href="https://learn.microsoft.com/en-us/nuget/concepts/auditing-packages#configuring-nuget-audit">See the MS docs for how to disable it, or have it ignore transitive dependencies</a>.</li>
+</ul>
+
+<p>All of these solutions require making changes to the project file (.csproj).
+If you only have a few offending projects, updating each project file isn’t too troublesome.
+If you have 10s or 100s of projects though, it can be a pain to update them all.</p>
+
+<p>A better solution is to leverage a <code class="language-plaintext highlighter-rouge">Directory.Build.props</code> file to apply the changes to all projects in a directory.
+You can read more about Directory.Build.props and how to use it <a href="https://learn.microsoft.com/en-us/visualstudio/msbuild/customize-by-directory">on the MS docs here</a>.</p>
+
+<p><a href="https://learn.microsoft.com/en-us/dotnet/core/compatibility/sdk/9.0/nugetaudit-transitive-packages">This MS doc</a> has more information on some of the workarounds mentioned above.</p>
+
+<p>You can find more information about potential actions to take when you encounter a vulnerable dependency in <a href="https://learn.microsoft.com/en-us/nuget/concepts/auditing-packages#actions-when-packages-with-known-vulnerabilities-are-reported">the NuGet audits docs here</a>, and <a href="https://devblogs.microsoft.com/nuget/nugetaudit-2-0-elevating-security-and-trust-in-package-management/">this MS blog post</a>.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The NuGet audit feature is a great addition to help developers be aware of security vulnerabilities in their projects.
+However, it can have the unintended side-effect of breaking the build if you treat warnings as errors.
+By updating your NuGet packages to versions that do not have vulnerabilities, or by using one of the workarounds mentioned above, you can prevent the build from breaking and still be notified of security vulnerabilities in your projects.</p>
+
+<p>I hope this article helps you keep your code compiling and secure.
+If you have any questions or comments, please leave them below.</p>
+
+<p>Happy coding!</p>
+
+        
+
+				<!--========== Dan's Customizations START ==========-->
+				<div>
+					<!-- Show an advertisement after the blog post content. -->
+					<!-- The advertisement shown at the bottom of a blog post. -->
+<div style="text-align: center; margin-top: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com Responsive Ad 1 -->
+		<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-0037930831928769" data-ad-slot="7917470839"
+			data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			function RunGoogleAdsensePostAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+				</div>
+				<!--========== Dan's Customizations END ==========-->
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/previews/pr-732/tags/#capitals" class="page__taxonomy-item p-category" rel="tag">Capitals</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-732/tags/#should-all" class="page__taxonomy-item p-category" rel="tag">Should all</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-732/tags/#start-with" class="page__taxonomy-item p-category" rel="tag">Start with</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/previews/pr-732/categories/#dotnet" class="page__taxonomy-item p-category" rel="tag">DotNet</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-732/categories/#nuget" class="page__taxonomy-item p-category" rel="tag">NuGet</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-732/categories/#visual-studio" class="page__taxonomy-item p-category" rel="tag">Visual Studio</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2024-11-16T00:00:00+00:00">November 16, 2024</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://x.com/intent/tweet?via=deadlydog&text=Prevent+NuGet+package+vulnerabilities+from+breaking+the+build%20https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-732%2FPrevent-NuGet-package-vulnerabilities-from-breaking-the-build%2F" class="btn btn--x" aria-label="Share on X" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on X">
+    <i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i><span> X</span>
+  </a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-732%2FPrevent-NuGet-package-vulnerabilities-from-breaking-the-build%2F" class="btn btn--facebook" aria-label="Share on Facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook">
+    <i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span>
+  </a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.danskingdom.com/previews/pr-732/Prevent-NuGet-package-vulnerabilities-from-breaking-the-build/" class="btn btn--linkedin" aria-label="Share on LinkedIn" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn">
+    <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span>
+  </a>
+
+  <a href="https://bsky.app/intent/compose?text=Prevent+NuGet+package+vulnerabilities+from+breaking+the+build%20https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-732%2FPrevent-NuGet-package-vulnerabilities-from-breaking-the-build%2F" class="btn btn--bluesky" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Bluesky">
+    <i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span> Bluesky</span>
+  </a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/previews/pr-732/Tech-podcasts-I-enjoy/" class="pagination--pager" title="Tech podcasts I enjoy">Previous</a>
+    
+    
+      <a href="/previews/pr-732/Find-the-assembly-version-of-a-DLL-file-with-PowerShell/" class="pagination--pager" title="Find the assembly version of a DLL file with PowerShell">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+      
+        <div class="page__comments">
+  
+  
+      <section id="static-comments">
+        
+          <!-- Start static comments -->
+          <div class="js-comments">
+            
+          </div>
+          <!-- End static comments -->
+
+          <!-- Start new comment form -->
+          <div class="page__comments-form">
+            <h4 class="page__comments-title">Leave a Comment</h4>
+            <p class="small">Your email address will not be published. Required fields are marked <span class="required">*</span></p>
+            <form id="new_comment" class="page__comments-form js-form form" method="post" action="https://dansblog-staticman.azurewebsites.net/v3/entry/github/deadlydog/Blog/main/comments">
+              <div class="form__spinner">
+                <i class="fas fa-spinner fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only">Loading...</span>
+              </div>
+
+              <div class="form-group">
+                <label for="comment-form-message">Comment <small class="required">*</small></label>
+                <textarea type="text" rows="3" id="comment-form-message" name="fields[message]" tabindex="1"></textarea>
+                <div class="small help-block"><a href="https://daringfireball.net/projects/markdown/">Markdown is supported.</a></div>
+              </div>
+              <div class="form-group">
+                <label for="comment-form-name">Name <small class="required">*</small></label>
+                <input type="text" id="comment-form-name" name="fields[name]" tabindex="2" />
+              </div>
+              <div class="form-group">
+                <label for="comment-form-email">Email address <small class="required">*</small></label>
+                <input type="email" id="comment-form-email" name="fields[email]" tabindex="3" />
+              </div>
+              <div class="form-group">
+                <label for="comment-form-url">Website (optional)</label>
+                <input type="url" id="comment-form-url" name="fields[url]" tabindex="4"/>
+              </div>
+              <div class="form-group hidden" style="display: none;">
+                <input type="hidden" name="options[slug]" value="Prevent-NuGet-package-vulnerabilities-from-breaking-the-build">
+                <label for="comment-form-location">Not used. Leave blank if you are a human.</label>
+                <input type="text" id="comment-form-location" name="fields[hidden]" autocomplete="off"/>
+                <input type="hidden" name="options[reCaptcha][siteKey]" value="6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0">
+                <input type="hidden" name="options[reCaptcha][secret]" value="YDDQ/Zd3cWC5JcTKX5o3OH7tlG8soGbDSnkvg5uv6R7+SkM2ujaeZYCri5ZXUc7l+2L60NPxpRQFvMjlQq6hhjTVi9IJHrHjrmthPjHj1ZM/rNz6/FtWLs4Sm/mHP4z0/ZqwF5bcAn6s4rpnUR5nHJt3M3f1XtPVdgufg9vSxHNeFRUDRWpZxedDOTharP6xf55FRLnVpOchRe/KkIIi+L4MYfAn27esFdbpcP4rnxCujYk3VGvMUXuFT2JMVY9DMDKfE20D1SUR9sleqFwyaHoYlJG+V8oUJVioBPQTq61NoO2Xj3uddbnLN7hqSJ3V2JKCGa7UZvZCyab56/txOg==">
+              </div>
+              <!-- Start comment form alert messaging -->
+              <p class="hidden js-notice">
+                <strong class="js-notice-text"></strong>
+              </p>
+              <!-- End comment form alert messaging -->
+              
+                <div class="form-group">
+                  <div class="g-recaptcha" data-sitekey="6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0"></div>
+                </div>
+              
+              <div class="form-group">
+                <button type="submit" id="comment-form-submit" tabindex="5" class="btn btn--primary btn--large">Submit Comment</button>
+              </div>
+            </form>
+          </div>
+          <!-- End new comment form -->
+          <script async src="https://www.google.com/recaptcha/api.js"></script>
+        
+      </section>
+    
+</div>
+
+      
+    
+  </article>
+
+  
+  
+    
+<div class="page__related">
+  
+  <h2 class="page__related-title">You May Also Enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-732/Host-website-PR-previews-on-GitHub-Pages-for-free/" rel="permalink">Host website PR previews on GitHub Pages for free
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-04-07T00:00:00+00:00">April 7, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">GitHub Pages allows you to host one static website per repository for free.
+The URL is typically in the format https://&lt;username&gt;.github.io/&lt;reposit...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-732/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/" rel="permalink">The part of the SDLC nobody talks about, and many companies don’t do properly
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-03-30T00:00:00+00:00">March 30, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">The most neglected phase of the software development lifecycle (SDLC) is often the decommissioning phase.
+An app has reached end-of-life, users are no longer...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-732/Easily-capture-terminal-output-from-users-you-help-remotely/" rel="permalink">Easily capture terminal output from users you help remotely
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-03-01T00:00:00+00:00">March 1, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">When helping others troubleshoot issues with their PC, you often need to see the output of commands they run.
+The easiest way to do this is to synchronously ...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-732/Colour-your-kubectl-output-and-type-less/" rel="permalink">Colour your kubectl output and type less
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-02-05T00:00:00+00:00">February 5, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">If you work with Kubernetes on the command line using kubectl, you will appreciate kubecolor.
+Kubecolor is a small utility that adds colour to your kubectl o...</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!--========== Dan's Customizations START ==========-->
+
+<!-- Show the Donate image button at the bottom of the screen. -->
+<!-- This defines all of the CSS, HTML, and JavaScript needed for the Donate button and modal. -->
+
+<style>
+	 /* Have a fixed donate section on all of the pages (always on-top on bottom-left). */
+	#Donate
+	{
+		position: fixed;
+		width: 100%;
+		max-width: 1300px;	/* Ensure the Donate section doesn't drift too far left on large screens. */
+		bottom: 0;
+		pointer-events: none;	/* Allow clicking through the div to blog content underneath. */
+	}
+
+	#DonateModalOpenButton
+	{
+		z-index: 10;	/* Always on-top, except for modals. */
+		cursor: pointer;
+		pointer-events: auto;	/* Restore allowing clicking this element in the Donate div. */
+	}
+
+	/* Default size for the donate image on large screens. */
+	.donate-button-image
+	{
+		width: 150px;
+	}
+
+	/* Shrink donate image a bit on medium size screens. */
+	@media only screen and (max-width: 64em)
+	{
+		.donate-button-image
+		{
+			width: 100px;
+		}
+	}
+
+	/* Shrink donate images a lot on smaller screens. */
+	@media only screen and (max-width: 32em)
+	{
+		.donate-button-image
+		{
+			width: 80px;
+		}
+
+		.donate-image
+		{
+			width: 120px;
+		}
+	}
+
+	/* Modal background. */
+	.modal-container
+	{
+		display: none;	/* Hidden by default. */
+		position: fixed;
+		z-index: 100;	/* Always on top. */
+
+		/* Center the modal-container div. */
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+
+		width: 85%;
+		max-width: 600px;
+		overflow: auto;	/* Enable scroll if needed. */
+		background-color: rgb(255, 255, 255);
+
+		/* Give the container a nice rounded border */
+		border-radius: 10px;
+		border: 2px solid #235e70;
+		box-shadow: 0 0 10px #235e70;
+	}
+
+	/* The modal's close button. */
+	.modal-close-button
+	{
+		float: right;
+		margin-right: 20px;
+		color: #235e70;
+		font-size: 40px;
+		font-weight: bold;
+	}
+
+	.modal-close-button:hover,
+	.modal-close-button:focus
+	{
+		color: #000000;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	/* Modal content. */
+	.modal-content
+	{
+		margin: auto;
+		display: block;
+		clear: both;	/* Ensure the content appears below the floated close button. */
+		width: 80%;
+		text-align: center;
+		padding-bottom: 30px;
+		color: #235e70;
+	}
+
+	.modal-content a
+	{
+		/* Override the footer's "text-decoration: none;" by using !important. https://stackoverflow.com/a/64637823/602585 */
+		text-decoration: underline !important;
+	}
+</style>
+
+<!-- Show the Donate image button at the bottom of the screen. -->
+<div id="Donate">
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+		alt="Donate button image" />
+</div>
+<div id="DonateModal" class="modal-container">
+	<div id="DonateModalCloseButton" class="modal-close-button">&times;</div>
+	<div class="modal-content">
+		<p>
+			If you've found my blog helpful and would like to show your appreciation, buy me a <a
+				href="https://en.wikipedia.org/wiki/Poutine">poutine</a>! It will encourage me to create more content 😁
+		</p>
+
+		<div>
+			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
+				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
+					alt="Donate payment button image" />
+			</a>
+		</div>
+	</div>
+</div>
+
+<script>
+	var donateModal = document.getElementById("DonateModal");
+	var donateModalOpenButton = document.getElementById("DonateModalOpenButton");
+	var donateModalCloseButton = document.getElementById("DonateModalCloseButton");
+
+	// When the user clicks the open button, open the modal.
+	donateModalOpenButton.onclick = function (event)
+	{
+		if (DonateModalIsOpen())
+		{
+			CloseDonateModal();
+		}
+		else
+		{
+			OpenDonateModal();
+			event.stopPropagation();	// Prevent the window event handler from closing the modal instantly.
+		}
+	}
+
+	// When the user clicks the close button, close the modal.
+	donateModalCloseButton.onclick = function (event)
+	{
+		CloseDonateModal();
+	}
+
+	// When the user clicks anywhere outside the modal, close the modal.
+	window.onclick = function (event)
+	{
+		// Must check both the modal and it's children.
+		var userClickedOutsideOfModal = (event.target !== donateModal && !donateModal.contains(event.target))
+
+		if (DonateModalIsOpen() && userClickedOutsideOfModal)
+		{
+			CloseDonateModal();
+		}
+	}
+
+	function OpenDonateModal()
+	{
+		donateModal.style.display = "block";
+	}
+
+	function CloseDonateModal()
+	{
+		donateModal.style.display = "none";
+	}
+
+	function DonateModalIsOpen()
+	{
+		return donateModal.style.display == "block";
+	}
+</script>
+
+
+<!-- Put an advertisement in the site's footer. -->
+<!-- Put an advertisement in the site's footer. -->
+<div style="text-align: center; margin-bottom: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com Responsive Ad 2 -->
+		<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0037930831928769" data-ad-slot="1591735639"
+			data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			function RunGoogleAdsenseFooterAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+
+<!--========== Dan's Customizations END ==========-->
+
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://bsky.app/profile/danskingdom.com" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-bluesky" aria-hidden="true"></i> Bluesky</a></li>
+        
+      
+        
+          <li><a href="https://hachyderm.io/@deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-mastodon" aria-hidden="true"></i> Mastodon</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> X / Twitter</a></li>
+        
+      
+        
+          <li><a href="https://www.youtube.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> YouTube</a></li>
+        
+      
+        
+          <li><a href="https://github.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/1danielschroeder/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+        
+      
+        
+          <li><a href="https://stackoverflow.com/users/602585/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i> Stack Overflow</a></li>
+        
+      
+    
+
+    
+      <li><a href="/previews/pr-732/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+
+<div class="page__footer-copyright">&copy; 2026 <a href="https://blog.danskingdom.com">Daniel Schroeder&#39;s Programming Blog</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/previews/pr-732/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/previews/pr-732/assets/js/lunr/lunr.min.js"></script>
+<script src="/previews/pr-732/assets/js/lunr/lunr-store.js"></script>
+<script src="/previews/pr-732/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Replaced entire file with my updated version. Dan's Customizations START and END for entire file.
+	Google Analytics introduced new required consent tags in 2023, so we had to update the code to account for them.
+	More info: https://developers.google.com/tag-platform/security/guides/consent?consentmode=basic#gtag.js
+-->
+
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() { dataLayer.push(arguments); }
+
+	// Consent not granted by default.
+	gtag('consent', 'default', {
+		'ad_user_data': 'denied',
+		'ad_personalization': 'denied',
+		'ad_storage': 'denied',
+		'analytics_storage': 'denied',
+		// Wait 500ms to allow consent function to update consent values before calling Google Analytics.
+		'wait_for_update': 500,
+	});
+
+	gtag('js', new Date());
+	gtag('config', 'G-7CB6XGCWTK', {
+			'anonymize_ip': false
+		});
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CB6XGCWTK"></script>
+<script>
+	function RunGoogleAnalyticsJavaScript()
+	{
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+
+		// Update consent values from denied to granted.
+		gtag('consent', 'update', {
+			ad_user_data: 'granted',
+			ad_personalization: 'granted',
+			ad_storage: 'granted',
+			analytics_storage: 'granted'
+		});
+	}
+</script>
+
+
+
+
+
+
+    
+  <script>
+    (function ($) {
+    $('#new_comment').submit(function () {
+      var form = this;
+
+      $(form).addClass('disabled');
+      $('#comment-form-submit').html('<i class="fas fa-spinner fa-spin fa-fw"></i> Loading...');
+
+      $.ajax({
+        type: $(this).attr('method'),
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        contentType: 'application/x-www-form-urlencoded',
+        success: function (data) {
+          $('#comment-form-submit').html('Submitted');
+          $('.page__comments-form .js-notice').removeClass('notice--danger');
+          $('.page__comments-form .js-notice').addClass('notice--success');
+          showAlert('Thanks for your comment! It will show on the site once it has been approved.');
+        },
+        error: function (err) {
+          console.log(err);
+          $('#comment-form-submit').html('Submit Comment');
+          $('.page__comments-form .js-notice').removeClass('notice--success');
+          $('.page__comments-form .js-notice').addClass('notice--danger');
+          showAlert('Sorry, there was an error with your submission. Please make sure all required fields have been completed and try again.');
+          $(form).removeClass('disabled');
+        }
+      });
+
+      return false;
+    });
+
+    function showAlert(message) {
+      $('.page__comments-form .js-notice').removeClass('hidden');
+      $('.page__comments-form .js-notice-text').html(message);
+    }
+  })(jQuery);
+  </script>
+
+
+  
+
+
+
+
+
+		<!--========== Dan's Customizations START ==========-->
+
+		<!-- Include any custom website level scripts. -->
+		<!--
+	Code in this file is included at the very bottom of every webpage.
+	This file should typically be used for scripts and other invisible
+	things that need to be loaded at the bottom of every page.
+-->
+
+<!-- Microsoft Clarity script for analytics (https://clarity.microsoft.com) -->
+<script type="text/javascript">
+	function RunMsClarityJavaScript()
+	{
+		// Code copied from the MS Clarity website.
+		(function (c, l, a, r, i, t, y)
+		{
+			c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+			t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+			y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+		})(window, document, "clarity", "script", "49915jr5qy");
+
+		// Let MS Clarity know the user consented so it can setup it's cookie tracking.
+		// More info: https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-consent-api-v2
+		window.clarity('consentv2', {
+			ad_storage: "granted",
+			analytics_storage: "granted"
+		});
+	}
+</script>
+
+
+<!-- Add button to toggle between light and dark themes. -->
+<script src="/assets/js/ThemeToggle.js" defer></script>
+
+<!-- Add buttons for copying code snippets to the clipboard. -->
+<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+
+<!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
+<span style="visibility: collapse;">
+	<a rel="me" href="https://hachyderm.io/@deadlydog">Mastodon</a>
+</span>
+
+<!-- Include the cookie notice popup. -->
+<!-- This should be included last to ensure that any functions it calls have been defined already. -->
+<!-- Original code taken from https://jekyllcodex.org/without-plugin/cookie-consent/ then modified. -->
+<style>
+	#cookie-notice {
+		padding: 0.5rem 1rem;
+		display: none;
+		text-align: center;
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		background: #222;
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	#cookie-notice a {
+		display: inline-block;
+		cursor: pointer;
+		margin-left: 0.5rem;
+	}
+
+	#cookie-notice-accept {
+		background: #07a21c;
+		color: white;
+	}
+
+	#cookie-notice-more-info {
+		background: #007bff;
+		color: white;
+	}
+
+	#cookie-notice-reject {
+		background: #dc3545;
+		color: white;
+	}
+
+	#cookie-notice-buttons {
+		display: inline-block;
+	}
+</style>
+
+<div id="cookie-notice">
+	<span>This website uses cookies to ensure you get the best experience.</span>
+	<span id="cookie-notice-buttons">
+		<a id="cookie-notice-more-info" class="btn btn-primary btn-sm" href="/privacy">More info</a>
+		<a id="cookie-notice-accept" class="btn btn-primary btn-sm">OK</a>
+	</span>
+</div>
+
+<script>
+	function createCookie(name, value, days)
+	{
+		var expires = "";
+		if (days)
+		{
+			var date = new Date();
+			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+			expires = "; expires=" + date.toUTCString();
+		}
+		document.cookie = name + "=" + value + expires + "; path=/";
+	}
+
+	function readCookie(name)
+	{
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0; i < ca.length; i++)
+		{
+			var c = ca[i];
+			while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+		}
+		return null;
+	}
+
+	function eraseCookie(name)
+	{
+		createCookie(name, "", -1);
+	}
+
+	function RunThirdPartyCodeThatUsesCookies()
+	{
+		// Call the functions that should not be ran until the user has accepted cookies.
+
+// If the user is not viewing a post, the Post Ad function will not be defined, so only call it if it is defined.
+if (typeof(RunGoogleAdsensePostAdvertisementJavaScript) === typeof(Function))
+{
+	RunGoogleAdsensePostAdvertisementJavaScript()
+}
+
+RunGoogleAdsenseFooterAdvertisementJavaScript()
+RunMsClarityJavaScript()
+
+// Google Analytics are not included when running locally/debugging, so to avoid an error only call this function if it is defined.
+if (typeof (RunGoogleAnalyticsJavaScript) === typeof(Function))
+{
+	RunGoogleAnalyticsJavaScript()
+}
+
+	}
+
+	// Rather than requiring consent, we just display a notice and assume consent if the user continues to use the website.
+	// Google displays its own consent automatically for countries that require it: https://umbracocommunity.social/@steve_gibe/111925508834045878
+	RunThirdPartyCodeThatUsesCookies()
+
+	if (readCookie('cookie-notice-response') != 'accepted')
+	{
+		// Display the cookie notice.
+		document.getElementById('cookie-notice').style.display = 'block';
+	}
+
+	document.getElementById('cookie-notice-accept').addEventListener("click", function ()
+	{
+		// Persist cookie acceptance for 180 days and hide the cookie notice.
+		createCookie('cookie-notice-response', 'accepted', 180);
+		document.getElementById('cookie-notice').style.display = 'none';
+
+		// Reload the page so the analytics scripts, etc. are ran on this page, not just future pages.
+		// I considered just calling the RunThirdPartyCodeThatUsesCookies() function here, but was
+		// not sure how that would affect some analytics metrics, like the time to load the page, etc.
+		location.reload();
+	});
+</script>
+
+
+
+		<!--========== Dan's Customizations END ==========-->
+  </body>
+</html>
