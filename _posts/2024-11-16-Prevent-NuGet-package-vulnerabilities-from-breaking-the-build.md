@@ -10,9 +10,9 @@ categories:
   - NuGet
   - Visual Studio
 tags:
-  - Should all
-  - Start with
-  - Capitals
+  - DotNet
+  - NuGet
+  - Visual Studio
 ---
 
 __TL;DR__: If you enable "Treat warnings as errors" in your .NET projects, NuGet audit warnings for security vulnerabilities may break your build, but there are ways to work around it if needed.
