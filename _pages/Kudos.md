@@ -9,6 +9,10 @@ It's a nice place I can turn to when I'm not feeling motivated, or when I need a
 
 ## Donations and thank you emails from the community
 
+### 2026-04-27
+
+$20.00 USD from John Andrusko for my [Path Length Checker app](https://github.com/deadlydog/PathLengthChecker).
+
 ### 2025-12-14
 
 $10.00 USD from Andreas Gehrke for [my blog](https://blog.danskingdom.com).
