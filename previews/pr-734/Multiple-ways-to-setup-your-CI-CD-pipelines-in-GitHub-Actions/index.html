@@ -1,0 +1,2314 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.27.3 by Michael Rose
+  Copyright 2013-2025 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Multiple ways to setup your CI/CD pipelines in GitHub Actions - Daniel Schroeder’s Programming Blog</title>
+<meta name="description" content="In this post I’ll show different approaches to setting up your build and deployment workflows with GitHub Actions, as well as some pros and cons of each.">
+
+
+  <meta name="author" content="Daniel Schroeder">
+  
+  <meta property="article:author" content="Daniel Schroeder">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Daniel Schroeder&#39;s Programming Blog">
+<meta property="og:title" content="Multiple ways to setup your CI/CD pipelines in GitHub Actions">
+<meta property="og:url" content="https://blog.danskingdom.com/previews/pr-734/Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/">
+
+
+  <meta property="og:description" content="In this post I’ll show different approaches to setting up your build and deployment workflows with GitHub Actions, as well as some pros and cons of each.">
+
+
+
+
+
+  <meta name="twitter:site" content="@deadlydog">
+  <meta name="twitter:title" content="Multiple ways to setup your CI/CD pipelines in GitHub Actions">
+  <meta name="twitter:description" content="In this post I’ll show different approaches to setting up your build and deployment workflows with GitHub Actions, as well as some pros and cons of each.">
+  <meta name="twitter:url" content="https://blog.danskingdom.com/previews/pr-734/Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2024-01-05T00:00:00+00:00">
+
+
+
+  <meta property="article:modified_time" content="2024-01-10T00:00:00+00:00">
+
+
+
+
+<link rel="canonical" href="https://blog.danskingdom.com/previews/pr-734/Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/previews/pr-734/feed.xml" type="application/atom+xml" rel="alternate" title="Daniel Schroeder's Programming Blog Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/previews/pr-734/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <script>
+function InitializeLightOrDarkModeStylesheet() {
+	let storageKey = 'theme-preference';
+	let darkHref = '/previews/pr-734/assets/css/dark.css';
+	let systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	let stored = null;
+	let mode = 'system';
+
+	try
+	{
+		stored = localStorage.getItem(storageKey);
+		if (stored === 'dark' || stored === 'light')
+		{
+			mode = stored;
+		}
+	}
+	catch (error)
+	{
+		console.warn('Could not access localStorage to get theme preference:', error);
+		mode = 'system';
+	}
+
+	let theme = mode === 'system' ? (systemQuery.matches ? 'dark' : 'light') : mode;
+	let linkMedia = mode === 'system' ? '(prefers-color-scheme: dark)' : (theme === 'dark' ? 'all' : 'not all');
+	let docEl = document.documentElement;
+
+	docEl.dataset.theme = theme;
+	docEl.dataset.themeMode = mode;
+
+	// Need to define colors here (in addition to the colorScheme) to prevent a flash of incorrect colors on each initial page load.
+	// So we need to keep these colors in sync with the ones defined in ThemeToggle.js.
+	if (theme === 'dark')
+	{
+		docEl.style.backgroundColor = '#0f172a';
+		docEl.style.color = '#e5e7eb';
+		docEl.style.colorScheme = 'dark';
+	}
+	else
+	{
+		docEl.style.backgroundColor = '#ffffff';
+		docEl.style.color = '#111827';
+		docEl.style.colorScheme = 'light';
+	}
+
+	let darkStylesheet = document.getElementById('theme-dark');
+
+	if (!darkStylesheet)
+	{
+		darkStylesheet = document.createElement('link');
+		darkStylesheet.id = 'theme-dark';
+		darkStylesheet.rel = 'stylesheet';
+		darkStylesheet.href = darkHref;
+		document.head.appendChild(darkStylesheet);
+	}
+
+	darkStylesheet.media = linkMedia;
+}
+InitializeLightOrDarkModeStylesheet();
+</script>
+
+  </head>
+
+  <body class="layout--single wide" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/previews/pr-734/">
+          Daniel Schroeder&#39;s Programming Blog
+          <span class="site-subtitle">Sharing my tips, tricks, and code to help other developers be more productive.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-734/"
+                
+                
+              >Home</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-734/posts/"
+                
+                
+              >Posts</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-734/categories/"
+                
+                
+              >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-734/about/"
+                
+                
+              >About</a>
+            </li></ul>
+				<!--========== Dan's Customizations START ==========-->
+				<button id="ThemeToggleButton" class="theme-toggle" title="Toggle light and dark mode. Alt+Click to follow the system setting again." aria-label="Toggle between light and dark mode" aria-pressed="false">
+					<i class="fas fa-moon theme-toggle__icon" aria-hidden="true"></i>
+				</button>
+				<!--========== Dan's Customizations END ==========-->
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://blog.danskingdom.com/previews/pr-734/">
+        <img src="/previews/pr-734/assets/Site/bio-photo.jpg" alt="Daniel Schroeder" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://blog.danskingdom.com/previews/pr-734/" itemprop="url">Daniel Schroeder</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>aka deadlydog. Developer and family man. MS MVP. Loves C#, .NET, PowerShell, AutoHotkey. Automate Everything!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Regina, SK, Canada</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://bsky.app/profile/danskingdom.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span class="label">Bluesky</span></a></li>
+          
+        
+          
+            <li><a href="https://hachyderm.io/@deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-mastodon" aria-hidden="true"></i><span class="label">Mastodon</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">X / Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://www.youtube.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i><span class="label">YouTube</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/1danielschroeder/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://stackoverflow.com/users/602585/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i><span class="label">Stack Overflow</span></a></li>
+          
+        
+          
+            <li><a href="mailto:deadlydog@hotmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://blog.danskingdom.com/feed.xml" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i><span class="label">Blog RSS Feed</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Multiple ways to setup your CI/CD pipelines in GitHub Actions">
+    <meta itemprop="description" content="In this post I’ll show different approaches to setting up your build and deployment workflows with GitHub Actions, as well as some pros and cons of each.">
+    <meta itemprop="datePublished" content="2024-01-05T00:00:00+00:00">
+    <meta itemprop="dateModified" content="2024-01-10T00:00:00+00:00">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+            <a href="https://blog.danskingdom.com/previews/pr-734/Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/" itemprop="url">Multiple ways to setup your CI/CD pipelines in GitHub Actions
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2024-01-05T00:00:00+00:00">January 5, 2024</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          22 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-stream"></i> Post Sections</h4></header>
+              <ul class="toc__menu"><li><a href="#tldr">TL;DR</a></li><li><a href="#background">Background</a></li><li><a href="#terminology">Terminology</a></li><li><a href="#the-approaches">The approaches</a></li><li><a href="#approach-1-build-and-deploy-with-a-single-workflow-file">Approach 1: Build and deploy with a single workflow file</a><ul><li><a href="#pros-and-cons-of-using-a-single-workflow-file">Pros and cons of using a single workflow file</a></li></ul></li><li><a href="#approach-2-deploy-workflow-listens-for-build-workflow-to-complete-pull-approach">Approach 2: Deploy workflow listens for build workflow to complete (Pull approach)</a><ul><li><a href="#pros-and-cons-of-using-the-pull-approach">Pros and cons of using the pull approach</a></li><li><a href="#similarities-to-azure-devops-classic-pipelines">Similarities to Azure DevOps classic pipelines</a></li><li><a href="#listening-for-other-events-to-trigger-the-deployment-workflow">Listening for other events to trigger the deployment workflow</a></li></ul></li><li><a href="#approach-3-build-workflow-triggers-deploy-workflow-push-approach">Approach 3: Build workflow triggers deploy workflow (Push approach)</a><ul><li><a href="#pros-and-cons-of-using-the-push-approach">Pros and cons of using the push approach</a></li></ul></li><li><a href="#approach-4-deploy-workflow-includes-build-workflow-include-approach">Approach 4: Deploy workflow includes build workflow (Include approach)</a><ul><li><a href="#pros-and-cons-of-using-the-include-approach">Pros and cons of using the include approach</a></li></ul></li><li><a href="#reusable-workflows-templates">Reusable workflows (templates)</a></li><li><a href="#approach-5-deploy-workflow-includes-build-workflow-and-uses-template-for-deployments-include-approach-with-reusable-workflows">Approach 5: Deploy workflow includes build workflow, and uses template for deployments (Include approach with reusable workflows)</a><ul><li><a href="#pros-and-cons-of-using-reusable-workflows-templates">Pros and cons of using reusable workflows (templates)</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+            </nav>
+          </aside>
+        
+
+				<!--========== Dan's Customizations START ==========-->
+				<div>
+					<!-- Show an advertisement in the blog post content. -->
+					<!-- The advertisement shown at the bottom of a blog post. -->
+<div style="text-align: center; margin-bottom: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com In-Article Ad -->
+		<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid"
+			data-ad-client="ca-pub-0037930831928769" data-ad-slot="6215502013"></ins>
+		<script>
+			function RunGoogleAdsensePostAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+				</div>
+				<!--========== Dan's Customizations END ==========-->
+
+        <p>In this post I’ll show different approaches to setting up your build and deployment workflows with GitHub Actions, as well as some pros and cons of each.</p>
+
+<h2 id="tldr">TL;DR</h2>
+
+<p>While I show several approaches here, the one I recommend using is the “Include approach with reusable workflows” (Approach 5), so you can skip straight to that section if you like and take in the sample code.</p>
+
+<p><a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions">This sample GitHub repository</a> contains all of the examples shown in this post, and you can see how the workflow runs look in <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions/actions">the GitHub Actions web UI here</a>.
+Feel free to fork the repo and play around with it yourself.</p>
+
+<h2 id="background">Background</h2>
+
+<p>Over the summer I created <a href="https://github.com/deadlydog/PowerShell.tiPS">the tiPS PowerShell module</a> in GitHub and decided to use GitHub Actions for the CI/CD process.
+For the past few years I have been using Azure DevOps for my CI/CD pipelines, but I wanted to try out GitHub Actions to see how it compared, especially since my code was also hosted in GitHub.
+The approaches I show here are ones I tried out in the tiPS project as it evolved, until settling on an approach I was happy with.</p>
+
+<h2 id="terminology">Terminology</h2>
+
+<p>Azure DevOps and much of the industry use the term “pipeline” to refer to the automated steps to build and deploy software, but GitHub Actions uses the term “workflow” instead.
+For the purposes of this post, the terms “pipeline” and “workflow” are interchangeable.</p>
+
+<p>Similarly, Azure DevOps uses the term “template”, while GitHub Actions uses the term “reusable workflow”, so I may use them interchangeably as well.</p>
+
+<h2 id="the-approaches">The approaches</h2>
+
+<p>Some CI/CD criteria we want to meet in our examples are:</p>
+
+<ul>
+  <li>Deploy to the <code class="language-plaintext highlighter-rouge">staging</code> environment automatically when a <code class="language-plaintext highlighter-rouge">main</code> branch build completes successfully.</li>
+  <li>Manual intervention should be required to deploy to the <code class="language-plaintext highlighter-rouge">production</code> environment.
+e.g. A manual approval.</li>
+  <li>PR builds and non-main branch builds should:
+    <ul>
+      <li>Not trigger automatic deployments.</li>
+      <li>Manual deployments should still be possible when needed.</li>
+    </ul>
+  </li>
+  <li>All builds should upload their artifacts so they can be downloaded/inspected.</li>
+</ul>
+
+<p>The approaches we will look at are:</p>
+
+<ol>
+  <li>Place all of the build and deployment steps in a single workflow file.</li>
+  <li>Have a deploy workflow listen for when the build workflow completes (<code class="language-plaintext highlighter-rouge">pull</code> approach).</li>
+  <li>Have the build workflow trigger the deploy workflow (<code class="language-plaintext highlighter-rouge">push</code> approach).</li>
+  <li>Have the deploy workflow include the build workflow (<code class="language-plaintext highlighter-rouge">include</code> approach).</li>
+  <li>Have the deploy workflow include the build workflow, and use a template for the deployment jobs (<code class="language-plaintext highlighter-rouge">include</code> approach with reusable workflows).</li>
+</ol>
+
+<p>I typically prefer to use the <code class="language-plaintext highlighter-rouge">include</code> approach, but I’ll show each approach so you can decide which one you prefer for a given scenario.</p>
+
+<p>If you are curious or confused about any of the workflow yaml syntax shown in the examples below, checkout <a href="https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions">the workflow syntax for GitHub Actions docs</a>.</p>
+
+<p>I created <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions">this sample GitHub repository</a> that contains all of the examples shown in this post, so you view their code and can see how they look in <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions/actions">the GitHub Actions web UI</a>.</p>
+
+<p>In the example yaml code below, I use the “👇” emoji to call out specific things to take note of, or that have changed from one approach to the next.</p>
+
+<h2 id="approach-1-build-and-deploy-with-a-single-workflow-file">Approach 1: Build and deploy with a single workflow file</h2>
+
+<p>Here is an example of a single workflow file that builds and deploys some code:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">name</span><span class="pi">:</span> <span class="s">1-single-file--build-and-deploy</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="s">main</span> <span class="c1"># Run workflow on PRs to the main branch.</span>
+
+  <span class="c1"># Run workflow on pushes to any branch.</span>
+  <span class="na">push</span><span class="pi">:</span>
+
+  <span class="c1"># Allows you to run this workflow manually from the Actions tab.</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+
+<span class="na">env</span><span class="pi">:</span>
+  <span class="na">artifactName</span><span class="pi">:</span> <span class="s">buildArtifact</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build-and-test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout the repo source code</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v3</span>
+
+      <span class="c1"># Steps to version, build, and test the code go here.</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload artifact</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName }}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./</span> <span class="c1"># Put the path to the build artifact files directory here.</span>
+
+  <span class="na">deploy-to-staging</span><span class="pi">:</span>
+    <span class="c1"># 👇 Only run this deploy job after the build-and-test job completes successfully.</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">build-and-test</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="c1"># 👇 Only run on pushes (not PRs) or manual triggers to the main branch.</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="s">(github.event_name == 'push' || github.event_name == 'workflow_dispatch') &amp;&amp; github.ref == 'refs/heads/main'</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Download artifact</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/download-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName }}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./buildArtifact</span>
+
+      <span class="c1"># Steps to deploy the code go here.</span>
+
+  <span class="na">deploy-to-production</span><span class="pi">:</span>
+    <span class="c1"># 👇 Only run this deploy job after the deploy-to-staging job completes successfully.</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">deploy-to-staging</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">environment</span><span class="pi">:</span> <span class="s">production</span> <span class="c1"># Used for environment-specific variables, secrets, and approvals.</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Download artifact</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/download-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName }}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./buildArtifact</span>
+
+      <span class="c1"># Steps to deploy the code go here.</span>
+
+</code></pre></div></div>
+
+<p>There are a few things to note here.
+First, the workflow is automatically triggered when a PR to the main branch is created, or when a change is pushed to any branch.
+It can also be manually triggered.
+Second, the workflow has 3 jobs: <code class="language-plaintext highlighter-rouge">build-and-test</code>, <code class="language-plaintext highlighter-rouge">deploy-to-staging</code>, and <code class="language-plaintext highlighter-rouge">deploy-to-production</code>.
+Notice in the <code class="language-plaintext highlighter-rouge">deploy-to-staging</code> job we use a conditional <code class="language-plaintext highlighter-rouge">if</code> statement to ensure we do not deploy if the workflow was triggered by a PR, or if the <code class="language-plaintext highlighter-rouge">push</code> was not for the <code class="language-plaintext highlighter-rouge">main</code> branch.</p>
+
+<p>Technically we did not need to create separate deploy jobs, and could have just put the deployment steps in the <code class="language-plaintext highlighter-rouge">build-and-test</code> job.
+In general, it is a good idea to separate the build steps from the deployment steps to maintain a separation of concerns.
+A technical reason for keeping them separate is GitHub Actions allows you to add approvals to a job via <a href="https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idenvironment">the <code class="language-plaintext highlighter-rouge">environment</code> key</a>.
+Approvals are often used to block deployments until someone manually approves it.
+Only jobs support an <code class="language-plaintext highlighter-rouge">environment</code>, and you would typically have a deployment job for each environment that you need to deploy to.</p>
+
+<p>Lastly, if you do decide to use a single job for both the build and deployment steps, then you technically do not need the <code class="language-plaintext highlighter-rouge">Upload artifact</code> and <code class="language-plaintext highlighter-rouge">Download artifact</code> steps.
+I would still recommend using the <code class="language-plaintext highlighter-rouge">Upload artifact</code> step though so that the build artifact is available for download in the GitHub Actions UI, in case you need to inspect its files.</p>
+
+<h3 id="pros-and-cons-of-using-a-single-workflow-file">Pros and cons of using a single workflow file</h3>
+
+<p>Pros:</p>
+
+<ul>
+  <li>Simple to setup, as it is only a single file.</li>
+  <li>Workflow environment variables can be easily used by all jobs.
+e.g. <code class="language-plaintext highlighter-rouge">env.artifactName</code></li>
+</ul>
+
+<p>Cons:</p>
+
+<ul>
+  <li>The workflow file may quickly grow in size as more steps and jobs are added.
+Having a single yaml file that is several hundred or thousands of lines long can be more difficult to maintain and daunting to look at.</li>
+  <li>Workflow code changes are required to deploy from any branch other than <code class="language-plaintext highlighter-rouge">main</code>.</li>
+  <li>If you want to deploy to multiple environments, you will need to duplicate the deployment steps for each environment (Approach 5 and the Reusable Workflows section below show how to solve this).
+Duplicate code is harder to maintain and can easily lead to bugs if the code is not kept in sync.</li>
+  <li>
+    <p>The deployment jobs/steps will be skipped for PRs and branch builds, but will still show up in the workflow web UI.
+This can be confusing to users, as they may not understand why those jobs/steps were skipped and that they cannot be manually triggered.</p>
+
+    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-1-jobs-that-will-never-run-show-in-the-web-ui.png" alt="Jobs that will never run showing in the web UI" /></p>
+  </li>
+  <li>
+    <p>The PR builds and non-main branch builds will show up in the same <code class="language-plaintext highlighter-rouge">1-single-file--build-and-deploy</code> workflow runs as the <code class="language-plaintext highlighter-rouge">main</code> branch builds.
+If there are a lot of PR runs or pushes to branches, they may bury the <code class="language-plaintext highlighter-rouge">main</code> branch runs, forcing you to go back several pages in the web UI to find the <code class="language-plaintext highlighter-rouge">main</code> branch runs to answer questions like, “When was the last time we deployed to production?”.</p>
+
+    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-1-main-branch-build-and-deploy-buried-under-pr-builds-in-github-workflow-runs.png" alt="Main branch build buried under PR builds" />)</p>
+  </li>
+</ul>
+
+<p>To see what the GitHub Actions UI looks like with this approach, check out <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions/actions/workflows/1-single-file--build-and-deploy.yml">the workflow runs in the sample repository</a>.</p>
+
+<h2 id="approach-2-deploy-workflow-listens-for-build-workflow-to-complete-pull-approach">Approach 2: Deploy workflow listens for build workflow to complete (Pull approach)</h2>
+
+<p>Here is an example of a workflow file that just builds the code:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">name</span><span class="pi">:</span> <span class="s">2-pull--build</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="s">main</span> <span class="c1"># Run workflow on PRs to the main branch.</span>
+
+  <span class="c1"># Run workflow on pushes to any branch.</span>
+  <span class="na">push</span><span class="pi">:</span>
+
+  <span class="c1"># Allows you to run this workflow manually from the Actions tab.</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+
+<span class="na">env</span><span class="pi">:</span>
+  <span class="na">artifactName</span><span class="pi">:</span> <span class="s">buildArtifact</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build-and-test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout the repo source code</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v3</span>
+
+      <span class="c1"># Steps to version, build, and test the code go here.</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload artifact</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName }}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./</span> <span class="c1"># Put the path to the build artifact files directory here.</span>
+
+</code></pre></div></div>
+
+<p>And the accompanying workflow file that deploys the code using the pull approach:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">name</span><span class="pi">:</span> <span class="s">2-pull--deploy</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="c1"># 👇 Run workflow anytime the 2-pull--build workflow completes for the main branch.</span>
+  <span class="c1"># Unfortunately, can not have it only run on successful builds, so it will run when builds fail too.</span>
+  <span class="na">workflow_run</span><span class="pi">:</span>
+    <span class="na">workflows</span><span class="pi">:</span> <span class="s">2-pull--build</span>
+    <span class="na">types</span><span class="pi">:</span> <span class="s">completed</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="s">main</span>
+
+  <span class="c1"># Allows you to run this workflow manually from the Actions tab.</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+    <span class="na">inputs</span><span class="pi">:</span>
+      <span class="c1"># 👇 Must specify the build artifacts to deploy when running manually.</span>
+      <span class="na">workflowRunId</span><span class="pi">:</span>
+        <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">The</span><span class="nv"> </span><span class="s">build</span><span class="nv"> </span><span class="s">workflow</span><span class="nv"> </span><span class="s">run</span><span class="nv"> </span><span class="s">ID</span><span class="nv"> </span><span class="s">containing</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">artifacts</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">use.</span><span class="nv"> </span><span class="s">The</span><span class="nv"> </span><span class="s">run</span><span class="nv"> </span><span class="s">ID</span><span class="nv"> </span><span class="s">can</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">found</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">URL</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">build</span><span class="nv"> </span><span class="s">workflow</span><span class="nv"> </span><span class="s">run.'</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">number</span>
+        <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
+
+<span class="na">env</span><span class="pi">:</span>
+  <span class="na">artifactName</span><span class="pi">:</span> <span class="s">buildArtifact</span> <span class="c1"># This must match the artifact name in the 2-pull--build workflow.</span>
+  <span class="c1"># 👇 Ternary operator to use input value if manually triggered, otherwise use the workflow_run.id of the workflow run that triggered this one.</span>
+  <span class="na">workflowRunId</span><span class="pi">:</span> <span class="s">${{ github.event_name == 'workflow_dispatch' &amp;&amp; inputs.workflowRunId || github.event.workflow_run.id }}</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">deploy-to-staging</span><span class="pi">:</span>
+    <span class="c1"># 👇 Only run the deployment if manually triggered, or the build workflow that triggered this succeeded.</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="s">${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="c1"># 👇 Must use a 3rd party action to download artifacts from other workflows.</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Download artifact from triggered workflow</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">dawidd6/action-download-artifact@v2</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">run_id</span><span class="pi">:</span> <span class="s">${{ env.workflowRunId }}</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName}}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./buildArtifact</span>
+          <span class="na">search_artifacts</span><span class="pi">:</span> <span class="no">true</span>
+
+      <span class="c1"># Steps to deploy the code go here.</span>
+
+  <span class="na">deploy-to-production</span><span class="pi">:</span>
+    <span class="c1"># Only run this deploy job after the deploy-to-staging job completes successfully.</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">deploy-to-staging</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">environment</span><span class="pi">:</span> <span class="s">production</span> <span class="c1"># Used for environment-specific variables, secrets, and approvals.</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="c1"># Must use a 3rd party action to download artifacts from other workflows.</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Download artifact from triggered workflow</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">dawidd6/action-download-artifact@v2</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">run_id</span><span class="pi">:</span> <span class="s">${{ env.workflowRunId }}</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName}}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./buildArtifact</span>
+          <span class="na">search_artifacts</span><span class="pi">:</span> <span class="no">true</span>
+
+      <span class="c1"># Steps to deploy the code go here.</span>
+
+</code></pre></div></div>
+
+<p>Here the build workflow is separate from the deployment workflow.
+The build workflow is triggered when there is a push to any branch, a PR to the main branch, or when manually triggered.
+The deployment workflow uses the <code class="language-plaintext highlighter-rouge">on.workflow_run</code> trigger to wait and listen for the build workflow to complete against the main branch.</p>
+
+<p>Because the build uses its own workflow, the deployment workflow needs a reference to the build’s workflow run ID so it knows which build run to download the artifacts from.
+This is provided automatically when the build triggers the deployment workflow, but must be provided manually when the deployment workflow is manually triggered.
+You can find the build workflow run ID by opening the build workflow run in the GitHub Actions UI and looking at the URL.
+The URL will look something like <code class="language-plaintext highlighter-rouge">https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions/actions/runs/6985605790</code>, where the run ID is <code class="language-plaintext highlighter-rouge">6985605790</code>.</p>
+
+<p>The next thing to note is that the <code class="language-plaintext highlighter-rouge">artifactName</code> environment variable is duplicated in both the build and deployment workflows.
+We could have the build workflow create an output variable that the deployment workflow could reference, but for the sake of simplicity I just duplicated the environment variable here.</p>
+
+<p>Next, notice that the <code class="language-plaintext highlighter-rouge">deploy-to-staging</code> job has a conditional <code class="language-plaintext highlighter-rouge">if</code> statement that will only run the job if the workflow was manually triggered, or if the build workflow completed successfully.
+Unfortunately, at this time, <a href="https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_run">the <code class="language-plaintext highlighter-rouge">on.workflow_run</code> event</a> does not have a property to indicate that the deploy workflow should only be triggered if the build workflow completed successfully, so we have to do the check ourselves on the job.</p>
+
+<p>Lastly, the deployment jobs use a 3rd party action to download the build artifact.
+At this time, GitHub Actions does not have a built-in action to download artifacts from other workflows.
+They do provide <a href="https://stackoverflow.com/a/77009805/602585">API endpoints to download artifacts from other workflows</a>, but it is simpler to use the 3rd party action.</p>
+
+<h3 id="pros-and-cons-of-using-the-pull-approach">Pros and cons of using the pull approach</h3>
+
+<p>Pros:</p>
+
+<ul>
+  <li>The build and deployment steps are separated into their own workflows, making them easier to maintain and understand.</li>
+  <li>
+    <p>The build workflow only shows the build steps in the GitHub Actions UI, and the deployment workflow only shows the deployment steps, so we do not constantly have “skipped” jobs for non-deployment builds like in the previous single-workflow-file approach.</p>
+
+    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-2-workflows-do-not-need-to-have-skipped-steps.png" alt="Workflows only contain appropriate steps so they do not always have skipped steps" /></p>
+  </li>
+  <li>Non-main branches and PRs can be manually deployed without any workflow code changes.</li>
+  <li>Builds for PRs and non-main branches that we do not want deployed do not trigger deployment workflows.</li>
+</ul>
+
+<p>Cons:</p>
+
+<ul>
+  <li>
+    <p>The deployment workflow is triggered even if the build workflow for the main branch fails, resulting in skipped deployment runs showing in the workflow UI.
+This can be confusing to users, and it clutters the workflow UI.</p>
+
+    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-2-deploy-workflow-jobs-are-all-skipped-when-main-branch-build-fails.png" alt="Skipped deployment workflow runs clutter the workflow UI" /></p>
+  </li>
+  <li>
+    <p>The name of the deployment workflow run is always <code class="language-plaintext highlighter-rouge">2-pull--deploy</code>, rather than the commit message of the build workflow run that triggered it.
+It also does not show the commit SHA.
+This can make it difficult to find the deployment workflow run you are looking for in the GitHub UI.</p>
+
+    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-2-deploy-workflow-run-name-is-always-the-same.png" alt="Deployment workflow runs are always named the same and do not include commit SHA" /></p>
+  </li>
+  <li>
+    <p>Certain variables must be duplicated between the build and deployment workflows (e.g. <code class="language-plaintext highlighter-rouge">env.artifactName</code>), or additional code added to pass the variables between the workflows.</p>
+  </li>
+</ul>
+
+<p>To see what the GitHub Actions UI looks like with this approach, check out the workflows in the sample repository for the <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions/actions/workflows/2-pull--build.yml">pull build runs</a> and <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions/actions/workflows/2-pull--deploy.yml">pull deploy runs</a>.</p>
+
+<h3 id="similarities-to-azure-devops-classic-pipelines">Similarities to Azure DevOps classic pipelines</h3>
+
+<p>After using Azure DevOps classic pipelines for years, this approach felt very natural and is probably the one most similar to classic pipelines.
+In Azure DevOps, you would explicitly create separate build and deployment pipelines, and the first step of the deployment pipeline setup is specifying the build pipeline that it should pull the artifacts from, and potentially automatically trigger off of.
+So the build pipeline would not know anything about the deployment pipeline, and the deployment pipeline could be automatically triggered when the build pipeline completed successfully.</p>
+
+<p>This approach worked quite well in GitHub at first, but I really did not like how blank, skipped deployment workflow runs got created when the main branch build failed.
+It quickly cluttered up the deployment runs when issues were encountered with the build workflow that took many attempts to fix.
+Also, having every deployment run named the same thing made finding a specific deployment very painful.</p>
+
+<h3 id="listening-for-other-events-to-trigger-the-deployment-workflow">Listening for other events to trigger the deployment workflow</h3>
+
+<p>Rather than triggering the deployment workflow when a build workflow completes, you may want to trigger the deployment workflow on other events, such as when a new image is uploaded to a container registry, or when a new release is created.
+These are valid scenarios that may be suitable for your project.
+One thing to consider is that you will either need to no longer upload the artifact to the container registry for non-main branch builds, meaning you are not able to inspect and test them, or you will need to add code to your deployment workflow to determine if the artifact should be deployed or not.
+This may or may not be a big deal, depending on your project requirements.</p>
+
+<h2 id="approach-3-build-workflow-triggers-deploy-workflow-push-approach">Approach 3: Build workflow triggers deploy workflow (Push approach)</h2>
+
+<p>Here is an example of a workflow that builds the code and then triggers a deployment workflow:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">name</span><span class="pi">:</span> <span class="s">3-push--build</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="s">main</span> <span class="c1"># Run workflow on PRs to the main branch.</span>
+
+  <span class="c1"># Run workflow on pushes to any branch.</span>
+  <span class="na">push</span><span class="pi">:</span>
+
+  <span class="c1"># Allows you to run this workflow manually from the Actions tab.</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+    <span class="na">inputs</span><span class="pi">:</span>
+      <span class="c1"># 👇 Allow deploying non-main branch builds.</span>
+      <span class="na">deploy</span><span class="pi">:</span>
+        <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Deploy</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">build</span><span class="nv"> </span><span class="s">artifacts.</span><span class="nv"> </span><span class="s">Only</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">effect</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">building</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">main</span><span class="nv"> </span><span class="s">branch.'</span>
+        <span class="na">required</span><span class="pi">:</span> <span class="no">false</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">boolean</span>
+        <span class="na">default</span><span class="pi">:</span> <span class="no">false</span>
+
+<span class="na">env</span><span class="pi">:</span>
+  <span class="na">artifactName</span><span class="pi">:</span> <span class="s">buildArtifact</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build-and-test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout the repo source code</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v3</span>
+
+      <span class="c1"># Steps to version, build, and test the code go here.</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload artifact</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName }}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./</span> <span class="c1"># Put the path to the build artifact files directory here.</span>
+
+  <span class="c1"># 👇 Trigger the deployment workflow.</span>
+  <span class="na">trigger-deployment</span><span class="pi">:</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">build-and-test</span>
+    <span class="c1"># 👇 Only trigger a deployment if the deploy parameter was set, or this build is for a push (not a PR) on the default branch (main).</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="s">inputs.deploy || (github.event_name != 'pull_request' &amp;&amp; github.ref == format('refs/heads/{0}', github.event.repository.default_branch))</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/3-push--deploy.yml</span>
+    <span class="c1"># 👇 Allow the deployment workflow to access the secrets of this workflow.</span>
+    <span class="na">secrets</span><span class="pi">:</span> <span class="s">inherit</span>
+
+</code></pre></div></div>
+
+<p>And here is the accompanying deployment workflow:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">name</span><span class="pi">:</span> <span class="s">3-push--deploy</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="c1"># 👇 Allow this workflow to be called by the 3-push--build workflow.</span>
+  <span class="na">workflow_call</span><span class="pi">:</span>
+
+<span class="na">env</span><span class="pi">:</span>
+  <span class="na">artifactName</span><span class="pi">:</span> <span class="s">buildArtifact</span> <span class="c1"># This must match the artifact name in the 3-push--build workflow.</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">deploy-to-staging</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="c1"># 👇 Can use the native download-artifact action.</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Download artifact</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/download-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName }}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./buildArtifact</span>
+
+      <span class="c1"># Steps to deploy the code go here.</span>
+
+  <span class="na">deploy-to-production</span><span class="pi">:</span>
+    <span class="c1"># Only run this deploy job after the deploy-to-staging job completes successfully.</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">deploy-to-staging</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">environment</span><span class="pi">:</span> <span class="s">production</span> <span class="c1"># Used for environment-specific variables, secrets, and approvals.</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Download artifact</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/download-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName }}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./buildArtifact</span>
+
+      <span class="c1"># Steps to deploy the code go here.</span>
+
+</code></pre></div></div>
+
+<p>Once again the build workflow is separate from the deployment workflow.
+The build workflow will trigger on a push to any branch, PRs to the main branch, or when manually triggered.
+Rather than the deploy workflow listening for the build workflow to complete, the build workflow explicitly calls the deploy workflow as its final job.</p>
+
+<p>Looking at the <code class="language-plaintext highlighter-rouge">trigger-deployment</code> job, we can see that only builds made from the main branch will trigger the deployment workflow.
+A <code class="language-plaintext highlighter-rouge">deploy</code> parameter is also provided in the build workflow that can be set when manually triggering a build, allowing for non-main branch builds to be deployed as well, if needed.
+Notice that the job provides the <code class="language-plaintext highlighter-rouge">secrets: inherit</code> key, which allows the deployment workflow to access the secrets of the build workflow.
+Without this, the deployment workflow would not have access to the GitHub repository secrets.</p>
+
+<blockquote>
+  <p>Aside: In addition to passing secrets to the deployment workflow, you can also pass other parameters to the deployment workflow by using the <code class="language-plaintext highlighter-rouge">with</code> key.
+While none are shown in this example, I will mention that in order to pass non-string values (e.g. boolean or number), I had to use the <code class="language-plaintext highlighter-rouge">fromJSON</code> function to maintain the variable’s type, as shown in <a href="https://github.com/actions/runner/issues/2206#issuecomment-1532246677">this GitHub issue</a>.</p>
+</blockquote>
+
+<p>Looking at the deployment workflow, you can see we are using the <code class="language-plaintext highlighter-rouge">on: workflow_call</code> event to allow the workflow to be called by the build workflow.
+Since the build workflow is triggering the deployment workflow, the end result is a single workflow run, meaning we can use the native <code class="language-plaintext highlighter-rouge">actions/download-artifact</code> action to download the build artifact, rather than having to use a 3rd party action.</p>
+
+<h3 id="pros-and-cons-of-using-the-push-approach">Pros and cons of using the push approach</h3>
+
+<p>Pros:</p>
+
+<ul>
+  <li>The build and deployment steps are separated into their own workflows, making them easier to maintain and understand.</li>
+  <li>Non-main branches and PRs can be manually deployed without any workflow code changes.</li>
+  <li>Builds for PRs and non-main branches that we do not want deployed do not trigger deployment workflows.</li>
+</ul>
+
+<p>Cons:</p>
+
+<ul>
+  <li>
+    <p>Since the deployment workflow is never triggered by GitHub, but is instead called by the build workflow, it means the deployment workflow will never show any runs.</p>
+
+    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-3-deployment-workflow-never-has-any-runs.png" alt="Deployment workflow never has any runs" /></p>
+
+    <p>Instead, the deploy jobs will show up as part of the build workflow run.
+This means that builds for PRs and non-main branches will be mixed in with the <code class="language-plaintext highlighter-rouge">main</code> branch builds and deployments.
+Just like with the <code class="language-plaintext highlighter-rouge">1-single-file--build-and-deploy</code> approach, this may bury the deployments under several pages of non-main branch runs, making it difficult to find runs you care about in the GitHub UI.</p>
+
+    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-3-all-builds-and-deployments-are-mixed-in-together.png" alt="Builds and deployments for all branches are mixed in together" /></p>
+  </li>
+  <li>
+    <p>Since the deployment jobs show up in the build workflow run, the GitHub UI prefixes each of the deployment jobs with the name of the job from the build workflow.
+This can make it difficult to see the full name of the deployment jobs in the generated diagram.
+Thankfully, the jobs are listed on the left in a tree view as well, so you can still read the full name there more easily.</p>
+
+    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-3-build-job-prefixed-on-deployment-job-names.png" alt="Deployment workflow name is prefixed on deployment jobs" /></p>
+  </li>
+</ul>
+
+<p>To see what the GitHub Actions UI looks like with this approach, check out the workflows in the sample repository for the <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions/actions/workflows/3-push--build.yml">push build runs</a> and <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions/actions/workflows/3-push--deploy.yml">push deploy runs</a>.</p>
+
+<h2 id="approach-4-deploy-workflow-includes-build-workflow-include-approach">Approach 4: Deploy workflow includes build workflow (Include approach)</h2>
+
+<p>Here is an example of a workflow that builds the code:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">name</span><span class="pi">:</span> <span class="s">4-include--build</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="s">main</span> <span class="c1"># Run workflow on PRs to the main branch.</span>
+
+  <span class="c1"># 👇 Run workflow on pushes to any branch, except the main branch.</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches-ignore</span><span class="pi">:</span> <span class="s">main</span>
+
+  <span class="c1"># Allows you to run this workflow manually from the Actions tab.</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+
+  <span class="c1"># 👇 Allows this workflow to be called from the deployment workflow.</span>
+  <span class="na">workflow_call</span><span class="pi">:</span>
+
+<span class="na">env</span><span class="pi">:</span>
+  <span class="na">artifactName</span><span class="pi">:</span> <span class="s">buildArtifact</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build-and-test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout the repo source code</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v3</span>
+
+      <span class="c1"># Steps to version, build, and test the code go here.</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload artifact</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName }}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./</span> <span class="c1"># Put the path to the build artifact files directory here.</span>
+
+</code></pre></div></div>
+
+<p>And here is the accompanying deployment workflow:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">name</span><span class="pi">:</span> <span class="s">4-include--deploy</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="c1"># 👇 Trigger the workflow on a push to the main branch.</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="s">main</span>
+
+  <span class="c1"># 👇 Allows you to run this workflow manually (for any branch) from the Actions tab.</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+
+<span class="na">env</span><span class="pi">:</span>
+  <span class="na">artifactName</span><span class="pi">:</span> <span class="s">buildArtifact</span> <span class="c1"># This must match the artifact name in the 4-include--build workflow.</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="c1"># 👇 Call the build workflow to create the artifacts to deploy.</span>
+  <span class="na">build-and-test</span><span class="pi">:</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/4-include--build.yml</span>
+    <span class="na">secrets</span><span class="pi">:</span> <span class="s">inherit</span> <span class="c1"># Pass secrets to the build workflow, if necessary.</span>
+
+  <span class="na">deploy-to-staging</span><span class="pi">:</span>
+    <span class="c1"># 👇 Only run this deploy job after the build-and-test job completes successfully.</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">build-and-test</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Download artifact</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/download-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName }}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./buildArtifact</span>
+
+      <span class="c1"># Steps to deploy the code go here.</span>
+
+  <span class="na">deploy-to-production</span><span class="pi">:</span>
+    <span class="c1"># Only run this deploy job after the deploy-to-staging job completes successfully.</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">deploy-to-staging</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">environment</span><span class="pi">:</span> <span class="s">production</span> <span class="c1"># Used for environment-specific variables, secrets, and approvals.</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Download artifact</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/download-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName }}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./buildArtifact</span>
+
+      <span class="c1"># Steps to deploy the code go here.</span>
+
+</code></pre></div></div>
+
+<p>You will notice that we still have separate build and deployment workflows.
+One key difference here is the specific triggers for each workflow.
+They have been set up so that the build workflow is only triggered by non-deployment builds, and the deployment workflow is triggered by builds that are meant to be deployed.</p>
+
+<p>The build workflow will trigger on a push to any branch <em>EXCEPT</em> the main branch, PRs to the main branch, or when manually triggered.
+It also allows other workflows to call it via the <code class="language-plaintext highlighter-rouge">workflow_call</code> event.
+The build workflow no longer triggers deployments, neither directly (push) nor indirectly (pull).</p>
+
+<p>The deployment workflow will now trigger on a push to the main branch, or when manually triggered.
+The manual trigger allows non-main branch deployments if needed.
+A key thing to note here is that the deployment workflow includes the build workflow via the <code class="language-plaintext highlighter-rouge">uses</code> key, so when a deployment is triggered it will first run the build jobs as part of its workflow run.
+This is similar to the <code class="language-plaintext highlighter-rouge">push</code> approach mentioned earlier, except that the dependency has been inverted so instead of the build workflow calling the deployment workflow, the deployment workflow calls the build workflow.
+This improves the workflow UI experience, as the deployment jobs will show up as part of the deployment workflow run, rather than the build workflow run like they did with the push approach.</p>
+
+<p>I came across this approach on <a href="https://www.viget.com/articles/automating-build-deploy-ci-cd-with-github-actions/">this excellent blog post</a> when I wasn’t satisfied with the pull and push approaches.</p>
+
+<h3 id="pros-and-cons-of-using-the-include-approach">Pros and cons of using the include approach</h3>
+
+<p>Pros:</p>
+
+<ul>
+  <li>Builds for PRs and non-main branches that we do not want deployed do not trigger deployment workflows, and show up in the GitHub UI under the build workflow.
+These are typically throwaway builds, so it is nice to not have them cluttering up the deployment workflow runs.</li>
+  <li>Builds that are deployed show up in the GitHub UI under the deployment workflow, making it easy to find the last time a deployment occurred.</li>
+  <li>Non-main branches and PRs can be manually deployed without any workflow code changes.</li>
+</ul>
+
+<p>Cons:</p>
+
+<ul>
+  <li>
+    <p>In the deployment workflow run GitHub UI, the build job name is prefixed with the name of the build job in the deployment workflow, which is a minor annoyance.</p>
+
+    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-4-build-job-name-is-prefixed-with-deployment-workflow-job-name.png" alt="Build job name prefixed with job name from deployment workflow" /></p>
+  </li>
+</ul>
+
+<p>To see what the GitHub Actions UI looks like with this approach, check out the workflows in the sample repository for the <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions/actions/workflows/4-include--build.yml">include build runs</a> and <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions/actions/workflows/4-include--deploy.yml">include deploy runs</a>.</p>
+
+<h2 id="reusable-workflows-templates">Reusable workflows (templates)</h2>
+
+<p>You probably noticed that we are always deploying to 2 environments: staging and production.
+You may have even more environments that you need to deploy to.
+This results in a lot of duplicate code in the deployment workflows.</p>
+
+<p>To avoid the duplicate code, we can use a reusable workflow to define the deployment jobs, and then include the reusable workflow in the deployment workflow.
+Azure DevOps calls these “templates”, but GitHub Actions calls them “reusable workflows”.
+You can think of a reusable workflow as a function that accepts parameters, so you define it once, and then can call it multiple times with different parameters.</p>
+
+<p>One caveat to be aware of is that while templates may also include other templates, GitHub only allows up to 4 levels of template nesting.
+Also, a workflow may only call up to 20 other workflows, including nested ones.
+And just like regular workflows, reusable workflows must be placed directly in the <code class="language-plaintext highlighter-rouge">.github/workflows</code> directory.</p>
+
+<p>See the <a href="https://docs.github.com/en/actions/using-workflows/reusing-workflows">GitHub docs on reusable workflows</a> for more information and limitations.</p>
+
+<p>Although I am only now introducing reusable workflows here, we’ve actually already been using them in the <code class="language-plaintext highlighter-rouge">push</code> and <code class="language-plaintext highlighter-rouge">include</code> approaches above, but were not calling them multiple times.
+Let’s see how to do that now.</p>
+
+<h2 id="approach-5-deploy-workflow-includes-build-workflow-and-uses-template-for-deployments-include-approach-with-reusable-workflows">Approach 5: Deploy workflow includes build workflow, and uses template for deployments (Include approach with reusable workflows)</h2>
+
+<p>Here is an example of a workflow that builds the code:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">name</span><span class="pi">:</span> <span class="s">5-include-with-deploy-template--build</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="s">main</span> <span class="c1"># Run workflow on PRs to the main branch.</span>
+
+  <span class="c1"># Run workflow on pushes to any branch, except the main branch.</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches-ignore</span><span class="pi">:</span> <span class="s">main</span>
+
+  <span class="c1"># Allows you to run this workflow manually from the Actions tab.</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+
+  <span class="c1"># 👇 Allows this workflow to be called from the deployment workflow, but the parameters must be provided.</span>
+  <span class="na">workflow_call</span><span class="pi">:</span>
+    <span class="na">inputs</span><span class="pi">:</span>
+      <span class="na">artifactName</span><span class="pi">:</span>
+        <span class="na">description</span><span class="pi">:</span> <span class="s">The name of the artifact to upload to.</span>
+        <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">string</span>
+
+<span class="na">env</span><span class="pi">:</span>
+  <span class="c1"># 👇 Provide a default artifact name for when this workflow is not called by the deployment workflow.</span>
+  <span class="na">artifactName</span><span class="pi">:</span> <span class="s">${{ inputs.artifactName || 'buildArtifact' }}</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build-and-test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout the repo source code</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v3</span>
+
+      <span class="c1"># Steps to version, build, and test the code go here.</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload artifact</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ env.artifactName }}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./</span> <span class="c1"># Put the path to the build artifact files directory here.</span>
+
+</code></pre></div></div>
+
+<p>And here is the accompanying deployment workflow:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">name</span><span class="pi">:</span> <span class="s">5-include-with-deploy-template--deploy</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="c1"># Trigger the workflow on a push to the main branch.</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="s">main</span>
+
+  <span class="c1"># Allows you to run this workflow manually (for any branch) from the Actions tab.</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+
+<span class="na">env</span><span class="pi">:</span>
+  <span class="c1"># 👇 Set the artifact name that will be used by the build and deployments, so it is now only defined in one place.</span>
+  <span class="na">artifactName</span><span class="pi">:</span> <span class="s">buildArtifact</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="c1"># 👇 Call the build workflow to create the artifacts to deploy, and provide the artifact name.</span>
+  <span class="na">build-and-test</span><span class="pi">:</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/5-include-with-deploy-template--build.yml</span>
+    <span class="na">with</span><span class="pi">:</span>
+      <span class="na">artifactName</span><span class="pi">:</span> <span class="s">${{ github.env.artifactName }}</span>
+    <span class="na">secrets</span><span class="pi">:</span> <span class="s">inherit</span> <span class="c1"># Pass secrets to the build workflow, if necessary.</span>
+
+  <span class="na">deploy-to-staging</span><span class="pi">:</span>
+    <span class="c1"># Only run this deploy job after the build-and-test job completes successfully.</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">build-and-test</span>
+    <span class="c1"># 👇 Call the deploy template with the proper environment name to deploy the artifacts.</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/5-include-with-deploy-template--deploy-template.yml</span>
+    <span class="na">with</span><span class="pi">:</span>
+      <span class="na">artifactName</span><span class="pi">:</span> <span class="s">${{ github.env.artifactName }}</span>
+      <span class="na">environmentName</span><span class="pi">:</span> <span class="s">staging</span>
+    <span class="na">secrets</span><span class="pi">:</span> <span class="s">inherit</span> <span class="c1"># Pass repository secrets to the deployment workflow.</span>
+
+  <span class="na">deploy-to-production</span><span class="pi">:</span>
+    <span class="c1"># Only run this deploy job after the deploy-to-staging job completes successfully.</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">deploy-to-staging</span>
+    <span class="c1"># 👇 Call the deploy template with the proper environment name to deploy the artifacts.</span>
+    <span class="na">uses</span><span class="pi">:</span> <span class="s">./.github/workflows/5-include-with-deploy-template--deploy-template.yml</span>
+    <span class="na">with</span><span class="pi">:</span>
+      <span class="na">artifactName</span><span class="pi">:</span> <span class="s">${{ github.env.artifactName }}</span>
+      <span class="na">environmentName</span><span class="pi">:</span> <span class="s">production</span>
+    <span class="na">secrets</span><span class="pi">:</span> <span class="s">inherit</span> <span class="c1"># Pass repository secrets to the deployment workflow.</span>
+
+</code></pre></div></div>
+
+<p>We now have on additional workflow file, which is the reusable workflow (template) that defines the deployment job:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">name</span><span class="pi">:</span> <span class="s">5-include-with-deploy-template--deploy-template</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="c1"># 👇 Allows this workflow to be called from the deployment workflow, but the parameters must be provided.</span>
+  <span class="na">workflow_call</span><span class="pi">:</span>
+    <span class="na">inputs</span><span class="pi">:</span>
+      <span class="na">artifactName</span><span class="pi">:</span>
+        <span class="na">description</span><span class="pi">:</span> <span class="s">The name of the artifact to download and deploy.</span>
+        <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">string</span>
+      <span class="na">environmentName</span><span class="pi">:</span>
+        <span class="na">description</span><span class="pi">:</span> <span class="s">The name of the environment to deploy to.</span>
+        <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">string</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">deploy</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="c1"># 👇 Allows using variables and secrets defined in the provided environment.</span>
+    <span class="na">environment</span><span class="pi">:</span> <span class="s">${{ inputs.environmentName }}</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Download artifact</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/download-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">${{ inputs.artifactName }}</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./buildArtifact</span>
+
+      <span class="c1"># Steps to deploy the code go here.</span>
+
+</code></pre></div></div>
+
+<p>I could have left the build workflow identical to the <code class="language-plaintext highlighter-rouge">include</code> approach shown earlier, however I thought that I would show how to allow the artifact name to be provided as a parameter.
+This allows the deployment workflow to provide the artifact name to the build workflow, so that we do not have to hardcode the value in 2 separate files as we had been doing earlier.
+Since the build may still be triggered outside of a deployment workflow, we had to update the <code class="language-plaintext highlighter-rouge">env: artifactName</code> to use a default value when the input value is not provided.
+This same approach can be used for other values that you want shared between different workflows.
+<a href="https://7tonshark.com/posts/github-actions-ternary-operator/">This excellent blog post</a> shows how to also to use the ternary operator to provide a default value, and also explains why we cannot use <code class="language-plaintext highlighter-rouge">env</code> variables in a job’s <code class="language-plaintext highlighter-rouge">if</code> clause.</p>
+
+<p>Next we see the deployment workflow.
+As mentioned above, you can see that we now pass the artifact name to the build workflow, so the only place the artifact name value is defined is in the deployment workflow.
+Next, notice that the workflow no longer duplicates the deployment steps in the <code class="language-plaintext highlighter-rouge">deploy-to-staging</code> and <code class="language-plaintext highlighter-rouge">deploy-to-production</code> jobs, but instead calls the new reusable workflow with the appropriate parameters; namely the <code class="language-plaintext highlighter-rouge">environmentName</code>.
+In our example the deployment code was simply <code class="language-plaintext highlighter-rouge"># Steps to deploy the code go here.</code>, but in a real world scenario the deployment steps may be several hundred lines of yaml code, so not duplicating it is a big win.</p>
+
+<p>Finally, look at the reusable workflow.
+You can see it takes 2 parameters: <code class="language-plaintext highlighter-rouge">artifactName</code> and <code class="language-plaintext highlighter-rouge">environmentName</code>.
+It defines a single job that is used to perform the deployment.</p>
+
+<p>GitHub allows you to create environment-specific variables and secrets, which can be used by the jobs in the workflow.
+These are configured in the GitHub repository web UI under the “Settings” tab, and then the “Environments” menu item.
+I personally prefer to have the variable values defined directly in the workflow files so that they are under source control.
+If you take that approach, you would simply add additional parameters to the reusable workflow and pass them in from the deployment workflow, just like we did with the <code class="language-plaintext highlighter-rouge">artifactName</code> and <code class="language-plaintext highlighter-rouge">environmentName</code> parameters.
+Secrets of course should not be committed to source control, so you would still want to define those in the GitHub UI, or use a 3rd party secret manager like Azure Key Vault.</p>
+
+<h3 id="pros-and-cons-of-using-reusable-workflows-templates">Pros and cons of using reusable workflows (templates)</h3>
+
+<p>This approach has the same pros and cons as the <code class="language-plaintext highlighter-rouge">include</code> approach above, as well as:</p>
+
+<p>Pros:</p>
+
+<ul>
+  <li>The deployment job is only defined once so there is no duplicated code.</li>
+</ul>
+
+<p>Cons:</p>
+
+<ul>
+  <li>
+    <p>Similar to <code class="language-plaintext highlighter-rouge">3-push--deploy</code> above, because the template will only be referenced by other workflows and never directly triggered itself, it still shows up in the GitHub Actions UI as a workflow, but will never have any runs shown, which may be confusing to users.</p>
+
+    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-5-deploy-template-will-never-show-any-runs.png" alt="Deploy template shows in the workflows even though it will never have any runs" /></p>
+  </li>
+</ul>
+
+<p>To see what the GitHub Actions UI looks like with this approach, check out the workflows in the sample repository for the <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions/actions/workflows/5-include-with-deploy-template--build.yml">build runs</a> and <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions/actions/workflows/5-include-with-deploy-template--deploy.yml">deploy runs</a>.</p>
+
+<p>GitHub does not allow you to place reusable workflows in subdirectories, so they are mixed in with other workflow files.
+It is a good idea is to prefix them with a word like <code class="language-plaintext highlighter-rouge">template</code> to make it clear that they are reusable workflows, and not meant to be triggered directly.</p>
+
+<p>When using the <code class="language-plaintext highlighter-rouge">include</code> approach and this one, you probably do not want to name your workflow just <code class="language-plaintext highlighter-rouge">deploy</code>, since it actually both builds and deploys.
+You may want to name the workflows something like <code class="language-plaintext highlighter-rouge">build-and-test</code> and <code class="language-plaintext highlighter-rouge">build-test-and-deploy</code> to more accurately reflect what they do, and call the deployment reusable workflow something like <code class="language-plaintext highlighter-rouge">template-deploy</code>.</p>
+
+<p>This is the approach I typically use for my projects.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this post we’ve seen a number of different approach you can take to define your build and deploy workflows.
+I typically prefer the last <code class="language-plaintext highlighter-rouge">include with reusable workflows</code> approach, but you may prefer another depending on your needs.</p>
+
+<p>The example code I’ve shown here is very simple and should simply be used as a starting point.
+You may want additional triggers for your workflows, such as when a tag is created, or on a schedule.
+You may want to create additional templates for other operations, such as running load tests, or running a security scan.</p>
+
+<p>My goal with this post was to share the various ways I’ve found to structure GitHub CI/CD workflows, and hopefully give you some ideas on how to structure your own.</p>
+
+<p>Finally, a reminder that I also created <a href="https://github.com/deadlydog/GitHub.Experiment.CiCdApproachesWithGitHubActions">this sample GitHub repository</a> that contains all of the examples shown in this post, so you view the code and can see how they look in the GitHub Actions menu.</p>
+
+<p>Have another approach that you think should be on this list, or other relevant information?
+Leave a comment and let me know.</p>
+
+<p>Happy pipeline building!</p>
+
+        
+
+				<!--========== Dan's Customizations START ==========-->
+				<div>
+					<!-- Show an advertisement after the blog post content. -->
+					<!-- The advertisement shown at the bottom of a blog post. -->
+<div style="text-align: center; margin-top: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com Responsive Ad 1 -->
+		<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-0037930831928769" data-ad-slot="7917470839"
+			data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			function RunGoogleAdsensePostAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+				</div>
+				<!--========== Dan's Customizations END ==========-->
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/previews/pr-734/tags/#build" class="page__taxonomy-item p-category" rel="tag">Build</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-734/tags/#continuous-deployment" class="page__taxonomy-item p-category" rel="tag">Continuous Deployment</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-734/tags/#continuous-integration" class="page__taxonomy-item p-category" rel="tag">Continuous Integration</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-734/tags/#deploy" class="page__taxonomy-item p-category" rel="tag">Deploy</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-734/tags/#github" class="page__taxonomy-item p-category" rel="tag">GitHub</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-734/tags/#github-actions" class="page__taxonomy-item p-category" rel="tag">GitHub Actions</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/previews/pr-734/categories/#build" class="page__taxonomy-item p-category" rel="tag">Build</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-734/categories/#deploy" class="page__taxonomy-item p-category" rel="tag">Deploy</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-734/categories/#github" class="page__taxonomy-item p-category" rel="tag">GitHub</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2024-01-10">January 10, 2024</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://x.com/intent/tweet?via=deadlydog&text=Multiple+ways+to+setup+your+CI%2FCD+pipelines+in+GitHub+Actions%20https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-734%2FMultiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions%2F" class="btn btn--x" aria-label="Share on X" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on X">
+    <i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i><span> X</span>
+  </a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-734%2FMultiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions%2F" class="btn btn--facebook" aria-label="Share on Facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook">
+    <i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span>
+  </a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.danskingdom.com/previews/pr-734/Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/" class="btn btn--linkedin" aria-label="Share on LinkedIn" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn">
+    <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span>
+  </a>
+
+  <a href="https://bsky.app/intent/compose?text=Multiple+ways+to+setup+your+CI%2FCD+pipelines+in+GitHub+Actions%20https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-734%2FMultiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions%2F" class="btn btn--bluesky" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Bluesky">
+    <i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span> Bluesky</span>
+  </a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/previews/pr-734/First-Single-and-SingleOrDefault-in-dotnet-are-harmful/" class="pagination--pager" title="First, Single, and SingleOrDefault in .NET are harmful">Previous</a>
+    
+    
+      <a href="/previews/pr-734/I-was-the-guest-for-the-100th-episode-of-The-PowerShell-Podcast/" class="pagination--pager" title="I was the guest for the 100th episode of The PowerShell Podcast!">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+      
+        <div class="page__comments">
+  
+  
+      <section id="static-comments">
+        
+          <!-- Start static comments -->
+          <div class="js-comments">
+            
+              <h4 class="page__comments-title">Comments</h4>
+              
+
+              <!-- In order to sort by date we must have an array of objects, not an array of arrays, so
+                    create a new array of plain comment objects and then sort by the comment date. -->
+              
+              
+              
+
+              
+                
+                
+                
+                
+                
+                <article id="comment1" class="js-comment comment" itemprop="comment" itemscope itemtype="https://schema.org/Comment">
+  <div class="comment__avatar-wrapper">
+    <img class="comment__avatar" src="https://www.gravatar.com/avatar/6c4d3add0af9c5ea2c9e3e1406ff122b?d=mm&s=80" alt="Colin">
+  </div>
+  <div class="comment__content-wrapper">
+    <h3 class="comment__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+      
+        <span itemprop="name"><a rel="external nofollow" itemprop="url" href="">Colin</a></span>
+      
+    </h3>
+    <p class="comment__date">
+      
+        <a href="#comment1" itemprop="url">
+        <time datetime="2024-08-08T08:30:05+00:00" itemprop="datePublished">August 8, 2024 at 08:30 AM</time>
+        </a>
+      
+    </p>
+    <div itemprop="text"><p>I’ve been using Azure DevOps for some years now and have started using GitHub actions. One thing that quickly irked is the lack of a concept of “stages” in GH action workflows.</p>
+
+<p>Quite often, I find that a “deployment” to an environment involves running multiple jobs (infrastructure, database, application code, etc.). In AzDO, I can logically group that collection of jobs into a “stage”, have a single set of approval gates for all the jobs in the stage… and can even apply default values to be used by all the jobs in a stage (e.g. the agent pool).</p>
+
+<p>I can see how your recommended approach allows us to create a reusable workflow (/template) that contains all the jobs needed to deploy to an environment. However, in the actual deployment workflow runs, there doesn’t seem to be any way of seeing the jobs related to a single environment logically grouped in any way (other than a naming convention).</p>
+
+<p>As such, there doesn’t appear to be a way to easily visualise the deployment flow through the environments as you can in AzDO. Not only this but - since approvals are at the job level - it seems like you would have to provide multiple approvals: One for each job in the group.</p>
+
+<p>Does GitHub actions support any other means of achieving what Stages give us in AzDO?</p>
+</div>
+  </div>
+</article>
+
+              
+                
+                
+                
+                
+                
+                <article id="comment2" class="js-comment comment" itemprop="comment" itemscope itemtype="https://schema.org/Comment">
+  <div class="comment__avatar-wrapper">
+    <img class="comment__avatar" src="https://www.gravatar.com/avatar/38e7ebb9b0c3704d4ba2ab4c3162a828?d=mm&s=80" alt="Ulad">
+  </div>
+  <div class="comment__content-wrapper">
+    <h3 class="comment__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+      
+        <span itemprop="name"><a rel="external nofollow" itemprop="url" href="">Ulad</a></span>
+      
+    </h3>
+    <p class="comment__date">
+      
+        <a href="#comment2" itemprop="url">
+        <time datetime="2024-12-20T17:20:14+00:00" itemprop="datePublished">December 20, 2024 at 05:20 PM</time>
+        </a>
+      
+    </p>
+    <div itemprop="text"><p>Great article, thanks from me learning GH after ADO :((((.</p>
+
+<p>Can you please clarify 4 and 5 options?
+Do I understand correctly that in these scenarios build and deploy pipelines are different and do not overlap in terms of runtime? Meaning, build pipeline will do its build stuff, and deployment pipeline will duplicate build pipeline work (yes using the same build code, but will generate different artifact) and then do its deploy stuff.</p>
+
+<p>Is that correct?</p>
+</div>
+  </div>
+</article>
+
+              
+            
+          </div>
+          <!-- End static comments -->
+
+          <!-- Start new comment form -->
+          <div class="page__comments-form">
+            <h4 class="page__comments-title">Leave a Comment</h4>
+            <p class="small">Your email address will not be published. Required fields are marked <span class="required">*</span></p>
+            <form id="new_comment" class="page__comments-form js-form form" method="post" action="https://dansblog-staticman.azurewebsites.net/v3/entry/github/deadlydog/Blog/main/comments">
+              <div class="form__spinner">
+                <i class="fas fa-spinner fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only">Loading...</span>
+              </div>
+
+              <div class="form-group">
+                <label for="comment-form-message">Comment <small class="required">*</small></label>
+                <textarea type="text" rows="3" id="comment-form-message" name="fields[message]" tabindex="1"></textarea>
+                <div class="small help-block"><a href="https://daringfireball.net/projects/markdown/">Markdown is supported.</a></div>
+              </div>
+              <div class="form-group">
+                <label for="comment-form-name">Name <small class="required">*</small></label>
+                <input type="text" id="comment-form-name" name="fields[name]" tabindex="2" />
+              </div>
+              <div class="form-group">
+                <label for="comment-form-email">Email address <small class="required">*</small></label>
+                <input type="email" id="comment-form-email" name="fields[email]" tabindex="3" />
+              </div>
+              <div class="form-group">
+                <label for="comment-form-url">Website (optional)</label>
+                <input type="url" id="comment-form-url" name="fields[url]" tabindex="4"/>
+              </div>
+              <div class="form-group hidden" style="display: none;">
+                <input type="hidden" name="options[slug]" value="Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions">
+                <label for="comment-form-location">Not used. Leave blank if you are a human.</label>
+                <input type="text" id="comment-form-location" name="fields[hidden]" autocomplete="off"/>
+                <input type="hidden" name="options[reCaptcha][siteKey]" value="6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0">
+                <input type="hidden" name="options[reCaptcha][secret]" value="YDDQ/Zd3cWC5JcTKX5o3OH7tlG8soGbDSnkvg5uv6R7+SkM2ujaeZYCri5ZXUc7l+2L60NPxpRQFvMjlQq6hhjTVi9IJHrHjrmthPjHj1ZM/rNz6/FtWLs4Sm/mHP4z0/ZqwF5bcAn6s4rpnUR5nHJt3M3f1XtPVdgufg9vSxHNeFRUDRWpZxedDOTharP6xf55FRLnVpOchRe/KkIIi+L4MYfAn27esFdbpcP4rnxCujYk3VGvMUXuFT2JMVY9DMDKfE20D1SUR9sleqFwyaHoYlJG+V8oUJVioBPQTq61NoO2Xj3uddbnLN7hqSJ3V2JKCGa7UZvZCyab56/txOg==">
+              </div>
+              <!-- Start comment form alert messaging -->
+              <p class="hidden js-notice">
+                <strong class="js-notice-text"></strong>
+              </p>
+              <!-- End comment form alert messaging -->
+              
+                <div class="form-group">
+                  <div class="g-recaptcha" data-sitekey="6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0"></div>
+                </div>
+              
+              <div class="form-group">
+                <button type="submit" id="comment-form-submit" tabindex="5" class="btn btn--primary btn--large">Submit Comment</button>
+              </div>
+            </form>
+          </div>
+          <!-- End new comment form -->
+          <script async src="https://www.google.com/recaptcha/api.js"></script>
+        
+      </section>
+    
+</div>
+
+      
+    
+  </article>
+
+  
+  
+    
+<div class="page__related">
+  
+  <h2 class="page__related-title">You May Also Enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-734/Host-website-PR-previews-on-GitHub-Pages-for-free/" rel="permalink">Host website PR previews on GitHub Pages for free
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-04-07T00:00:00+00:00">April 7, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">GitHub Pages allows you to host one static website per repository for free.
+The URL is typically in the format https://&lt;username&gt;.github.io/&lt;reposit...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-734/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/" rel="permalink">The part of the SDLC nobody talks about, and many companies don’t do properly
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-03-30T00:00:00+00:00">March 30, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">The most neglected phase of the software development lifecycle (SDLC) is often the decommissioning phase.
+An app has reached end-of-life, users are no longer...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-734/Easily-capture-terminal-output-from-users-you-help-remotely/" rel="permalink">Easily capture terminal output from users you help remotely
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-03-01T00:00:00+00:00">March 1, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">When helping others troubleshoot issues with their PC, you often need to see the output of commands they run.
+The easiest way to do this is to synchronously ...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-734/Colour-your-kubectl-output-and-type-less/" rel="permalink">Colour your kubectl output and type less
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-02-05T00:00:00+00:00">February 5, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">If you work with Kubernetes on the command line using kubectl, you will appreciate kubecolor.
+Kubecolor is a small utility that adds colour to your kubectl o...</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!--========== Dan's Customizations START ==========-->
+
+<!-- Show the Donate image button at the bottom of the screen. -->
+<!-- This defines all of the CSS, HTML, and JavaScript needed for the Donate button and modal. -->
+
+<style>
+	 /* Have a fixed donate section on all of the pages (always on-top on bottom-left). */
+	#Donate
+	{
+		position: fixed;
+		width: 100%;
+		max-width: 1300px;	/* Ensure the Donate section doesn't drift too far left on large screens. */
+		bottom: 0;
+		pointer-events: none;	/* Allow clicking through the div to blog content underneath. */
+	}
+
+	#DonateModalOpenButton
+	{
+		z-index: 10;	/* Always on-top, except for modals. */
+		cursor: pointer;
+		pointer-events: auto;	/* Restore allowing clicking this element in the Donate div. */
+	}
+
+	/* Default size for the donate image on large screens. */
+	.donate-button-image
+	{
+		width: 150px;
+	}
+
+	/* Shrink donate image a bit on medium size screens. */
+	@media only screen and (max-width: 64em)
+	{
+		.donate-button-image
+		{
+			width: 100px;
+		}
+	}
+
+	/* Shrink donate images a lot on smaller screens. */
+	@media only screen and (max-width: 32em)
+	{
+		.donate-button-image
+		{
+			width: 80px;
+		}
+
+		.donate-image
+		{
+			width: 120px;
+		}
+	}
+
+	/* Modal background. */
+	.modal-container
+	{
+		display: none;	/* Hidden by default. */
+		position: fixed;
+		z-index: 100;	/* Always on top. */
+
+		/* Center the modal-container div. */
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+
+		width: 85%;
+		max-width: 600px;
+		overflow: auto;	/* Enable scroll if needed. */
+		background-color: rgb(255, 255, 255);
+
+		/* Give the container a nice rounded border */
+		border-radius: 10px;
+		border: 2px solid #235e70;
+		box-shadow: 0 0 10px #235e70;
+	}
+
+	/* The modal's close button. */
+	.modal-close-button
+	{
+		float: right;
+		margin-right: 20px;
+		color: #235e70;
+		font-size: 40px;
+		font-weight: bold;
+	}
+
+	.modal-close-button:hover,
+	.modal-close-button:focus
+	{
+		color: #000000;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	/* Modal content. */
+	.modal-content
+	{
+		margin: auto;
+		display: block;
+		clear: both;	/* Ensure the content appears below the floated close button. */
+		width: 80%;
+		text-align: center;
+		padding-bottom: 30px;
+		color: #235e70;
+	}
+
+	.modal-content a
+	{
+		/* Override the footer's "text-decoration: none;" by using !important. https://stackoverflow.com/a/64637823/602585 */
+		text-decoration: underline !important;
+	}
+</style>
+
+<!-- Show the Donate image button at the bottom of the screen. -->
+<div id="Donate">
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+		alt="Donate button image" />
+</div>
+<div id="DonateModal" class="modal-container">
+	<div id="DonateModalCloseButton" class="modal-close-button">&times;</div>
+	<div class="modal-content">
+		<p>
+			If you've found my blog helpful and would like to show your appreciation, buy me a <a
+				href="https://en.wikipedia.org/wiki/Poutine">poutine</a>! It will encourage me to create more content 😁
+		</p>
+
+		<div>
+			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
+				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
+					alt="Donate payment button image" />
+			</a>
+		</div>
+	</div>
+</div>
+
+<script>
+	var donateModal = document.getElementById("DonateModal");
+	var donateModalOpenButton = document.getElementById("DonateModalOpenButton");
+	var donateModalCloseButton = document.getElementById("DonateModalCloseButton");
+
+	// When the user clicks the open button, open the modal.
+	donateModalOpenButton.onclick = function (event)
+	{
+		if (DonateModalIsOpen())
+		{
+			CloseDonateModal();
+		}
+		else
+		{
+			OpenDonateModal();
+			event.stopPropagation();	// Prevent the window event handler from closing the modal instantly.
+		}
+	}
+
+	// When the user clicks the close button, close the modal.
+	donateModalCloseButton.onclick = function (event)
+	{
+		CloseDonateModal();
+	}
+
+	// When the user clicks anywhere outside the modal, close the modal.
+	window.onclick = function (event)
+	{
+		// Must check both the modal and it's children.
+		var userClickedOutsideOfModal = (event.target !== donateModal && !donateModal.contains(event.target))
+
+		if (DonateModalIsOpen() && userClickedOutsideOfModal)
+		{
+			CloseDonateModal();
+		}
+	}
+
+	function OpenDonateModal()
+	{
+		donateModal.style.display = "block";
+	}
+
+	function CloseDonateModal()
+	{
+		donateModal.style.display = "none";
+	}
+
+	function DonateModalIsOpen()
+	{
+		return donateModal.style.display == "block";
+	}
+</script>
+
+
+<!-- Put an advertisement in the site's footer. -->
+<!-- Put an advertisement in the site's footer. -->
+<div style="text-align: center; margin-bottom: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com Responsive Ad 2 -->
+		<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0037930831928769" data-ad-slot="1591735639"
+			data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			function RunGoogleAdsenseFooterAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+
+<!--========== Dan's Customizations END ==========-->
+
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://bsky.app/profile/danskingdom.com" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-bluesky" aria-hidden="true"></i> Bluesky</a></li>
+        
+      
+        
+          <li><a href="https://hachyderm.io/@deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-mastodon" aria-hidden="true"></i> Mastodon</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> X / Twitter</a></li>
+        
+      
+        
+          <li><a href="https://www.youtube.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> YouTube</a></li>
+        
+      
+        
+          <li><a href="https://github.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/1danielschroeder/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+        
+      
+        
+          <li><a href="https://stackoverflow.com/users/602585/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i> Stack Overflow</a></li>
+        
+      
+    
+
+    
+      <li><a href="/previews/pr-734/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+
+<div class="page__footer-copyright">&copy; 2026 <a href="https://blog.danskingdom.com">Daniel Schroeder&#39;s Programming Blog</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/previews/pr-734/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/previews/pr-734/assets/js/lunr/lunr.min.js"></script>
+<script src="/previews/pr-734/assets/js/lunr/lunr-store.js"></script>
+<script src="/previews/pr-734/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Replaced entire file with my updated version. Dan's Customizations START and END for entire file.
+	Google Analytics introduced new required consent tags in 2023, so we had to update the code to account for them.
+	More info: https://developers.google.com/tag-platform/security/guides/consent?consentmode=basic#gtag.js
+-->
+
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() { dataLayer.push(arguments); }
+
+	// Consent not granted by default.
+	gtag('consent', 'default', {
+		'ad_user_data': 'denied',
+		'ad_personalization': 'denied',
+		'ad_storage': 'denied',
+		'analytics_storage': 'denied',
+		// Wait 500ms to allow consent function to update consent values before calling Google Analytics.
+		'wait_for_update': 500,
+	});
+
+	gtag('js', new Date());
+	gtag('config', 'G-7CB6XGCWTK', {
+			'anonymize_ip': false
+		});
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CB6XGCWTK"></script>
+<script>
+	function RunGoogleAnalyticsJavaScript()
+	{
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+
+		// Update consent values from denied to granted.
+		gtag('consent', 'update', {
+			ad_user_data: 'granted',
+			ad_personalization: 'granted',
+			ad_storage: 'granted',
+			analytics_storage: 'granted'
+		});
+	}
+</script>
+
+
+
+
+
+
+    
+  <script>
+    (function ($) {
+    $('#new_comment').submit(function () {
+      var form = this;
+
+      $(form).addClass('disabled');
+      $('#comment-form-submit').html('<i class="fas fa-spinner fa-spin fa-fw"></i> Loading...');
+
+      $.ajax({
+        type: $(this).attr('method'),
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        contentType: 'application/x-www-form-urlencoded',
+        success: function (data) {
+          $('#comment-form-submit').html('Submitted');
+          $('.page__comments-form .js-notice').removeClass('notice--danger');
+          $('.page__comments-form .js-notice').addClass('notice--success');
+          showAlert('Thanks for your comment! It will show on the site once it has been approved.');
+        },
+        error: function (err) {
+          console.log(err);
+          $('#comment-form-submit').html('Submit Comment');
+          $('.page__comments-form .js-notice').removeClass('notice--success');
+          $('.page__comments-form .js-notice').addClass('notice--danger');
+          showAlert('Sorry, there was an error with your submission. Please make sure all required fields have been completed and try again.');
+          $(form).removeClass('disabled');
+        }
+      });
+
+      return false;
+    });
+
+    function showAlert(message) {
+      $('.page__comments-form .js-notice').removeClass('hidden');
+      $('.page__comments-form .js-notice-text').html(message);
+    }
+  })(jQuery);
+  </script>
+
+
+  
+
+
+
+
+
+		<!--========== Dan's Customizations START ==========-->
+
+		<!-- Include any custom website level scripts. -->
+		<!--
+	Code in this file is included at the very bottom of every webpage.
+	This file should typically be used for scripts and other invisible
+	things that need to be loaded at the bottom of every page.
+-->
+
+<!-- Microsoft Clarity script for analytics (https://clarity.microsoft.com) -->
+<script type="text/javascript">
+	function RunMsClarityJavaScript()
+	{
+		// Code copied from the MS Clarity website.
+		(function (c, l, a, r, i, t, y)
+		{
+			c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+			t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+			y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+		})(window, document, "clarity", "script", "49915jr5qy");
+
+		// Let MS Clarity know the user consented so it can setup it's cookie tracking.
+		// More info: https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-consent-api-v2
+		window.clarity('consentv2', {
+			ad_storage: "granted",
+			analytics_storage: "granted"
+		});
+	}
+</script>
+
+
+<!-- Add button to toggle between light and dark themes. -->
+<script src="/assets/js/ThemeToggle.js" defer></script>
+
+<!-- Add buttons for copying code snippets to the clipboard. -->
+<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+
+<!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
+<span style="visibility: collapse;">
+	<a rel="me" href="https://hachyderm.io/@deadlydog">Mastodon</a>
+</span>
+
+<!-- Include the cookie notice popup. -->
+<!-- This should be included last to ensure that any functions it calls have been defined already. -->
+<!-- Original code taken from https://jekyllcodex.org/without-plugin/cookie-consent/ then modified. -->
+<style>
+	#cookie-notice {
+		padding: 0.5rem 1rem;
+		display: none;
+		text-align: center;
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		background: #222;
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	#cookie-notice a {
+		display: inline-block;
+		cursor: pointer;
+		margin-left: 0.5rem;
+	}
+
+	#cookie-notice-accept {
+		background: #07a21c;
+		color: white;
+	}
+
+	#cookie-notice-more-info {
+		background: #007bff;
+		color: white;
+	}
+
+	#cookie-notice-reject {
+		background: #dc3545;
+		color: white;
+	}
+
+	#cookie-notice-buttons {
+		display: inline-block;
+	}
+</style>
+
+<div id="cookie-notice">
+	<span>This website uses cookies to ensure you get the best experience.</span>
+	<span id="cookie-notice-buttons">
+		<a id="cookie-notice-more-info" class="btn btn-primary btn-sm" href="/privacy">More info</a>
+		<a id="cookie-notice-accept" class="btn btn-primary btn-sm">OK</a>
+	</span>
+</div>
+
+<script>
+	function createCookie(name, value, days)
+	{
+		var expires = "";
+		if (days)
+		{
+			var date = new Date();
+			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+			expires = "; expires=" + date.toUTCString();
+		}
+		document.cookie = name + "=" + value + expires + "; path=/";
+	}
+
+	function readCookie(name)
+	{
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0; i < ca.length; i++)
+		{
+			var c = ca[i];
+			while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+		}
+		return null;
+	}
+
+	function eraseCookie(name)
+	{
+		createCookie(name, "", -1);
+	}
+
+	function RunThirdPartyCodeThatUsesCookies()
+	{
+		// Call the functions that should not be ran until the user has accepted cookies.
+
+// If the user is not viewing a post, the Post Ad function will not be defined, so only call it if it is defined.
+if (typeof(RunGoogleAdsensePostAdvertisementJavaScript) === typeof(Function))
+{
+	RunGoogleAdsensePostAdvertisementJavaScript()
+}
+
+RunGoogleAdsenseFooterAdvertisementJavaScript()
+RunMsClarityJavaScript()
+
+// Google Analytics are not included when running locally/debugging, so to avoid an error only call this function if it is defined.
+if (typeof (RunGoogleAnalyticsJavaScript) === typeof(Function))
+{
+	RunGoogleAnalyticsJavaScript()
+}
+
+	}
+
+	// Rather than requiring consent, we just display a notice and assume consent if the user continues to use the website.
+	// Google displays its own consent automatically for countries that require it: https://umbracocommunity.social/@steve_gibe/111925508834045878
+	RunThirdPartyCodeThatUsesCookies()
+
+	if (readCookie('cookie-notice-response') != 'accepted')
+	{
+		// Display the cookie notice.
+		document.getElementById('cookie-notice').style.display = 'block';
+	}
+
+	document.getElementById('cookie-notice-accept').addEventListener("click", function ()
+	{
+		// Persist cookie acceptance for 180 days and hide the cookie notice.
+		createCookie('cookie-notice-response', 'accepted', 180);
+		document.getElementById('cookie-notice').style.display = 'none';
+
+		// Reload the page so the analytics scripts, etc. are ran on this page, not just future pages.
+		// I considered just calling the RunThirdPartyCodeThatUsesCookies() function here, but was
+		// not sure how that would affect some analytics metrics, like the time to load the page, etc.
+		location.reload();
+	});
+</script>
+
+
+
+		<!--========== Dan's Customizations END ==========-->
+  </body>
+</html>
