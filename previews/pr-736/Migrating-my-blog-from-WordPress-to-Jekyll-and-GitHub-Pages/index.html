@@ -1,0 +1,1649 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.27.3 by Michael Rose
+  Copyright 2013-2025 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Migrating my blog from WordPress to Jekyll and GitHub Pages - Daniel Schroeder’s Programming Blog</title>
+<meta name="description" content="You may have noticed my blog has a very different look now! It used to look like this.">
+
+
+  <meta name="author" content="Daniel Schroeder">
+  
+  <meta property="article:author" content="Daniel Schroeder">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Daniel Schroeder&#39;s Programming Blog">
+<meta property="og:title" content="Migrating my blog from WordPress to Jekyll and GitHub Pages">
+<meta property="og:url" content="https://blog.danskingdom.com/previews/pr-736/Migrating-my-blog-from-WordPress-to-Jekyll-and-GitHub-Pages/">
+
+
+  <meta property="og:description" content="You may have noticed my blog has a very different look now! It used to look like this.">
+
+
+
+
+
+  <meta name="twitter:site" content="@deadlydog">
+  <meta name="twitter:title" content="Migrating my blog from WordPress to Jekyll and GitHub Pages">
+  <meta name="twitter:description" content="You may have noticed my blog has a very different look now! It used to look like this.">
+  <meta name="twitter:url" content="https://blog.danskingdom.com/previews/pr-736/Migrating-my-blog-from-WordPress-to-Jekyll-and-GitHub-Pages/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2019-08-17T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="https://blog.danskingdom.com/previews/pr-736/Migrating-my-blog-from-WordPress-to-Jekyll-and-GitHub-Pages/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/previews/pr-736/feed.xml" type="application/atom+xml" rel="alternate" title="Daniel Schroeder's Programming Blog Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/previews/pr-736/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <script>
+function InitializeLightOrDarkModeStylesheet() {
+	let storageKey = 'theme-preference';
+	let darkHref = '/previews/pr-736/assets/css/dark.css';
+	let systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	let stored = null;
+	let mode = 'system';
+
+	try
+	{
+		stored = localStorage.getItem(storageKey);
+		if (stored === 'dark' || stored === 'light')
+		{
+			mode = stored;
+		}
+	}
+	catch (error)
+	{
+		console.warn('Could not access localStorage to get theme preference:', error);
+		mode = 'system';
+	}
+
+	let theme = mode === 'system' ? (systemQuery.matches ? 'dark' : 'light') : mode;
+	let linkMedia = mode === 'system' ? '(prefers-color-scheme: dark)' : (theme === 'dark' ? 'all' : 'not all');
+	let docEl = document.documentElement;
+
+	docEl.dataset.theme = theme;
+	docEl.dataset.themeMode = mode;
+
+	// Need to define colors here (in addition to the colorScheme) to prevent a flash of incorrect colors on each initial page load.
+	// So we need to keep these colors in sync with the ones defined in ThemeToggle.js.
+	if (theme === 'dark')
+	{
+		docEl.style.backgroundColor = '#0f172a';
+		docEl.style.color = '#e5e7eb';
+		docEl.style.colorScheme = 'dark';
+	}
+	else
+	{
+		docEl.style.backgroundColor = '#ffffff';
+		docEl.style.color = '#111827';
+		docEl.style.colorScheme = 'light';
+	}
+
+	let darkStylesheet = document.getElementById('theme-dark');
+
+	if (!darkStylesheet)
+	{
+		darkStylesheet = document.createElement('link');
+		darkStylesheet.id = 'theme-dark';
+		darkStylesheet.rel = 'stylesheet';
+		darkStylesheet.href = darkHref;
+		document.head.appendChild(darkStylesheet);
+	}
+
+	darkStylesheet.media = linkMedia;
+}
+InitializeLightOrDarkModeStylesheet();
+</script>
+
+  </head>
+
+  <body class="layout--single wide" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/previews/pr-736/">
+          Daniel Schroeder&#39;s Programming Blog
+          <span class="site-subtitle">Sharing my tips, tricks, and code to help other developers be more productive.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-736/"
+                
+                
+              >Home</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-736/posts/"
+                
+                
+              >Posts</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-736/categories/"
+                
+                
+              >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-736/about/"
+                
+                
+              >About</a>
+            </li></ul>
+				<!--========== Dan's Customizations START ==========-->
+				<button id="ThemeToggleButton" class="theme-toggle" title="Toggle light and dark mode. Alt+Click to follow the system setting again." aria-label="Toggle between light and dark mode" aria-pressed="false">
+					<i class="fas fa-moon theme-toggle__icon" aria-hidden="true"></i>
+				</button>
+				<!--========== Dan's Customizations END ==========-->
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://blog.danskingdom.com/previews/pr-736/">
+        <img src="/previews/pr-736/assets/Site/bio-photo.jpg" alt="Daniel Schroeder" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://blog.danskingdom.com/previews/pr-736/" itemprop="url">Daniel Schroeder</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>aka deadlydog. Developer and family man. MS MVP. Loves C#, .NET, PowerShell, AutoHotkey. Automate Everything!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Regina, SK, Canada</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://bsky.app/profile/danskingdom.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span class="label">Bluesky</span></a></li>
+          
+        
+          
+            <li><a href="https://hachyderm.io/@deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-mastodon" aria-hidden="true"></i><span class="label">Mastodon</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">X / Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://www.youtube.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i><span class="label">YouTube</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/1danielschroeder/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://stackoverflow.com/users/602585/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i><span class="label">Stack Overflow</span></a></li>
+          
+        
+          
+            <li><a href="mailto:deadlydog@hotmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://blog.danskingdom.com/feed.xml" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i><span class="label">Blog RSS Feed</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Migrating my blog from WordPress to Jekyll and GitHub Pages">
+    <meta itemprop="description" content="You may have noticed my blog has a very different look now! It used to look like this.">
+    <meta itemprop="datePublished" content="2019-08-17T00:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+            <a href="https://blog.danskingdom.com/previews/pr-736/Migrating-my-blog-from-WordPress-to-Jekyll-and-GitHub-Pages/" itemprop="url">Migrating my blog from WordPress to Jekyll and GitHub Pages
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2019-08-17T00:00:00+00:00">August 17, 2019</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          13 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+
+				<!--========== Dan's Customizations START ==========-->
+				<div>
+					<!-- Show an advertisement in the blog post content. -->
+					<!-- The advertisement shown at the bottom of a blog post. -->
+<div style="text-align: center; margin-bottom: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com In-Article Ad -->
+		<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid"
+			data-ad-client="ca-pub-0037930831928769" data-ad-slot="6215502013"></ins>
+		<script>
+			function RunGoogleAdsensePostAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+				</div>
+				<!--========== Dan's Customizations END ==========-->
+
+        <p>You may have noticed my blog has a very different look now! It used to look like this.</p>
+
+<p><img src="/assets/Posts/2019-08-17-Migrating-my-blog-from-WordPress-to-Jekyll-and-GitHub-Pages/OldWordPressBlogScreenshot.png" alt="Old WordPress Blog Screenshot" /></p>
+
+<p>I decided to migrate my blog from WordPress to Jekyll, and this blog post highlights my reasons why and some of my experiences when doing so.</p>
+
+<h2 id="what-is-jekyll">What is Jekyll</h2>
+
+<p>You’ve probably heard of WordPress, but maybe not Jekyll. They are both platforms for hosting blog content. The big difference, in my eyes, is that WordPress stores all of it’s data in a MySQL database, while Jekyll’s data is all stored in text files. This means your entire blog contents can be stored in source control, such as Git.</p>
+
+<p>Jekyll is used to compile the file contents and output all of the files for your static website, typically by running a command like <code class="language-plaintext highlighter-rouge">bundle exec jekyll serve</code>. Jekyll typically supports websites with static content, making it ideal for blogs. Jekyll leverages the <a href="https://shopify.github.io/liquid/">Liquid</a> programming language for flow control (if statements, loops, etc.) and <a href="https://jekyllrb.com/docs/front-matter/">FrontMatter</a> for variables. It also allows you to write your website content in <a href="https://www.markdownguide.org/getting-started">Markdown</a>, as well as HTML.</p>
+
+<p>Visit <a href="https://jekyllrb.com/">the official Jekyll site</a> to learn more and see how to get started with it.</p>
+
+<h2 id="why-i-migrated-from-wordpress-to-jekyll">Why I migrated from WordPress to Jekyll</h2>
+
+<p>You may have noticed that I haven’t blogged in quite a while; almost 2 years! While I was busy with work and family, another contributor was simply that the technology didn’t make it <em>easy</em> to post new content.</p>
+
+<p>Reasons why I wanted to convert my blog away from WordPress:</p>
+
+<ul>
+  <li><strong>The Editor</strong> - I wasn’t a fan of the WordPress online editor, so I used <a href="http://openlivewriter.org">Open Live Writer</a>. It provided a nicer experience, but required some plugins for code snippets and images to work properly. Also, updating posts would often result in duplicate images and attachments being uploaded. It just wasn’t a great experience, and it required a bit of work to get everything setup correctly again after reinstalling Windows. Also, when editing posts later in WordPress, I’d have to wade through generated HTML code as well instead of focusing just on my content.</li>
+  <li><strong>Special Characters</strong> - Special XML characters common in code (such as <code class="language-plaintext highlighter-rouge">&lt;</code>, <code class="language-plaintext highlighter-rouge">&gt;</code>, and <code class="language-plaintext highlighter-rouge">"</code>) would get converted to their escape sequence when posting through Open Live Writer, and I’d always have to go into the online editor and modify my code snippets to transform things like <code class="language-plaintext highlighter-rouge">&amp;lt;</code> back into their proper character.</li>
+  <li><strong>Markdown</strong> - I wanted to write my posts in Markdown so that I could focus on my content, and less on it’s presentation. It also meant I wouldn’t need lean on a special editor or to mess with HTML. I tried a few WordPress plugins, but ultimately they didn’t meet my expectations.</li>
+  <li><strong>Update Nightmares</strong> - WordPress and the plugins constantly had new updates that needed to be applied. My main issue was often the updates would fail, leaving my blog offline until I manually fixed things up; I learned very quickly to backup all files and the database before doing any updates. The resolution often involved grabbing the new version’s updated source code and manually applying the updated files to my WordPress instance over FTP, rather than using the <code class="language-plaintext highlighter-rouge">Update</code> button in the WordPress GUI. I’m not sure if this is a common problem for other WordPress users, but it was for me for several years.</li>
+  <li><strong>Cost</strong> - I was paying $150+/year for web hosting with GoDaddy. When renewal time came around, I decided to migrate my WordPress blog from GoDaddy to Azure. This was even more expensive at ~$60/month to host the website and MySQL database, but I get $70/month free Azure credits with my Visual Studio subscription. So even though Azure was more expensive, it was technically free for me; however, it meant I couldn’t use those Azure credits on other things.</li>
+</ul>
+
+<p>Reasons why I decided to use Jekyll:</p>
+
+<ul>
+  <li><strong>Source Control</strong> - As a software developer, using a git repo is familiar to me, and it means all changes are in source control. There’s no external database dependency to manage and maintain. It also means no longer having to take backups.</li>
+  <li><strong>Markdown</strong> - It supports writing in your posts in <a href="https://www.markdownguide.org/getting-started">Markdown</a>. Enough said.</li>
+  <li><strong>Everything Is Text</strong> - Updating and creating posts is easy and can be done from any text editor, even just with the GitHub online editor. There’s no magic going on behind the scenes (other than the filename convention and FrontMatter); everything is plain text.</li>
+  <li><strong>Customization</strong> - There are tons of themes available. If you don’t like them, you can customize them, or create your own from scratch, assuming you know HTML, CSS, Javascript, Liquid, and FrontMatter (before this migration I hadn’t heard of <a href="https://shopify.github.io/liquid/">Liquid</a> or <a href="https://jekyllrb.com/docs/front-matter/">FrontMatter</a>).</li>
+  <li><strong>Preview Changes Locally</strong> - Jekyll allows you to host the site on your local machine to preview any changes you’ve made, whether it’s just a new post that you’ve written, or large sweeping change like changing your theme. This way I can preview my changes and make sure everything is the way I want it before pushing it to the live site.</li>
+  <li><strong>It’s Free</strong> - Jekyll itself is <a href="https://github.com/jekyll/jekyll">open source</a> and free.</li>
+  <li><strong>Host Your Site Anywhere</strong> - Because Jekyll simply outputs the HTML files of your site, you can host your site wherever you like; there are no special requirements from your hosting provider (e.g. supporting MySQL).</li>
+  <li><strong>Free Hosting On GitHub Pages!</strong> - <a href="https://help.github.com/en/articles/setting-up-your-github-pages-site-locally-with-jekyll">GitHub Pages supports Jekyll</a> and allows you to host your site completely for free! <a href="https://jekyllrb.com/docs/github-pages/">More info</a>.</li>
+</ul>
+
+<h3 id="why-didnt-i-go-to-some-other-free-hosted-service">Why didn’t I go to some other free hosted service</h3>
+
+<p>There are a ton of <a href="https://www.techradar.com/news/the-best-free-blogging-sites">free blog hosting options</a> out there, even programming focused ones like <a href="https://dev.to">dev.to</a>, so why did I decide to go this route?</p>
+
+<p>I originally started my blog with <a href="http://geekswithblogs.net">GeeksWithBlogs.net</a>. A couple years after starting my blog, they announced that they were shutting down (although they still seem to be around today, *head-scratch*). With the thought of losing all of the hard work I had put into my blog content (even if it wasn’t great), it was then that I decided I was going to move into a self-hosted blog alternative. One where even if my provider disappeared one day, I wouldn’t lose all of my hard work.</p>
+
+<p>Luckily there was an existing process for exporting from GeeksWithBlogs to WordPress, and that’s what I went with. With WordPress I would be able to have database backups and manually put my files into source control. Back then (circa 2012), this was very appealing. I wouldn’t be relying on a 3rd party service anymore, and would truly own (and host) my content. I decided to self-host my WordPress site so that I wouldn’t be relying on some 3rd party provider that might go under again, and so that I had more options between themes and plugins to use, while not subjecting my readers invasive advertisements.</p>
+
+<p>Fast-forward 7 years; being able to natively store my blog in source control with free hosting is even more appealing.</p>
+
+<h2 id="how-i-migrated-from-wordpress-to-jekyll">How I migrated from WordPress to Jekyll</h2>
+
+<p>If you’re starting a new blog or website from scratch, using Jekyll is pretty straightforward and you can get up and running in a few minutes. I had a lot of existing content in WordPress that I wanted to migrate though, so I used the <a href="https://github.com/benbalter/wordpress-to-jekyll-exporter">WordPress to Jekyll Exporter plugin</a>, which worked great. I did have a problem with it at first though, in that <a href="https://github.com/benbalter/wordpress-to-jekyll-exporter/issues/145">it kept generating a zero-byte zip file</a>. Fortunately I was able to just roll it back from v2.3.0 to 2.2.3 and that version worked properly.</p>
+
+<h3 id="massaging-the-jekyll-data">Massaging the Jekyll data</h3>
+
+<p>Once I had the data out WordPress and in text files in the Jekyll file structure, there were a few changes I needed to make before it would show correctly:</p>
+
+<ul>
+  <li><strong>Image / Attachment URLs</strong> - When I exported the site the images and attachments were exported as well, but the their links in the posts were still using an absolute URL path that pointed back to my WordPress blog URL, rather than pointing to the local image / attachment files. This meant having to go through all my posts and updating the image and attachment links to use relative paths.</li>
+  <li><strong>FrontMatter Variables</strong> - I had to update the FrontMatter on each post to match what my theme expected. For example, each post had a <code class="language-plaintext highlighter-rouge">layout: post</code> value, but my theme expected <code class="language-plaintext highlighter-rouge">layout: single</code>.
+    <ul>
+      <li>(optional) Remove extra unnecessary FrontMatter variables from all of the posts. e.g. Remove the <code class="language-plaintext highlighter-rouge">id</code>, <code class="language-plaintext highlighter-rouge">jabber_published</code>, and <code class="language-plaintext highlighter-rouge">guid</code> variables, as they weren’t used by my theme. They weren’t hurting anything by being there, but I like to keep my files as clean as possible.</li>
+      <li>(optional) I also removed the <code class="language-plaintext highlighter-rouge">author</code> and <code class="language-plaintext highlighter-rouge">layout</code> variables from all my posts and instead set up default values in the <code class="language-plaintext highlighter-rouge">_config.yml</code> file. This just helps prevent duplicate text in all my posts FrontMatter.</li>
+    </ul>
+  </li>
+  <li><strong>Convert HTML To Markdown (optional)</strong> - I went through all of my posts to convert any HTML to Markdown. HTML displayed fine, I’m just a bit picky and try to stick to pure Markdown. It also ensures that my older posts will look the same as my newer ones, as some of the HTML had colors and other styles hard-coded in it that would override whatever theme I chose.</li>
+</ul>
+
+<h2 id="finding-a-jekyll-theme-to-use">Finding a Jekyll theme to use</h2>
+
+<p>There are <a href="https://rubygems.org/search?utf8=%E2%9C%93&amp;query=jekyll-theme">a lot of great Jekyll themes to choose from</a>. Some things to be aware of when choosing a theme though is that some actually provide different features, such as:</p>
+
+<ul>
+  <li>Google analytics</li>
+  <li>Advertisements</li>
+  <li>Support for comments</li>
+  <li>Metadata on your posts (estimated read time, created and updated dates, etc.)</li>
+</ul>
+
+<p>If the theme you choose doesn’t support a specific feature, you can always add it in yourself, but it does require some development effort and know-how. It’s great if you can find one that not only looks great, but that also natively supports everything you want.</p>
+
+<h3 id="different-ways-of-leveraging-a-jekyll-theme">Different ways of leveraging a Jekyll theme</h3>
+
+<p>This was probably one of the most confusing parts of the migration for me. There are 3 different ways you can use a theme in Jekyll, and not all themes support all 3 ways. The 3 options you have are:</p>
+
+<ol>
+  <li><strong>Fork The Theme Repository</strong> - Basically clone all of the source code, and then go ahead and add your posts to it and customize it however you like. This is perhaps the most straightforward approach, but it doesn’t allow you to automatically take new updates to the theme; you would have to manually merge changes into your forked repository.</li>
+  <li><strong>Ruby Gems</strong> - <a href="https://jekyllrb.com/docs/themes/">The official docs</a> describe this better than I ever could, but essentially you have a <code class="language-plaintext highlighter-rouge">Gemfile</code> that lists the dependencies of your site, including your theme. You run a command like <code class="language-plaintext highlighter-rouge">bundle update</code> to update your gem versions and pull the latest version of the gem’s files into your project. This is how you update your site to a newer version of the theme. In the .Net world, this is similar to a NuGet package. You don’t actually see the theme files in your project like when forking a theme repository though, so it helps keep your repo nice and clean with only the files you care about. Most themes support this method.</li>
+  <li><strong>GitHub Remote Theme Repository</strong> - I believe this option is only available for themes hosted in GitHub (which most are), and not all themes support it. This method allows you to always be on the latest version of the theme without having to run any addition commands (e.g. <code class="language-plaintext highlighter-rouge">bundle update</code>). Rather than including the theme in your <code class="language-plaintext highlighter-rouge">Gemfile</code>, you instead include a line in your <code class="language-plaintext highlighter-rouge">_config.yml</code> that references the remote theme repo. e.g. <code class="language-plaintext highlighter-rouge">remote_theme: mmistakes/minimal-mistakes</code> to always use the latest version of the theme, or <code class="language-plaintext highlighter-rouge">mmistakes/minimal-mistakes@26c1989</code> to use a specific branch/commit/tag of the theme. This allows your site to always be on the latest version of the theme without any intervention, or use the <code class="language-plaintext highlighter-rouge">@branch/commit/tag</code> syntax to stay on a specific version until you decide to update. As with Ruby Gems, this option does not store the theme files in your repo, keeping your repo nice and clean. GitHub Pages has several built-in themes that <a href="https://help.github.com/en/articles/adding-a-jekyll-theme-to-your-github-pages-site">you can use for your Jekyll site</a> as well if you like. <a href="https://github.com/benbalter/jekyll-remote-theme">More info</a>.</li>
+</ol>
+
+<p>I ended up using the <a href="https://mmistakes.github.io/minimal-mistakes/">minimal mistakes</a> theme and the remote theme repository strategy.</p>
+
+<h3 id="troubleshooting-jekyll-theme-issues">Troubleshooting Jekyll theme issues</h3>
+
+<p>I first started out using the Ruby Gems approach, but ran into issues where the site wouldn’t display my posts; it seemed to work with some themes (ones I didn’t want to actually use), but not others. I didn’t understand why at the time, but it was due to my lack of understanding of how <code class="language-plaintext highlighter-rouge">Liquid</code> and <code class="language-plaintext highlighter-rouge">FrontMatter</code> worked with the themes. Not all themes looks for the same variables; some expect your posts to have <code class="language-plaintext highlighter-rouge">layout: post</code> defined on them, others want <code class="language-plaintext highlighter-rouge">layout: posts</code>, or <code class="language-plaintext highlighter-rouge">layout: single</code>, or something else. If the posts don’t have the theme’s expected FrontMatter variables defined on them, they might not be recognized as themes, causing them to not be displayed, or to be displayed, but not look how you expect them to.</p>
+
+<p>In addition to specific FrontMatter variables, different themes often expect to find different variables defined in your <code class="language-plaintext highlighter-rouge">_config.yml</code> file as well. While there are some standard variables that most themes expect to find, such as <code class="language-plaintext highlighter-rouge">name</code> and <code class="language-plaintext highlighter-rouge">description</code>, theme’s may expect other variables as well depending on what features they offer. For example, the <a href="https://mmistakes.github.io/minimal-mistakes/">minimal mistakes theme</a> expected to find a <code class="language-plaintext highlighter-rouge">words_per_minute</code> variable so that it can display the estimated reading time of a post.</p>
+
+<p>With Jekyll, <code class="language-plaintext highlighter-rouge">Liquid</code> accesses variables defined in the <code class="language-plaintext highlighter-rouge">_config.yml</code> by using the <code class="language-plaintext highlighter-rouge">site</code> keyword. For example, in my theme’s code it accesses the <code class="language-plaintext highlighter-rouge">words_per_minute</code> variable by using <code class="language-plaintext highlighter-rouge">site.words_per_minute</code>. Variables defined in a posts FrontMatter are accessed using the <code class="language-plaintext highlighter-rouge">post</code> keyword, such as <code class="language-plaintext highlighter-rouge">post.date</code>, where <code class="language-plaintext highlighter-rouge">date</code> would be a FrontMatter variable defined at the top of my posts.</p>
+
+<p>Also, some themes only enable certain features when Jekyll is running in production mode. For example, <a href="https://mmistakes.github.io/minimal-mistakes/">minimal mistakes</a> only displays advertisements and the comment posting form when running in production mode. Running Jekyll in production mode involves setting the <code class="language-plaintext highlighter-rouge">JEKYLL_ENV</code> variable to <code class="language-plaintext highlighter-rouge">production</code>. You can set this variable when starting your Jekyll site by using <code class="language-plaintext highlighter-rouge">JEKYLL_ENV=production bundle exec jekyll serve</code>. For some reason, this wouldn’t work for me when running this command in PowerShell, and I instead had to use Bash (I’m running Windows btw). If using GitHub Pages to host your site, it will have the variable set to <code class="language-plaintext highlighter-rouge">production</code> by default.</p>
+
+<p>So if your site is not displaying how you expect it to, read the theme’s documentation (if it has any), or dig right into its code to see what variables it expects to be defined at the <code class="language-plaintext highlighter-rouge">site</code> and <code class="language-plaintext highlighter-rouge">post</code> level.</p>
+
+<p>Lastly, I’ve found that sometimes the best or quickest way to troubleshoot issues is to find somebody elses website that’s using the same theme or integrations as you and take a look at their code. Feel free to check out <a href="https://github.com/deadlydog/deadlydog.github.io">the code used to host this blog</a>.</p>
+
+<h2 id="running-the-jekyll-site-on-github-pages">Running the Jekyll site on GitHub Pages</h2>
+
+<p>Getting your site up and running on GitHub Pages is actually super easy. GitHub has <a href="https://help.github.com/en/articles/using-jekyll-as-a-static-site-generator-with-github-pages">some help docs</a> that walk you through it. The main points are:</p>
+
+<ul>
+  <li>In your repository’s <code class="language-plaintext highlighter-rouge">Settings</code> page, enable <code class="language-plaintext highlighter-rouge">GitHub Pages</code>.</li>
+  <li>If your Jekyll site is on your User or Organization page (e.g. username.github.io), then GitHub Pages will build your site from the <code class="language-plaintext highlighter-rouge">master</code> branch.</li>
+  <li>If your Jekyll site is on a Project page, it will build your site from the <code class="language-plaintext highlighter-rouge">gh-pages</code> branch.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">_config.yml</code> file and other Jekyll files must be at the root of the branch, or optionally <a href="https://help.github.com/en/articles/configuring-a-publishing-source-for-github-pages">in a <code class="language-plaintext highlighter-rouge">docs</code> folder at the root of the branch</a>.</li>
+</ul>
+
+<p>Pretty much though, if you’re able to build and serve your Jekyll site on your local computer, just push the files to your GitHub repo and it will compile and host your site for you. It may take a couple minutes for any changes to show on the GitHub Pages after you’ve pushed them to the GitHub repo, as it needs to compile your Jekyll site to generate the GitHub Pages files.</p>
+
+<h2 id="using-staticman-to-get-comments-in-jekyll">Using Staticman to get comments in Jekyll</h2>
+
+<p>With Jekyll producing a static website and not having a database, it doesn’t natively lend itself to comment submissions. Luckily, there are several options for adding comments to your Jekyll site, with one of the most popular being <a href="https://disqus.com">Disqus</a>. I decided to go with <a href="https://staticman.net/">Staticman</a> for my blog because, again, I didn’t want to be reliant on a 3rd party; I want to own all of the content and not worry about a 3rd party going out of business, changing their pricing model, or figuring out how to export my comments out of their system at a later point in time.</p>
+
+<p>With <a href="https://staticman.net/">Staticman</a>, you <a href="https://mademistakes.com/articles/jekyll-static-comments/">add a form</a> <a href="https://mademistakes.com/articles/improving-jekyll-static-comments/">to your website</a> (if your theme doesn’t provide a built-in one). When a comment is submitted, it sends the information to the Staticman API, and then Staticman will open up a pull request against your GitHub (or GitLab) repository with the information. Once the pull request is completed, the comment will now be inside of your Git repository, causing GitHub Pages to rebuild your Jekyll site and display the new comment.</p>
+
+<p>The idea of how Staticman works is simple enough, and actually pretty clever. Unfortunately when I went to integrate Staticman into my Jekyll site (summer 2019), there were issues with Staticman. The main issue was that the official documentation says to use a free publicly hosted instance of the Staticman API, and gives the URL for it. The problem is that it’s using a free hosting plan and is limited to a certain number of requests per day. As more and more people adopted it, it began reaching it’s quota very often, resulting in frequent <code class="language-plaintext highlighter-rouge">409 Too many requests</code> errors when people tried to submit comments.</p>
+
+<p>This led me down the path of hosting my own private instance of Staticman. Luckily, a few other people had already taken this route as well and <a href="https://www.datascienceblog.net/post/other/staticman_comments/">blogged</a> <a href="https://vincenttam.gitlab.io/post/2018-09-16-staticman-powered-gitlab-pages/2/">some</a> <a href="https://bloggerbust.ca/series/staticman-with-github-and-zeit-now/">nice</a> <a href="https://github.com/eduardoboucas/staticman/issues/293">tutorials</a> for various hosting providers. The unfortunate bit was the official Staticman docs had not been updated to include any of this information, so finding it involved hunting through numerous GitHub issues on the Staticman repository. Also, many of the code changes required for these hosting options had not been merged into the Staticman <code class="language-plaintext highlighter-rouge">dev</code> or <code class="language-plaintext highlighter-rouge">master</code> branches yet, so it meant using an “unofficial” Staticman branch.</p>
+
+<p>For myself, I ended up using Heroku to host my Staticman instance. It’s completely free, and since I’m the only one hitting the API, I shouldn’t run over my API request limit. <a href="https://github.com/eduardoboucas/staticman/issues/294">This GitHub issue</a> provides more information around exactly what I did and the issues I encountered and their resolutions. My main issues had to do around using ReCaptcha on comment submissions, but I got it all figured out in the end.</p>
+
+<h2 id="bonus-section-my-editor-preference">Bonus section: My editor preference</h2>
+
+<p>While I can technically use any text editor to create blog posts, my favourite editor is VS Code, for a number of reasons:</p>
+
+<ul>
+  <li>It has native Git support, and pushing my changes up to GitHub is a breeze.</li>
+  <li>It has a built-in terminal, making it easy to build and serve the Jekyll site locally to preview my changes.</li>
+  <li>It has a built-in Markdown previewer, so if I don’t want to actually spin up my site locally to preview the changes, I can use the built-in editor to quickly verify that my Markdown syntax is all correct and looks the way I expect.</li>
+  <li>It has some amazing extensions that make writing posts in markdown a great experience:
+    <ul>
+      <li><a href="https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one">Markdown All in One</a></li>
+      <li><a href="https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint">markdownlint</a></li>
+      <li><a href="https://marketplace.visualstudio.com/items?itemName=ionutvmi.path-autocomplete">Path Autocomplete</a></li>
+      <li><a href="https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker">Code Spell Checker</a></li>
+    </ul>
+  </li>
+  <li>It also has many extensions for doing web development, which is handy if you want to customize your Jekyll site:
+    <ul>
+      <li><a href="https://marketplace.visualstudio.com/items?itemName=abusaidm.html-snippets">HTML Snippets</a></li>
+      <li><a href="https://marketplace.visualstudio.com/items?itemName=ecmel.vscode-html-css">HTML CSS Support</a></li>
+      <li><a href="https://marketplace.visualstudio.com/items?itemName=sissel.shopify-liquid">Liquid</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Hopefully this has given you some insight or tips into what you can do with your own blog. I chose Jekyll because it allows me to host the website wherever I like, and I completely own my content and don’t have to worry about my hosting provider going out of business. I also chose it because GitHub Pages natively supports it, and can host my blog completely for free.</p>
+
+<p>The hardest part was getting my existing content changed into a format that my chosen theme expected. I think starting fresh from scratch would be much easier, regardless of what theme you choose to go with. I’m not certain that I would recommend Jekyll for somebody non-technical (like my mom), but for software developers who like to write in Markdown it’s definitely a top contender.</p>
+
+<p>Happy <strike>coding</strike> blogging :)</p>
+
+
+        
+
+				<!--========== Dan's Customizations START ==========-->
+				<div>
+					<!-- Show an advertisement after the blog post content. -->
+					<!-- The advertisement shown at the bottom of a blog post. -->
+<div style="text-align: center; margin-top: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com Responsive Ad 1 -->
+		<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-0037930831928769" data-ad-slot="7917470839"
+			data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			function RunGoogleAdsensePostAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+				</div>
+				<!--========== Dan's Customizations END ==========-->
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/previews/pr-736/tags/#github-pages" class="page__taxonomy-item p-category" rel="tag">GitHub Pages</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-736/tags/#jekyll" class="page__taxonomy-item p-category" rel="tag">Jekyll</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-736/tags/#migrate" class="page__taxonomy-item p-category" rel="tag">Migrate</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-736/tags/#staticman" class="page__taxonomy-item p-category" rel="tag">Staticman</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-736/tags/#wordpress" class="page__taxonomy-item p-category" rel="tag">WordPress</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/previews/pr-736/categories/#github-pages" class="page__taxonomy-item p-category" rel="tag">GitHub Pages</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-736/categories/#jekyll" class="page__taxonomy-item p-category" rel="tag">Jekyll</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-736/categories/#staticman" class="page__taxonomy-item p-category" rel="tag">Staticman</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-736/categories/#wordpress" class="page__taxonomy-item p-category" rel="tag">WordPress</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2019-08-17T00:00:00+00:00">August 17, 2019</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://x.com/intent/tweet?via=deadlydog&text=Migrating+my+blog+from+WordPress+to+Jekyll+and+GitHub+Pages%20https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-736%2FMigrating-my-blog-from-WordPress-to-Jekyll-and-GitHub-Pages%2F" class="btn btn--x" aria-label="Share on X" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on X">
+    <i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i><span> X</span>
+  </a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-736%2FMigrating-my-blog-from-WordPress-to-Jekyll-and-GitHub-Pages%2F" class="btn btn--facebook" aria-label="Share on Facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook">
+    <i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span>
+  </a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.danskingdom.com/previews/pr-736/Migrating-my-blog-from-WordPress-to-Jekyll-and-GitHub-Pages/" class="btn btn--linkedin" aria-label="Share on LinkedIn" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn">
+    <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span>
+  </a>
+
+  <a href="https://bsky.app/intent/compose?text=Migrating+my+blog+from+WordPress+to+Jekyll+and+GitHub+Pages%20https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-736%2FMigrating-my-blog-from-WordPress-to-Jekyll-and-GitHub-Pages%2F" class="btn btn--bluesky" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Bluesky">
+    <i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span> Bluesky</span>
+  </a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/previews/pr-736/powershell-log-levels-included-in-tfs-2017-and-vsts-build-and-release-logs/" class="pagination--pager" title="PowerShell Log Levels Included In TFS 2017 and VSTS Build and Release Logs">Previous</a>
+    
+    
+      <a href="/previews/pr-736/Order-Outlook-Deleted-Items-folder-by-date-deleted/" class="pagination--pager" title="Order Outlook Deleted Items folder by date deleted">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+      
+        <div class="page__comments">
+  
+  
+      <section id="static-comments">
+        
+          <!-- Start static comments -->
+          <div class="js-comments">
+            
+              <h4 class="page__comments-title">Comments</h4>
+              
+
+              <!-- In order to sort by date we must have an array of objects, not an array of arrays, so
+                    create a new array of plain comment objects and then sort by the comment date. -->
+              
+              
+              
+
+              
+                
+                
+                
+                
+                
+                <article id="comment1" class="js-comment comment" itemprop="comment" itemscope itemtype="https://schema.org/Comment">
+  <div class="comment__avatar-wrapper">
+    <img class="comment__avatar" src="https://www.gravatar.com/avatar/f4267a08257a5d6d803f2231d697302d?d=mm&s=80" alt="Kevin Severud">
+  </div>
+  <div class="comment__content-wrapper">
+    <h3 class="comment__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+      
+        <span itemprop="name"><a rel="external nofollow" itemprop="url" href="">Kevin Severud</a></span>
+      
+    </h3>
+    <p class="comment__date">
+      
+        <a href="#comment1" itemprop="url">
+        <time datetime="2019-09-09T18:48:10+00:00" itemprop="datePublished">September 9, 2019 at 06:48 PM</time>
+        </a>
+      
+    </p>
+    <div itemprop="text"><p>Great explanation and info. Thank you.</p>
+</div>
+  </div>
+</article>
+
+              
+                
+                
+                
+                
+                
+                <article id="comment2" class="js-comment comment" itemprop="comment" itemscope itemtype="https://schema.org/Comment">
+  <div class="comment__avatar-wrapper">
+    <img class="comment__avatar" src="https://www.gravatar.com/avatar/c6937532928911c0dae3c9c89b658c09?d=mm&s=80" alt="Travis Downs">
+  </div>
+  <div class="comment__content-wrapper">
+    <h3 class="comment__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+      
+        <span itemprop="name"><a rel="external nofollow" itemprop="url" href="https://travisdowns.github.io">Travis Downs</a></span>
+      
+    </h3>
+    <p class="comment__date">
+      
+        <a href="#comment2" itemprop="url">
+        <time datetime="2019-12-11T02:29:18+00:00" itemprop="datePublished">December 11, 2019 at 02:29 AM</time>
+        </a>
+      
+    </p>
+    <div itemprop="text"><p>Thanks, this helped me a lot (this comment also serves to see if your comments are still working).</p>
+</div>
+  </div>
+</article>
+
+              
+                
+                
+                
+                
+                
+                <article id="comment3" class="js-comment comment" itemprop="comment" itemscope itemtype="https://schema.org/Comment">
+  <div class="comment__avatar-wrapper">
+    <img class="comment__avatar" src="https://www.gravatar.com/avatar/61b616a93a1436e65736f073f40a8b7f?d=mm&s=80" alt="wontsaymynametho">
+  </div>
+  <div class="comment__content-wrapper">
+    <h3 class="comment__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+      
+        <span itemprop="name"><a rel="external nofollow" itemprop="url" href="">wontsaymynametho</a></span>
+      
+    </h3>
+    <p class="comment__date">
+      
+        <a href="#comment3" itemprop="url">
+        <time datetime="2020-05-04T18:10:58+00:00" itemprop="datePublished">May 4, 2020 at 06:10 PM</time>
+        </a>
+      
+    </p>
+    <div itemprop="text"><p>Having an own Min-Mis based jekyll blog and wanting to get staticman to work I appreciate finding some info with a working form here too, thanks!</p>
+</div>
+  </div>
+</article>
+
+              
+            
+          </div>
+          <!-- End static comments -->
+
+          <!-- Start new comment form -->
+          <div class="page__comments-form">
+            <h4 class="page__comments-title">Leave a Comment</h4>
+            <p class="small">Your email address will not be published. Required fields are marked <span class="required">*</span></p>
+            <form id="new_comment" class="page__comments-form js-form form" method="post" action="https://dansblog-staticman.azurewebsites.net/v3/entry/github/deadlydog/Blog/main/comments">
+              <div class="form__spinner">
+                <i class="fas fa-spinner fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only">Loading...</span>
+              </div>
+
+              <div class="form-group">
+                <label for="comment-form-message">Comment <small class="required">*</small></label>
+                <textarea type="text" rows="3" id="comment-form-message" name="fields[message]" tabindex="1"></textarea>
+                <div class="small help-block"><a href="https://daringfireball.net/projects/markdown/">Markdown is supported.</a></div>
+              </div>
+              <div class="form-group">
+                <label for="comment-form-name">Name <small class="required">*</small></label>
+                <input type="text" id="comment-form-name" name="fields[name]" tabindex="2" />
+              </div>
+              <div class="form-group">
+                <label for="comment-form-email">Email address <small class="required">*</small></label>
+                <input type="email" id="comment-form-email" name="fields[email]" tabindex="3" />
+              </div>
+              <div class="form-group">
+                <label for="comment-form-url">Website (optional)</label>
+                <input type="url" id="comment-form-url" name="fields[url]" tabindex="4"/>
+              </div>
+              <div class="form-group hidden" style="display: none;">
+                <input type="hidden" name="options[slug]" value="Migrating-my-blog-from-WordPress-to-Jekyll-and-GitHub-Pages">
+                <label for="comment-form-location">Not used. Leave blank if you are a human.</label>
+                <input type="text" id="comment-form-location" name="fields[hidden]" autocomplete="off"/>
+                <input type="hidden" name="options[reCaptcha][siteKey]" value="6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0">
+                <input type="hidden" name="options[reCaptcha][secret]" value="YDDQ/Zd3cWC5JcTKX5o3OH7tlG8soGbDSnkvg5uv6R7+SkM2ujaeZYCri5ZXUc7l+2L60NPxpRQFvMjlQq6hhjTVi9IJHrHjrmthPjHj1ZM/rNz6/FtWLs4Sm/mHP4z0/ZqwF5bcAn6s4rpnUR5nHJt3M3f1XtPVdgufg9vSxHNeFRUDRWpZxedDOTharP6xf55FRLnVpOchRe/KkIIi+L4MYfAn27esFdbpcP4rnxCujYk3VGvMUXuFT2JMVY9DMDKfE20D1SUR9sleqFwyaHoYlJG+V8oUJVioBPQTq61NoO2Xj3uddbnLN7hqSJ3V2JKCGa7UZvZCyab56/txOg==">
+              </div>
+              <!-- Start comment form alert messaging -->
+              <p class="hidden js-notice">
+                <strong class="js-notice-text"></strong>
+              </p>
+              <!-- End comment form alert messaging -->
+              
+                <div class="form-group">
+                  <div class="g-recaptcha" data-sitekey="6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0"></div>
+                </div>
+              
+              <div class="form-group">
+                <button type="submit" id="comment-form-submit" tabindex="5" class="btn btn--primary btn--large">Submit Comment</button>
+              </div>
+            </form>
+          </div>
+          <!-- End new comment form -->
+          <script async src="https://www.google.com/recaptcha/api.js"></script>
+        
+      </section>
+    
+</div>
+
+      
+    
+  </article>
+
+  
+  
+    
+<div class="page__related">
+  
+  <h2 class="page__related-title">You May Also Enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-736/Host-website-PR-previews-on-GitHub-Pages-for-free/" rel="permalink">Host website PR previews on GitHub Pages for free
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-04-07T00:00:00+00:00">April 7, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">GitHub Pages allows you to host one static website per repository for free.
+The URL is typically in the format https://&lt;username&gt;.github.io/&lt;reposit...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-736/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/" rel="permalink">The part of the SDLC nobody talks about, and many companies don’t do properly
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-03-30T00:00:00+00:00">March 30, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">The most neglected phase of the software development lifecycle (SDLC) is often the decommissioning phase.
+An app has reached end-of-life, users are no longer...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-736/Easily-capture-terminal-output-from-users-you-help-remotely/" rel="permalink">Easily capture terminal output from users you help remotely
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-03-01T00:00:00+00:00">March 1, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">When helping others troubleshoot issues with their PC, you often need to see the output of commands they run.
+The easiest way to do this is to synchronously ...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-736/Colour-your-kubectl-output-and-type-less/" rel="permalink">Colour your kubectl output and type less
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-02-05T00:00:00+00:00">February 5, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">If you work with Kubernetes on the command line using kubectl, you will appreciate kubecolor.
+Kubecolor is a small utility that adds colour to your kubectl o...</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!--========== Dan's Customizations START ==========-->
+
+<!-- Show the Donate image button at the bottom of the screen. -->
+<!-- This defines all of the CSS, HTML, and JavaScript needed for the Donate button and modal. -->
+
+<style>
+	 /* Have a fixed donate section on all of the pages (always on-top on bottom-left). */
+	#Donate
+	{
+		position: fixed;
+		width: 100%;
+		max-width: 1300px;	/* Ensure the Donate section doesn't drift too far left on large screens. */
+		bottom: 0;
+		pointer-events: none;	/* Allow clicking through the div to blog content underneath. */
+	}
+
+	#DonateModalOpenButton
+	{
+		z-index: 10;	/* Always on-top, except for modals. */
+		cursor: pointer;
+		pointer-events: auto;	/* Restore allowing clicking this element in the Donate div. */
+	}
+
+	/* Default size for the donate image on large screens. */
+	.donate-button-image
+	{
+		width: 150px;
+	}
+
+	/* Shrink donate image a bit on medium size screens. */
+	@media only screen and (max-width: 64em)
+	{
+		.donate-button-image
+		{
+			width: 100px;
+		}
+	}
+
+	/* Shrink donate images a lot on smaller screens. */
+	@media only screen and (max-width: 32em)
+	{
+		.donate-button-image
+		{
+			width: 80px;
+		}
+
+		.donate-image
+		{
+			width: 120px;
+		}
+	}
+
+	/* Modal background. */
+	.modal-container
+	{
+		display: none;	/* Hidden by default. */
+		position: fixed;
+		z-index: 100;	/* Always on top. */
+
+		/* Center the modal-container div. */
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+
+		width: 85%;
+		max-width: 600px;
+		overflow: auto;	/* Enable scroll if needed. */
+		background-color: rgb(255, 255, 255);
+
+		/* Give the container a nice rounded border */
+		border-radius: 10px;
+		border: 2px solid #235e70;
+		box-shadow: 0 0 10px #235e70;
+	}
+
+	/* The modal's close button. */
+	.modal-close-button
+	{
+		float: right;
+		margin-right: 20px;
+		color: #235e70;
+		font-size: 40px;
+		font-weight: bold;
+	}
+
+	.modal-close-button:hover,
+	.modal-close-button:focus
+	{
+		color: #000000;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	/* Modal content. */
+	.modal-content
+	{
+		margin: auto;
+		display: block;
+		clear: both;	/* Ensure the content appears below the floated close button. */
+		width: 80%;
+		text-align: center;
+		padding-bottom: 30px;
+		color: #235e70;
+	}
+
+	.modal-content a
+	{
+		/* Override the footer's "text-decoration: none;" by using !important. https://stackoverflow.com/a/64637823/602585 */
+		text-decoration: underline !important;
+	}
+</style>
+
+<!-- Show the Donate image button at the bottom of the screen. -->
+<div id="Donate">
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+		alt="Donate button image" />
+</div>
+<div id="DonateModal" class="modal-container">
+	<div id="DonateModalCloseButton" class="modal-close-button">&times;</div>
+	<div class="modal-content">
+		<p>
+			If you've found my blog helpful and would like to show your appreciation, buy me a <a
+				href="https://en.wikipedia.org/wiki/Poutine">poutine</a>! It will encourage me to create more content 😁
+		</p>
+
+		<div>
+			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
+				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
+					alt="Donate payment button image" />
+			</a>
+		</div>
+	</div>
+</div>
+
+<script>
+	var donateModal = document.getElementById("DonateModal");
+	var donateModalOpenButton = document.getElementById("DonateModalOpenButton");
+	var donateModalCloseButton = document.getElementById("DonateModalCloseButton");
+
+	// When the user clicks the open button, open the modal.
+	donateModalOpenButton.onclick = function (event)
+	{
+		if (DonateModalIsOpen())
+		{
+			CloseDonateModal();
+		}
+		else
+		{
+			OpenDonateModal();
+			event.stopPropagation();	// Prevent the window event handler from closing the modal instantly.
+		}
+	}
+
+	// When the user clicks the close button, close the modal.
+	donateModalCloseButton.onclick = function (event)
+	{
+		CloseDonateModal();
+	}
+
+	// When the user clicks anywhere outside the modal, close the modal.
+	window.onclick = function (event)
+	{
+		// Must check both the modal and it's children.
+		var userClickedOutsideOfModal = (event.target !== donateModal && !donateModal.contains(event.target))
+
+		if (DonateModalIsOpen() && userClickedOutsideOfModal)
+		{
+			CloseDonateModal();
+		}
+	}
+
+	function OpenDonateModal()
+	{
+		donateModal.style.display = "block";
+	}
+
+	function CloseDonateModal()
+	{
+		donateModal.style.display = "none";
+	}
+
+	function DonateModalIsOpen()
+	{
+		return donateModal.style.display == "block";
+	}
+</script>
+
+
+<!-- Put an advertisement in the site's footer. -->
+<!-- Put an advertisement in the site's footer. -->
+<div style="text-align: center; margin-bottom: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com Responsive Ad 2 -->
+		<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0037930831928769" data-ad-slot="1591735639"
+			data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			function RunGoogleAdsenseFooterAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+
+<!--========== Dan's Customizations END ==========-->
+
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://bsky.app/profile/danskingdom.com" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-bluesky" aria-hidden="true"></i> Bluesky</a></li>
+        
+      
+        
+          <li><a href="https://hachyderm.io/@deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-mastodon" aria-hidden="true"></i> Mastodon</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> X / Twitter</a></li>
+        
+      
+        
+          <li><a href="https://www.youtube.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> YouTube</a></li>
+        
+      
+        
+          <li><a href="https://github.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/1danielschroeder/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+        
+      
+        
+          <li><a href="https://stackoverflow.com/users/602585/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i> Stack Overflow</a></li>
+        
+      
+    
+
+    
+      <li><a href="/previews/pr-736/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+
+<div class="page__footer-copyright">&copy; 2026 <a href="https://blog.danskingdom.com">Daniel Schroeder&#39;s Programming Blog</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/previews/pr-736/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/previews/pr-736/assets/js/lunr/lunr.min.js"></script>
+<script src="/previews/pr-736/assets/js/lunr/lunr-store.js"></script>
+<script src="/previews/pr-736/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Replaced entire file with my updated version. Dan's Customizations START and END for entire file.
+	Google Analytics introduced new required consent tags in 2023, so we had to update the code to account for them.
+	More info: https://developers.google.com/tag-platform/security/guides/consent?consentmode=basic#gtag.js
+-->
+
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() { dataLayer.push(arguments); }
+
+	// Consent not granted by default.
+	gtag('consent', 'default', {
+		'ad_user_data': 'denied',
+		'ad_personalization': 'denied',
+		'ad_storage': 'denied',
+		'analytics_storage': 'denied',
+		// Wait 500ms to allow consent function to update consent values before calling Google Analytics.
+		'wait_for_update': 500,
+	});
+
+	gtag('js', new Date());
+	gtag('config', 'G-7CB6XGCWTK', {
+			'anonymize_ip': false
+		});
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CB6XGCWTK"></script>
+<script>
+	function RunGoogleAnalyticsJavaScript()
+	{
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+
+		// Update consent values from denied to granted.
+		gtag('consent', 'update', {
+			ad_user_data: 'granted',
+			ad_personalization: 'granted',
+			ad_storage: 'granted',
+			analytics_storage: 'granted'
+		});
+	}
+</script>
+
+
+
+
+
+
+    
+  <script>
+    (function ($) {
+    $('#new_comment').submit(function () {
+      var form = this;
+
+      $(form).addClass('disabled');
+      $('#comment-form-submit').html('<i class="fas fa-spinner fa-spin fa-fw"></i> Loading...');
+
+      $.ajax({
+        type: $(this).attr('method'),
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        contentType: 'application/x-www-form-urlencoded',
+        success: function (data) {
+          $('#comment-form-submit').html('Submitted');
+          $('.page__comments-form .js-notice').removeClass('notice--danger');
+          $('.page__comments-form .js-notice').addClass('notice--success');
+          showAlert('Thanks for your comment! It will show on the site once it has been approved.');
+        },
+        error: function (err) {
+          console.log(err);
+          $('#comment-form-submit').html('Submit Comment');
+          $('.page__comments-form .js-notice').removeClass('notice--success');
+          $('.page__comments-form .js-notice').addClass('notice--danger');
+          showAlert('Sorry, there was an error with your submission. Please make sure all required fields have been completed and try again.');
+          $(form).removeClass('disabled');
+        }
+      });
+
+      return false;
+    });
+
+    function showAlert(message) {
+      $('.page__comments-form .js-notice').removeClass('hidden');
+      $('.page__comments-form .js-notice-text').html(message);
+    }
+  })(jQuery);
+  </script>
+
+
+  
+
+
+
+
+
+		<!--========== Dan's Customizations START ==========-->
+
+		<!-- Include any custom website level scripts. -->
+		<!--
+	Code in this file is included at the very bottom of every webpage.
+	This file should typically be used for scripts and other invisible
+	things that need to be loaded at the bottom of every page.
+-->
+
+<!-- Microsoft Clarity script for analytics (https://clarity.microsoft.com) -->
+<script type="text/javascript">
+	function RunMsClarityJavaScript()
+	{
+		// Code copied from the MS Clarity website.
+		(function (c, l, a, r, i, t, y)
+		{
+			c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+			t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+			y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+		})(window, document, "clarity", "script", "49915jr5qy");
+
+		// Let MS Clarity know the user consented so it can setup it's cookie tracking.
+		// More info: https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-consent-api-v2
+		window.clarity('consentv2', {
+			ad_storage: "granted",
+			analytics_storage: "granted"
+		});
+	}
+</script>
+
+
+<!-- Add button to toggle between light and dark themes. -->
+<script src="/assets/js/ThemeToggle.js" defer></script>
+
+<!-- Add buttons for copying code snippets to the clipboard. -->
+<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+
+<!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
+<span style="visibility: collapse;">
+	<a rel="me" href="https://hachyderm.io/@deadlydog">Mastodon</a>
+</span>
+
+<!-- Include the cookie notice popup. -->
+<!-- This should be included last to ensure that any functions it calls have been defined already. -->
+<!-- Original code taken from https://jekyllcodex.org/without-plugin/cookie-consent/ then modified. -->
+<style>
+	#cookie-notice {
+		padding: 0.5rem 1rem;
+		display: none;
+		text-align: center;
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		background: #222;
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	#cookie-notice a {
+		display: inline-block;
+		cursor: pointer;
+		margin-left: 0.5rem;
+	}
+
+	#cookie-notice-accept {
+		background: #07a21c;
+		color: white;
+	}
+
+	#cookie-notice-more-info {
+		background: #007bff;
+		color: white;
+	}
+
+	#cookie-notice-reject {
+		background: #dc3545;
+		color: white;
+	}
+
+	#cookie-notice-buttons {
+		display: inline-block;
+	}
+</style>
+
+<div id="cookie-notice">
+	<span>This website uses cookies to ensure you get the best experience.</span>
+	<span id="cookie-notice-buttons">
+		<a id="cookie-notice-more-info" class="btn btn-primary btn-sm" href="/privacy">More info</a>
+		<a id="cookie-notice-accept" class="btn btn-primary btn-sm">OK</a>
+	</span>
+</div>
+
+<script>
+	function createCookie(name, value, days)
+	{
+		var expires = "";
+		if (days)
+		{
+			var date = new Date();
+			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+			expires = "; expires=" + date.toUTCString();
+		}
+		document.cookie = name + "=" + value + expires + "; path=/";
+	}
+
+	function readCookie(name)
+	{
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0; i < ca.length; i++)
+		{
+			var c = ca[i];
+			while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+		}
+		return null;
+	}
+
+	function eraseCookie(name)
+	{
+		createCookie(name, "", -1);
+	}
+
+	function RunThirdPartyCodeThatUsesCookies()
+	{
+		// Call the functions that should not be ran until the user has accepted cookies.
+
+// If the user is not viewing a post, the Post Ad function will not be defined, so only call it if it is defined.
+if (typeof(RunGoogleAdsensePostAdvertisementJavaScript) === typeof(Function))
+{
+	RunGoogleAdsensePostAdvertisementJavaScript()
+}
+
+RunGoogleAdsenseFooterAdvertisementJavaScript()
+RunMsClarityJavaScript()
+
+// Google Analytics are not included when running locally/debugging, so to avoid an error only call this function if it is defined.
+if (typeof (RunGoogleAnalyticsJavaScript) === typeof(Function))
+{
+	RunGoogleAnalyticsJavaScript()
+}
+
+	}
+
+	// Rather than requiring consent, we just display a notice and assume consent if the user continues to use the website.
+	// Google displays its own consent automatically for countries that require it: https://umbracocommunity.social/@steve_gibe/111925508834045878
+	RunThirdPartyCodeThatUsesCookies()
+
+	if (readCookie('cookie-notice-response') != 'accepted')
+	{
+		// Display the cookie notice.
+		document.getElementById('cookie-notice').style.display = 'block';
+	}
+
+	document.getElementById('cookie-notice-accept').addEventListener("click", function ()
+	{
+		// Persist cookie acceptance for 180 days and hide the cookie notice.
+		createCookie('cookie-notice-response', 'accepted', 180);
+		document.getElementById('cookie-notice').style.display = 'none';
+
+		// Reload the page so the analytics scripts, etc. are ran on this page, not just future pages.
+		// I considered just calling the RunThirdPartyCodeThatUsesCookies() function here, but was
+		// not sure how that would affect some analytics metrics, like the time to load the page, etc.
+		location.reload();
+	});
+</script>
+
+
+
+		<!--========== Dan's Customizations END ==========-->
+  </body>
+</html>
