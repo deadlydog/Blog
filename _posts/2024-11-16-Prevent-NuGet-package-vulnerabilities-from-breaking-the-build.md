@@ -72,7 +72,7 @@ These are listed in order of most recommended to least recommended:
     <WarningsNotAsErrors>NU1901,NU1902,NU1903,NU1904</WarningsNotAsErrors>
     ```
 
-    These are the 3 NuGet audit warning codes that I encountered, but there may be others.
+    These are the 4 NuGet audit warning codes that I encountered, but there may be others.
 
     If you are editing the .csproj file by hand, you will want to add it to the `<PropertyGroup>` section of both your `Debug` and `Release` configurations.
 
