@@ -1,0 +1,1523 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.27.3 by Michael Rose
+  Copyright 2013-2025 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Update your terminal prompt and font in Windows Terminal, VS Code, and Visual Studio - Daniel Schroeder’s Programming Blog</title>
+<meta name="description" content="I use Oh My Posh to improve my PowerShell terminal’s prompt appearance and show additional helpful information. There are many themes to choose from, and I have even created my own theme that you are welcome to use. Mine looks like this:">
+
+
+  <meta name="author" content="Daniel Schroeder">
+  
+  <meta property="article:author" content="Daniel Schroeder">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Daniel Schroeder&#39;s Programming Blog">
+<meta property="og:title" content="Update your terminal prompt and font in Windows Terminal, VS Code, and Visual Studio">
+<meta property="og:url" content="https://blog.danskingdom.com/previews/pr-744/Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/">
+
+
+  <meta property="og:description" content="I use Oh My Posh to improve my PowerShell terminal’s prompt appearance and show additional helpful information. There are many themes to choose from, and I have even created my own theme that you are welcome to use. Mine looks like this:">
+
+
+
+
+
+  <meta name="twitter:site" content="@deadlydog">
+  <meta name="twitter:title" content="Update your terminal prompt and font in Windows Terminal, VS Code, and Visual Studio">
+  <meta name="twitter:description" content="I use Oh My Posh to improve my PowerShell terminal’s prompt appearance and show additional helpful information. There are many themes to choose from, and I have even created my own theme that you are welcome to use. Mine looks like this:">
+  <meta name="twitter:url" content="https://blog.danskingdom.com/previews/pr-744/Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2023-06-29T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="https://blog.danskingdom.com/previews/pr-744/Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/previews/pr-744/feed.xml" type="application/atom+xml" rel="alternate" title="Daniel Schroeder's Programming Blog Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/previews/pr-744/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <script>
+function InitializeLightOrDarkModeStylesheet() {
+	let storageKey = 'theme-preference';
+	let darkHref = '/previews/pr-744/assets/css/dark.css';
+	let systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	let stored = null;
+	let mode = 'system';
+
+	try
+	{
+		stored = localStorage.getItem(storageKey);
+		if (stored === 'dark' || stored === 'light')
+		{
+			mode = stored;
+		}
+	}
+	catch (error)
+	{
+		console.warn('Could not access localStorage to get theme preference:', error);
+		mode = 'system';
+	}
+
+	let theme = mode === 'system' ? (systemQuery.matches ? 'dark' : 'light') : mode;
+	let linkMedia = mode === 'system' ? '(prefers-color-scheme: dark)' : (theme === 'dark' ? 'all' : 'not all');
+	let docEl = document.documentElement;
+
+	docEl.dataset.theme = theme;
+	docEl.dataset.themeMode = mode;
+
+	// Need to define colors here (in addition to the colorScheme) to prevent a flash of incorrect colors on each initial page load.
+	// So we need to keep these colors in sync with the ones defined in ThemeToggle.js.
+	if (theme === 'dark')
+	{
+		docEl.style.backgroundColor = '#0f172a';
+		docEl.style.color = '#e5e7eb';
+		docEl.style.colorScheme = 'dark';
+	}
+	else
+	{
+		docEl.style.backgroundColor = '#ffffff';
+		docEl.style.color = '#111827';
+		docEl.style.colorScheme = 'light';
+	}
+
+	let darkStylesheet = document.getElementById('theme-dark');
+
+	if (!darkStylesheet)
+	{
+		darkStylesheet = document.createElement('link');
+		darkStylesheet.id = 'theme-dark';
+		darkStylesheet.rel = 'stylesheet';
+		darkStylesheet.href = darkHref;
+		document.head.appendChild(darkStylesheet);
+	}
+
+	darkStylesheet.media = linkMedia;
+}
+InitializeLightOrDarkModeStylesheet();
+</script>
+
+  </head>
+
+  <body class="layout--single wide" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/previews/pr-744/">
+          Daniel Schroeder&#39;s Programming Blog
+          <span class="site-subtitle">Sharing my tips, tricks, and code to help other developers be more productive.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-744/"
+                
+                
+              >Home</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-744/posts/"
+                
+                
+              >Posts</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-744/categories/"
+                
+                
+              >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-744/about/"
+                
+                
+              >About</a>
+            </li></ul>
+				<!--========== Dan's Customizations START ==========-->
+				<button id="ThemeToggleButton" class="theme-toggle" title="Toggle light and dark mode. Alt+Click to follow the system setting again." aria-label="Toggle between light and dark mode" aria-pressed="false">
+					<i class="fas fa-moon theme-toggle__icon" aria-hidden="true"></i>
+				</button>
+				<!--========== Dan's Customizations END ==========-->
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://blog.danskingdom.com/previews/pr-744/">
+        <img src="/previews/pr-744/assets/Site/bio-photo.jpg" alt="Daniel Schroeder" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://blog.danskingdom.com/previews/pr-744/" itemprop="url">Daniel Schroeder</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>aka deadlydog. Developer and family man. MS MVP. Loves C#, .NET, PowerShell, AutoHotkey. Automate Everything!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Regina, SK, Canada</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://bsky.app/profile/danskingdom.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span class="label">Bluesky</span></a></li>
+          
+        
+          
+            <li><a href="https://hachyderm.io/@deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-mastodon" aria-hidden="true"></i><span class="label">Mastodon</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">X / Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://www.youtube.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i><span class="label">YouTube</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/1danielschroeder/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://stackoverflow.com/users/602585/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i><span class="label">Stack Overflow</span></a></li>
+          
+        
+          
+            <li><a href="mailto:deadlydog@hotmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://blog.danskingdom.com/feed.xml" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i><span class="label">Blog RSS Feed</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Update your terminal prompt and font in Windows Terminal, VS Code, and Visual Studio">
+    <meta itemprop="description" content="I use Oh My Posh to improve my PowerShell terminal’s prompt appearance and show additional helpful information.There are many themes to choose from, and I have even created my own theme that you are welcome to use.Mine looks like this:">
+    <meta itemprop="datePublished" content="2023-06-29T00:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+            <a href="https://blog.danskingdom.com/previews/pr-744/Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/" itemprop="url">Update your terminal prompt and font in Windows Terminal, VS Code, and Visual Studio
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-06-29T00:00:00+00:00">June 29, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+
+				<!--========== Dan's Customizations START ==========-->
+				<div>
+					<!-- Show an advertisement in the blog post content. -->
+					<!-- The advertisement shown at the bottom of a blog post. -->
+<div style="text-align: center; margin-bottom: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com In-Article Ad -->
+		<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid"
+			data-ad-client="ca-pub-0037930831928769" data-ad-slot="6215502013"></ins>
+		<script>
+			function RunGoogleAdsensePostAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+				</div>
+				<!--========== Dan's Customizations END ==========-->
+
+        <p>I use <a href="https://ohmyposh.dev">Oh My Posh</a> to improve my PowerShell terminal’s prompt appearance and show additional helpful information.
+There are <a href="https://ohmyposh.dev/docs/themes">many themes to choose from</a>, and I have even created <a href="https://github.com/deadlydog/Oh-My-Posh.DeadlydogTheme">my own theme</a> that you are welcome to use.
+Mine looks like this:</p>
+
+<p><img src="/assets/Posts/2023-06-29-Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/deadlydog-theme-screenshot.png" alt="Oh My Posh deadlydog theme screenshot" /></p>
+
+<p>You can see it displays additional helpful information, like the current directory, the current git branch and status, how long it took the last command to complete, and more.</p>
+
+<p>To use a terminal prompt theme you need to have a font installed that supports all the icons that the theme uses, and then configure your terminal to use that font.</p>
+
+<p>Even if you do not want to use a prompt theme, you may still want to update your terminal font, so let’s see how to do that.</p>
+
+<h2 id="download-and-install-a-font">Download and install a font</h2>
+
+<p>The first step is to install a font that supports all the icons you want to use.
+You can head over to <a href="https://www.nerdfonts.com/font-downloads">https://www.nerdfonts.com/font-downloads</a> and find a font that you like and supports the icons you want.
+I personally like the <code class="language-plaintext highlighter-rouge">CaskaydiaCove Nerd Font</code>.</p>
+
+<p>Once you’ve downloaded and unzipped the font, you can double-click the appropriate .ttf file to open it in the Windows Font Viewer, and then click the <code class="language-plaintext highlighter-rouge">Install</code> button to install it.</p>
+
+<p>Here is a screenshot of installing the <code class="language-plaintext highlighter-rouge">CaskaydiaCoveNerdFontMono-Regular.ttf</code> file font:</p>
+
+<p><img src="/assets/Posts/2023-06-29-Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/install-font-screenshot.png" alt="Installing a font" /></p>
+
+<p>You can install several fonts if you like so that you have a few to choose from in your applications.
+If you want to install many fonts at once, you can select multiple .ttf files and then right-click and select <code class="language-plaintext highlighter-rouge">Install</code> from the context menu.</p>
+
+<p>I personally like <code class="language-plaintext highlighter-rouge">Mono</code> fonts for my code and terminal, as I find them easier to read and better for aligning code.
+Mono fonts use the same width for all characters (e.g. the <code class="language-plaintext highlighter-rouge">i</code> character will take the same amount of space as the <code class="language-plaintext highlighter-rouge">w</code> character).
+I will be configuring my terminal to use the <code class="language-plaintext highlighter-rouge">CaskaydiaCove Nerd Font Mono</code> font in the examples below.</p>
+
+<h2 id="update-windows-terminal-to-use-the-new-font">Update Windows Terminal to use the new font</h2>
+
+<p>To update the Windows Terminal font:</p>
+
+<ol>
+  <li>Open Windows Terminal.</li>
+  <li>Open the Settings via the tab dropdown menu, or by pressing <kbd>Ctrl</kbd>+<kbd>,</kbd>.</li>
+  <li>(Optional) I recommend setting the <code class="language-plaintext highlighter-rouge">Default terminal application</code> to Windows Terminal.
+This will make it so that when Windows launches a terminal app, such as <code class="language-plaintext highlighter-rouge">cmd</code>, <code class="language-plaintext highlighter-rouge">Windows PowerShell</code>, <code class="language-plaintext highlighter-rouge">PowerShell 7</code>, or the Visual Studio debugging console, it will launch in Windows Terminal instead of their default (old-style) console.
+<img src="/assets/Posts/2023-06-29-Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/set-windows-terminal-as-default-terminal.png" alt="Setting Windows Terminal as the default terminal application" /></li>
+  <li>Select the profile that you want to change the font for.
+If you want to change the default font for all profiles, then select the <code class="language-plaintext highlighter-rouge">Defaults</code> profile.</li>
+  <li>Click into the <code class="language-plaintext highlighter-rouge">Appearance</code> section.
+<img src="/assets/Posts/2023-06-29-Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/access-windows-terminal-defaults-appearance-screenshot.png" alt="Select default profile appearance" /></li>
+  <li>Change the <code class="language-plaintext highlighter-rouge">Font face</code> to the font you want to use.
+<img src="/assets/Posts/2023-06-29-Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/windows-terminal-set-font-screenshot.png" alt="Select font face" /></li>
+  <li>Save the changes.</li>
+  <li>Repeat for any other profiles you want to change the font for.</li>
+</ol>
+
+<p>Windows terminal should now be using your new font 🙌.</p>
+
+<h2 id="update-the-vs-code-terminal-to-use-the-new-font">Update the VS Code terminal to use the new font</h2>
+
+<p>To update the VS Code terminal font:</p>
+
+<ol>
+  <li>Open Visual Studio Code.</li>
+  <li>Navigate to <code class="language-plaintext highlighter-rouge">File</code> -&gt; <code class="language-plaintext highlighter-rouge">Preferences</code> -&gt; <code class="language-plaintext highlighter-rouge">Settings</code>, or press <kbd>Ctrl</kbd>+<kbd>,</kbd> to open the Settings window.</li>
+  <li>Search for <code class="language-plaintext highlighter-rouge">font family</code>.</li>
+  <li>You will likely notice the <code class="language-plaintext highlighter-rouge">Editor: Font Family</code> setting near the top.
+You can change this if you like, but it will change the code editor font, not the terminal font.
+<img src="/assets/Posts/2023-06-29-Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/vs-code-change-editor-font-screenshot.png" alt="Change VS Code editor font family" /></li>
+  <li>Scroll down to the <code class="language-plaintext highlighter-rouge">Terminal &gt; Integrated: Font Family</code> setting, and update it to the font you want to use.
+<img src="/assets/Posts/2023-06-29-Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/vs-code-change-terminal-font-screenshot.png" alt="Change VS Code terminal font family" /></li>
+  <li>Save the changes.</li>
+</ol>
+
+<p>The VS Code terminal should now be using your new font 🙌.</p>
+
+<h2 id="update-the-visual-studio-terminal-to-use-the-new-font">Update the Visual Studio terminal to use the new font</h2>
+
+<p>To update the Visual Studio terminal font:</p>
+
+<ol>
+  <li>Open Visual Studio.</li>
+  <li>Navigate to <code class="language-plaintext highlighter-rouge">Tools</code> -&gt; <code class="language-plaintext highlighter-rouge">Options</code> to open the Options window.</li>
+  <li>Navigate to the <code class="language-plaintext highlighter-rouge">Environment</code> -&gt; <code class="language-plaintext highlighter-rouge">Fonts and Colors</code> section.</li>
+  <li>By default it will be on the <code class="language-plaintext highlighter-rouge">Text Editor</code> setting.
+ You can change the font for these items if you like, but it will change the code editor font, not the terminal font.</li>
+  <li>Change the setting to <code class="language-plaintext highlighter-rouge">Terminal</code>.</li>
+  <li>Update the <code class="language-plaintext highlighter-rouge">Font</code> setting to the font you want to use.
+<img src="/assets/Posts/2023-06-29-Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/set-visual-studio-terminal-font-screenshot.png" alt="Change Visual Studio terminal font" /></li>
+  <li>Click the OK button to save the changes.</li>
+</ol>
+
+<p>The Visual Studio terminal should now be using your new font 🙌.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>You now know about Oh My Posh, terminal prompt themes, and how to update the fonts in Windows Terminal, VS Code, and Visual Studio.
+I hope you found this post helpful.</p>
+
+<p>Happy coding!</p>
+
+        
+
+				<!--========== Dan's Customizations START ==========-->
+				<div>
+					<!-- Show an advertisement after the blog post content. -->
+					<!-- The advertisement shown at the bottom of a blog post. -->
+<div style="text-align: center; margin-top: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com Responsive Ad 1 -->
+		<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-0037930831928769" data-ad-slot="7917470839"
+			data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			function RunGoogleAdsensePostAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+				</div>
+				<!--========== Dan's Customizations END ==========-->
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/previews/pr-744/tags/#editor" class="page__taxonomy-item p-category" rel="tag">Editor</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-744/tags/#powershell" class="page__taxonomy-item p-category" rel="tag">PowerShell</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-744/tags/#visual-studio" class="page__taxonomy-item p-category" rel="tag">Visual Studio</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-744/tags/#visual-studio-code" class="page__taxonomy-item p-category" rel="tag">Visual Studio Code</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-744/tags/#windows-terminal" class="page__taxonomy-item p-category" rel="tag">Windows Terminal</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/previews/pr-744/categories/#editor" class="page__taxonomy-item p-category" rel="tag">Editor</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-744/categories/#powershell" class="page__taxonomy-item p-category" rel="tag">PowerShell</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-744/categories/#visual-studio" class="page__taxonomy-item p-category" rel="tag">Visual Studio</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-744/categories/#visual-studio-code" class="page__taxonomy-item p-category" rel="tag">Visual Studio Code</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-744/categories/#windows-terminal" class="page__taxonomy-item p-category" rel="tag">Windows Terminal</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2023-06-29T00:00:00+00:00">June 29, 2023</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://x.com/intent/tweet?via=deadlydog&text=Update+your+terminal+prompt+and+font+in+Windows+Terminal%2C+VS+Code%2C+and+Visual+Studio%20https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-744%2FUpdate-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio%2F" class="btn btn--x" aria-label="Share on X" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on X">
+    <i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i><span> X</span>
+  </a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-744%2FUpdate-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio%2F" class="btn btn--facebook" aria-label="Share on Facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook">
+    <i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span>
+  </a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.danskingdom.com/previews/pr-744/Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio/" class="btn btn--linkedin" aria-label="Share on LinkedIn" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn">
+    <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span>
+  </a>
+
+  <a href="https://bsky.app/intent/compose?text=Update+your+terminal+prompt+and+font+in+Windows+Terminal%2C+VS+Code%2C+and+Visual+Studio%20https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-744%2FUpdate-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio%2F" class="btn btn--bluesky" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Bluesky">
+    <i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span> Bluesky</span>
+  </a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/previews/pr-744/Increase-system-fault-tolerance-with-the-Stale-Cache-pattern/" class="pagination--pager" title="Increase system fault tolerance with the Stale Cache pattern">Previous</a>
+    
+    
+      <a href="/previews/pr-744/Inherit-and-extend-a-Blazor-component-and-add-UI-elements-and-hijack-its-parameters/" class="pagination--pager" title="Inherit and extend a Blazor component, add UI elements, and hijack its parameters">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+      
+        <div class="page__comments">
+  
+  
+      <section id="static-comments">
+        
+          <!-- Start static comments -->
+          <div class="js-comments">
+            
+              <h4 class="page__comments-title">Comments</h4>
+              
+
+              <!-- In order to sort by date we must have an array of objects, not an array of arrays, so
+                    create a new array of plain comment objects and then sort by the comment date. -->
+              
+              
+              
+
+              
+                
+                
+                
+                
+                
+                <article id="comment1" class="js-comment comment" itemprop="comment" itemscope itemtype="https://schema.org/Comment">
+  <div class="comment__avatar-wrapper">
+    <img class="comment__avatar" src="https://www.gravatar.com/avatar/bea622c64a43326207f2b4a6cf8be22c?d=mm&s=80" alt="nils">
+  </div>
+  <div class="comment__content-wrapper">
+    <h3 class="comment__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+      
+        <span itemprop="name"><a rel="external nofollow" itemprop="url" href="https://linktr.ee/nilsandrey">nils</a></span>
+      
+    </h3>
+    <p class="comment__date">
+      
+        <a href="#comment1" itemprop="url">
+        <time datetime="2023-06-30T23:00:38+00:00" itemprop="datePublished">June 30, 2023 at 11:00 PM</time>
+        </a>
+      
+    </p>
+    <div itemprop="text"><p>Cool. I’ve been using Oh My Posh for a long time, is great. I’ll certainly check your custom theme. I recommend the font Iosevka to save horizontal space. It was also packed as a nerd font.</p>
+</div>
+  </div>
+</article>
+
+              
+            
+          </div>
+          <!-- End static comments -->
+
+          <!-- Start new comment form -->
+          <div class="page__comments-form">
+            <h4 class="page__comments-title">Leave a Comment</h4>
+            <p class="small">Your email address will not be published. Required fields are marked <span class="required">*</span></p>
+            <form id="new_comment" class="page__comments-form js-form form" method="post" action="https://dansblog-staticman.azurewebsites.net/v3/entry/github/deadlydog/Blog/main/comments">
+              <div class="form__spinner">
+                <i class="fas fa-spinner fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only">Loading...</span>
+              </div>
+
+              <div class="form-group">
+                <label for="comment-form-message">Comment <small class="required">*</small></label>
+                <textarea type="text" rows="3" id="comment-form-message" name="fields[message]" tabindex="1"></textarea>
+                <div class="small help-block"><a href="https://daringfireball.net/projects/markdown/">Markdown is supported.</a></div>
+              </div>
+              <div class="form-group">
+                <label for="comment-form-name">Name <small class="required">*</small></label>
+                <input type="text" id="comment-form-name" name="fields[name]" tabindex="2" />
+              </div>
+              <div class="form-group">
+                <label for="comment-form-email">Email address <small class="required">*</small></label>
+                <input type="email" id="comment-form-email" name="fields[email]" tabindex="3" />
+              </div>
+              <div class="form-group">
+                <label for="comment-form-url">Website (optional)</label>
+                <input type="url" id="comment-form-url" name="fields[url]" tabindex="4"/>
+              </div>
+              <div class="form-group hidden" style="display: none;">
+                <input type="hidden" name="options[slug]" value="Update-your-terminal-prompt-and-font-in-Windows-Terminal-and-VS-Code-and-Visual-Studio">
+                <label for="comment-form-location">Not used. Leave blank if you are a human.</label>
+                <input type="text" id="comment-form-location" name="fields[hidden]" autocomplete="off"/>
+                <input type="hidden" name="options[reCaptcha][siteKey]" value="6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0">
+                <input type="hidden" name="options[reCaptcha][secret]" value="YDDQ/Zd3cWC5JcTKX5o3OH7tlG8soGbDSnkvg5uv6R7+SkM2ujaeZYCri5ZXUc7l+2L60NPxpRQFvMjlQq6hhjTVi9IJHrHjrmthPjHj1ZM/rNz6/FtWLs4Sm/mHP4z0/ZqwF5bcAn6s4rpnUR5nHJt3M3f1XtPVdgufg9vSxHNeFRUDRWpZxedDOTharP6xf55FRLnVpOchRe/KkIIi+L4MYfAn27esFdbpcP4rnxCujYk3VGvMUXuFT2JMVY9DMDKfE20D1SUR9sleqFwyaHoYlJG+V8oUJVioBPQTq61NoO2Xj3uddbnLN7hqSJ3V2JKCGa7UZvZCyab56/txOg==">
+              </div>
+              <!-- Start comment form alert messaging -->
+              <p class="hidden js-notice">
+                <strong class="js-notice-text"></strong>
+              </p>
+              <!-- End comment form alert messaging -->
+              
+                <div class="form-group">
+                  <div class="g-recaptcha" data-sitekey="6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0"></div>
+                </div>
+              
+              <div class="form-group">
+                <button type="submit" id="comment-form-submit" tabindex="5" class="btn btn--primary btn--large">Submit Comment</button>
+              </div>
+            </form>
+          </div>
+          <!-- End new comment form -->
+          <script async src="https://www.google.com/recaptcha/api.js"></script>
+        
+      </section>
+    
+</div>
+
+      
+    
+  </article>
+
+  
+  
+    
+<div class="page__related">
+  
+  <h2 class="page__related-title">You May Also Enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-744/Host-website-PR-previews-on-GitHub-Pages-for-free/" rel="permalink">Host website PR previews on GitHub Pages for free
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-04-07T00:00:00+00:00">April 7, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">GitHub Pages allows you to host one static website per repository for free.
+The URL is typically in the format https://&lt;username&gt;.github.io/&lt;reposit...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-744/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/" rel="permalink">The part of the SDLC nobody talks about, and many companies don’t do properly
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-03-30T00:00:00+00:00">March 30, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">The most neglected phase of the software development lifecycle (SDLC) is often the decommissioning phase.
+An app has reached end-of-life, users are no longer...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-744/Easily-capture-terminal-output-from-users-you-help-remotely/" rel="permalink">Easily capture terminal output from users you help remotely
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-03-01T00:00:00+00:00">March 1, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">When helping others troubleshoot issues with their PC, you often need to see the output of commands they run.
+The easiest way to do this is to synchronously ...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-744/Colour-your-kubectl-output-and-type-less/" rel="permalink">Colour your kubectl output and type less
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-02-05T00:00:00+00:00">February 5, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">If you work with Kubernetes on the command line using kubectl, you will appreciate kubecolor.
+Kubecolor is a small utility that adds colour to your kubectl o...</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!--========== Dan's Customizations START ==========-->
+
+<!-- Show the Donate image button at the bottom of the screen. -->
+<!-- This defines all of the CSS, HTML, and JavaScript needed for the Donate button and modal. -->
+
+<style>
+	 /* Have a fixed donate section on all of the pages (always on-top on bottom-left). */
+	#Donate
+	{
+		position: fixed;
+		width: 100%;
+		max-width: 1300px;	/* Ensure the Donate section doesn't drift too far left on large screens. */
+		bottom: 0;
+		pointer-events: none;	/* Allow clicking through the div to blog content underneath. */
+	}
+
+	#DonateModalOpenButton
+	{
+		z-index: 10;	/* Always on-top, except for modals. */
+		cursor: pointer;
+		pointer-events: auto;	/* Restore allowing clicking this element in the Donate div. */
+	}
+
+	/* Default size for the donate image on large screens. */
+	.donate-button-image
+	{
+		width: 150px;
+	}
+
+	/* Shrink donate image a bit on medium size screens. */
+	@media only screen and (max-width: 64em)
+	{
+		.donate-button-image
+		{
+			width: 100px;
+		}
+	}
+
+	/* Shrink donate images a lot on smaller screens. */
+	@media only screen and (max-width: 32em)
+	{
+		.donate-button-image
+		{
+			width: 80px;
+		}
+
+		.donate-image
+		{
+			width: 120px;
+		}
+	}
+
+	/* Modal background. */
+	.modal-container
+	{
+		display: none;	/* Hidden by default. */
+		position: fixed;
+		z-index: 100;	/* Always on top. */
+
+		/* Center the modal-container div. */
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+
+		width: 85%;
+		max-width: 600px;
+		overflow: auto;	/* Enable scroll if needed. */
+		background-color: rgb(255, 255, 255);
+
+		/* Give the container a nice rounded border */
+		border-radius: 10px;
+		border: 2px solid #235e70;
+		box-shadow: 0 0 10px #235e70;
+	}
+
+	/* The modal's close button. */
+	.modal-close-button
+	{
+		float: right;
+		margin-right: 20px;
+		color: #235e70;
+		font-size: 40px;
+		font-weight: bold;
+	}
+
+	.modal-close-button:hover,
+	.modal-close-button:focus
+	{
+		color: #000000;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	/* Modal content. */
+	.modal-content
+	{
+		margin: auto;
+		display: block;
+		clear: both;	/* Ensure the content appears below the floated close button. */
+		width: 80%;
+		text-align: center;
+		padding-bottom: 30px;
+		color: #235e70;
+	}
+
+	.modal-content a
+	{
+		/* Override the footer's "text-decoration: none;" by using !important. https://stackoverflow.com/a/64637823/602585 */
+		text-decoration: underline !important;
+	}
+</style>
+
+<!-- Show the Donate image button at the bottom of the screen. -->
+<div id="Donate">
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+		alt="Donate button image" />
+</div>
+<div id="DonateModal" class="modal-container">
+	<div id="DonateModalCloseButton" class="modal-close-button">&times;</div>
+	<div class="modal-content">
+		<p>
+			If you've found my blog helpful and would like to show your appreciation, buy me a <a
+				href="https://en.wikipedia.org/wiki/Poutine">poutine</a>! It will encourage me to create more content 😁
+		</p>
+
+		<div>
+			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
+				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
+					alt="Donate payment button image" />
+			</a>
+		</div>
+	</div>
+</div>
+
+<script>
+	var donateModal = document.getElementById("DonateModal");
+	var donateModalOpenButton = document.getElementById("DonateModalOpenButton");
+	var donateModalCloseButton = document.getElementById("DonateModalCloseButton");
+
+	// When the user clicks the open button, open the modal.
+	donateModalOpenButton.onclick = function (event)
+	{
+		if (DonateModalIsOpen())
+		{
+			CloseDonateModal();
+		}
+		else
+		{
+			OpenDonateModal();
+			event.stopPropagation();	// Prevent the window event handler from closing the modal instantly.
+		}
+	}
+
+	// When the user clicks the close button, close the modal.
+	donateModalCloseButton.onclick = function (event)
+	{
+		CloseDonateModal();
+	}
+
+	// When the user clicks anywhere outside the modal, close the modal.
+	window.onclick = function (event)
+	{
+		// Must check both the modal and it's children.
+		var userClickedOutsideOfModal = (event.target !== donateModal && !donateModal.contains(event.target))
+
+		if (DonateModalIsOpen() && userClickedOutsideOfModal)
+		{
+			CloseDonateModal();
+		}
+	}
+
+	function OpenDonateModal()
+	{
+		donateModal.style.display = "block";
+	}
+
+	function CloseDonateModal()
+	{
+		donateModal.style.display = "none";
+	}
+
+	function DonateModalIsOpen()
+	{
+		return donateModal.style.display == "block";
+	}
+</script>
+
+
+<!-- Put an advertisement in the site's footer. -->
+<!-- Put an advertisement in the site's footer. -->
+<div style="text-align: center; margin-bottom: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com Responsive Ad 2 -->
+		<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0037930831928769" data-ad-slot="1591735639"
+			data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			function RunGoogleAdsenseFooterAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+
+<!--========== Dan's Customizations END ==========-->
+
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://bsky.app/profile/danskingdom.com" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-bluesky" aria-hidden="true"></i> Bluesky</a></li>
+        
+      
+        
+          <li><a href="https://hachyderm.io/@deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-mastodon" aria-hidden="true"></i> Mastodon</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> X / Twitter</a></li>
+        
+      
+        
+          <li><a href="https://www.youtube.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> YouTube</a></li>
+        
+      
+        
+          <li><a href="https://github.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/1danielschroeder/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+        
+      
+        
+          <li><a href="https://stackoverflow.com/users/602585/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i> Stack Overflow</a></li>
+        
+      
+    
+
+    
+      <li><a href="/previews/pr-744/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+
+<div class="page__footer-copyright">&copy; 2026 <a href="https://blog.danskingdom.com">Daniel Schroeder&#39;s Programming Blog</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/previews/pr-744/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/previews/pr-744/assets/js/lunr/lunr.min.js"></script>
+<script src="/previews/pr-744/assets/js/lunr/lunr-store.js"></script>
+<script src="/previews/pr-744/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Replaced entire file with my updated version. Dan's Customizations START and END for entire file.
+	Google Analytics introduced new required consent tags in 2023, so we had to update the code to account for them.
+	More info: https://developers.google.com/tag-platform/security/guides/consent?consentmode=basic#gtag.js
+-->
+
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() { dataLayer.push(arguments); }
+
+	// Consent not granted by default.
+	gtag('consent', 'default', {
+		'ad_user_data': 'denied',
+		'ad_personalization': 'denied',
+		'ad_storage': 'denied',
+		'analytics_storage': 'denied',
+		// Wait 500ms to allow consent function to update consent values before calling Google Analytics.
+		'wait_for_update': 500,
+	});
+
+	gtag('js', new Date());
+	gtag('config', 'G-7CB6XGCWTK', {
+			'anonymize_ip': false
+		});
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CB6XGCWTK"></script>
+<script>
+	function RunGoogleAnalyticsJavaScript()
+	{
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+
+		// Update consent values from denied to granted.
+		gtag('consent', 'update', {
+			ad_user_data: 'granted',
+			ad_personalization: 'granted',
+			ad_storage: 'granted',
+			analytics_storage: 'granted'
+		});
+	}
+</script>
+
+
+
+
+
+
+    
+  <script>
+    (function ($) {
+    $('#new_comment').submit(function () {
+      var form = this;
+
+      $(form).addClass('disabled');
+      $('#comment-form-submit').html('<i class="fas fa-spinner fa-spin fa-fw"></i> Loading...');
+
+      $.ajax({
+        type: $(this).attr('method'),
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        contentType: 'application/x-www-form-urlencoded',
+        success: function (data) {
+          $('#comment-form-submit').html('Submitted');
+          $('.page__comments-form .js-notice').removeClass('notice--danger');
+          $('.page__comments-form .js-notice').addClass('notice--success');
+          showAlert('Thanks for your comment! It will show on the site once it has been approved.');
+        },
+        error: function (err) {
+          console.log(err);
+          $('#comment-form-submit').html('Submit Comment');
+          $('.page__comments-form .js-notice').removeClass('notice--success');
+          $('.page__comments-form .js-notice').addClass('notice--danger');
+          showAlert('Sorry, there was an error with your submission. Please make sure all required fields have been completed and try again.');
+          $(form).removeClass('disabled');
+        }
+      });
+
+      return false;
+    });
+
+    function showAlert(message) {
+      $('.page__comments-form .js-notice').removeClass('hidden');
+      $('.page__comments-form .js-notice-text').html(message);
+    }
+  })(jQuery);
+  </script>
+
+
+  
+
+
+
+
+
+		<!--========== Dan's Customizations START ==========-->
+
+		<!-- Include any custom website level scripts. -->
+		<!--
+	Code in this file is included at the very bottom of every webpage.
+	This file should typically be used for scripts and other invisible
+	things that need to be loaded at the bottom of every page.
+-->
+
+<!-- Microsoft Clarity script for analytics (https://clarity.microsoft.com) -->
+<script type="text/javascript">
+	function RunMsClarityJavaScript()
+	{
+		// Code copied from the MS Clarity website.
+		(function (c, l, a, r, i, t, y)
+		{
+			c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+			t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+			y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+		})(window, document, "clarity", "script", "49915jr5qy");
+
+		// Let MS Clarity know the user consented so it can setup it's cookie tracking.
+		// More info: https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-consent-api-v2
+		window.clarity('consentv2', {
+			ad_storage: "granted",
+			analytics_storage: "granted"
+		});
+	}
+</script>
+
+
+<!-- Add button to toggle between light and dark themes. -->
+<script src="/assets/js/ThemeToggle.js" defer></script>
+
+<!-- Add buttons for copying code snippets to the clipboard. -->
+<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+
+<!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
+<span style="visibility: collapse;">
+	<a rel="me" href="https://hachyderm.io/@deadlydog">Mastodon</a>
+</span>
+
+<!-- Include the cookie notice popup. -->
+<!-- This should be included last to ensure that any functions it calls have been defined already. -->
+<!-- Original code taken from https://jekyllcodex.org/without-plugin/cookie-consent/ then modified. -->
+<style>
+	#cookie-notice {
+		padding: 0.5rem 1rem;
+		display: none;
+		text-align: center;
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		background: #222;
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	#cookie-notice a {
+		display: inline-block;
+		cursor: pointer;
+		margin-left: 0.5rem;
+	}
+
+	#cookie-notice-accept {
+		background: #07a21c;
+		color: white;
+	}
+
+	#cookie-notice-more-info {
+		background: #007bff;
+		color: white;
+	}
+
+	#cookie-notice-reject {
+		background: #dc3545;
+		color: white;
+	}
+
+	#cookie-notice-buttons {
+		display: inline-block;
+	}
+</style>
+
+<div id="cookie-notice">
+	<span>This website uses cookies to ensure you get the best experience.</span>
+	<span id="cookie-notice-buttons">
+		<a id="cookie-notice-more-info" class="btn btn-primary btn-sm" href="/privacy">More info</a>
+		<a id="cookie-notice-accept" class="btn btn-primary btn-sm">OK</a>
+	</span>
+</div>
+
+<script>
+	function createCookie(name, value, days)
+	{
+		var expires = "";
+		if (days)
+		{
+			var date = new Date();
+			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+			expires = "; expires=" + date.toUTCString();
+		}
+		document.cookie = name + "=" + value + expires + "; path=/";
+	}
+
+	function readCookie(name)
+	{
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0; i < ca.length; i++)
+		{
+			var c = ca[i];
+			while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+		}
+		return null;
+	}
+
+	function eraseCookie(name)
+	{
+		createCookie(name, "", -1);
+	}
+
+	function RunThirdPartyCodeThatUsesCookies()
+	{
+		// Call the functions that should not be ran until the user has accepted cookies.
+
+// If the user is not viewing a post, the Post Ad function will not be defined, so only call it if it is defined.
+if (typeof(RunGoogleAdsensePostAdvertisementJavaScript) === typeof(Function))
+{
+	RunGoogleAdsensePostAdvertisementJavaScript()
+}
+
+RunGoogleAdsenseFooterAdvertisementJavaScript()
+RunMsClarityJavaScript()
+
+// Google Analytics are not included when running locally/debugging, so to avoid an error only call this function if it is defined.
+if (typeof (RunGoogleAnalyticsJavaScript) === typeof(Function))
+{
+	RunGoogleAnalyticsJavaScript()
+}
+
+	}
+
+	// Rather than requiring consent, we just display a notice and assume consent if the user continues to use the website.
+	// Google displays its own consent automatically for countries that require it: https://umbracocommunity.social/@steve_gibe/111925508834045878
+	RunThirdPartyCodeThatUsesCookies()
+
+	if (readCookie('cookie-notice-response') != 'accepted')
+	{
+		// Display the cookie notice.
+		document.getElementById('cookie-notice').style.display = 'block';
+	}
+
+	document.getElementById('cookie-notice-accept').addEventListener("click", function ()
+	{
+		// Persist cookie acceptance for 180 days and hide the cookie notice.
+		createCookie('cookie-notice-response', 'accepted', 180);
+		document.getElementById('cookie-notice').style.display = 'none';
+
+		// Reload the page so the analytics scripts, etc. are ran on this page, not just future pages.
+		// I considered just calling the RunThirdPartyCodeThatUsesCookies() function here, but was
+		// not sure how that would affect some analytics metrics, like the time to load the page, etc.
+		location.reload();
+	});
+</script>
+
+
+
+		<!--========== Dan's Customizations END ==========-->
+  </body>
+</html>
