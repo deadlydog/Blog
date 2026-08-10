@@ -106,7 +106,7 @@ analytics:
 author:
   name: "Daniel Schroeder"
   avatar: "/assets/Site/bio-photo.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio: "aka deadlydog. Developer and family man. MS MVP. Loves C#, .NET, PowerShell, AutoHotkey. Automate Everything!"
+  bio: "aka deadlydog. Developer and family man. Dual MS MVP. Loves C#, .NET, PowerShell, AutoHotkey. Automate Everything!"
   location: "Regina, SK, Canada"
   # email: "deadlydog@hotmail.com"
   links:
