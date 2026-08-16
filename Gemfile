@@ -9,6 +9,9 @@ source "https://rubygems.org"
 
 gem "github-pages", group: :jekyll_plugins
 
+# Liquid 4.0.3 and less are not compatible with newer versions of Ruby (v3.2+).
+gem "liquid", ">= 4.0.4"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem.
 gem "tzinfo-data"
 
