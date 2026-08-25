@@ -1,0 +1,2292 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.27.3 by Michael Rose
+  Copyright 2013-2025 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en-US" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Change these VS Code default settings to make it even more awesome - Daniel Schroeder’s Programming Blog</title>
+<meta name="description" content="This post is a collection of Visual Studio Code settings that I think are worth changing from their default values. This only includes native VS Code settings; no extensions or themes.">
+
+
+  <meta name="author" content="Daniel Schroeder">
+  
+  <meta property="article:author" content="Daniel Schroeder">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Daniel Schroeder&#39;s Programming Blog">
+<meta property="og:title" content="Change these VS Code default settings to make it even more awesome">
+<meta property="og:url" content="https://blog.danskingdom.com/previews/pr-754/Visual-Studio-Code-default-settings-to-change/">
+
+
+  <meta property="og:description" content="This post is a collection of Visual Studio Code settings that I think are worth changing from their default values. This only includes native VS Code settings; no extensions or themes.">
+
+
+
+
+
+  <meta name="twitter:site" content="@deadlydog">
+  <meta name="twitter:title" content="Change these VS Code default settings to make it even more awesome">
+  <meta name="twitter:description" content="This post is a collection of Visual Studio Code settings that I think are worth changing from their default values. This only includes native VS Code settings; no extensions or themes.">
+  <meta name="twitter:url" content="https://blog.danskingdom.com/previews/pr-754/Visual-Studio-Code-default-settings-to-change/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2023-03-14T00:00:00+00:00">
+
+
+
+  <meta property="article:modified_time" content="2024-01-14T00:00:00+00:00">
+
+
+
+
+<link rel="canonical" href="https://blog.danskingdom.com/previews/pr-754/Visual-Studio-Code-default-settings-to-change/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/previews/pr-754/feed.xml" type="application/atom+xml" rel="alternate" title="Daniel Schroeder's Programming Blog Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/previews/pr-754/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <script>
+function InitializeLightOrDarkModeStylesheet() {
+	let storageKey = 'theme-preference';
+	let darkHref = '/previews/pr-754/assets/css/dark.css';
+	let systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	let stored = null;
+	let mode = 'system';
+
+	try
+	{
+		stored = localStorage.getItem(storageKey);
+		if (stored === 'dark' || stored === 'light')
+		{
+			mode = stored;
+		}
+	}
+	catch (error)
+	{
+		console.warn('Could not access localStorage to get theme preference:', error);
+		mode = 'system';
+	}
+
+	let theme = mode === 'system' ? (systemQuery.matches ? 'dark' : 'light') : mode;
+	let linkMedia = mode === 'system' ? '(prefers-color-scheme: dark)' : (theme === 'dark' ? 'all' : 'not all');
+	let docEl = document.documentElement;
+
+	docEl.dataset.theme = theme;
+	docEl.dataset.themeMode = mode;
+
+	// Need to define colors here (in addition to the colorScheme) to prevent a flash of incorrect colors on each initial page load.
+	// So we need to keep these colors in sync with the ones defined in ThemeToggle.js.
+	if (theme === 'dark')
+	{
+		docEl.style.backgroundColor = '#0f172a';
+		docEl.style.color = '#e5e7eb';
+		docEl.style.colorScheme = 'dark';
+	}
+	else
+	{
+		docEl.style.backgroundColor = '#ffffff';
+		docEl.style.color = '#111827';
+		docEl.style.colorScheme = 'light';
+	}
+
+	let darkStylesheet = document.getElementById('theme-dark');
+
+	if (!darkStylesheet)
+	{
+		darkStylesheet = document.createElement('link');
+		darkStylesheet.id = 'theme-dark';
+		darkStylesheet.rel = 'stylesheet';
+		darkStylesheet.href = darkHref;
+		document.head.appendChild(darkStylesheet);
+	}
+
+	darkStylesheet.media = linkMedia;
+}
+InitializeLightOrDarkModeStylesheet();
+</script>
+
+  </head>
+
+  <body class="layout--single wide" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/previews/pr-754/">
+          Daniel Schroeder&#39;s Programming Blog
+          <span class="site-subtitle">Sharing my tips, tricks, and code to help other developers be more productive.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-754/"
+                
+                
+              >Home</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-754/posts/"
+                
+                
+              >Posts</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-754/categories/"
+                
+                
+              >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/previews/pr-754/about/"
+                
+                
+              >About</a>
+            </li></ul>
+				<!--========== Dan's Customizations START ==========-->
+				<button id="ThemeToggleButton" class="theme-toggle" title="Toggle light and dark mode. Alt+Click to follow the system setting again." aria-label="Toggle between light and dark mode" aria-pressed="false">
+					<i class="fas fa-moon theme-toggle__icon" aria-hidden="true"></i>
+				</button>
+				<!--========== Dan's Customizations END ==========-->
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://blog.danskingdom.com/previews/pr-754/">
+        <img src="/previews/pr-754/assets/Site/bio-photo.jpg" alt="Daniel Schroeder" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://blog.danskingdom.com/previews/pr-754/" itemprop="url">Daniel Schroeder</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>aka deadlydog. Developer and family man. Dual MS MVP. Loves C#, .NET, PowerShell, AutoHotkey. Automate Everything!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Regina, SK, Canada</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://bsky.app/profile/danskingdom.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span class="label">Bluesky</span></a></li>
+          
+        
+          
+            <li><a href="https://hachyderm.io/@deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-mastodon" aria-hidden="true"></i><span class="label">Mastodon</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">X / Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://www.youtube.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i><span class="label">YouTube</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/1danielschroeder/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://stackoverflow.com/users/602585/deadlydog" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i><span class="label">Stack Overflow</span></a></li>
+          
+        
+          
+            <li><a href="mailto:deadlydog@hotmail.com" rel="nofollow noopener noreferrer me"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://blog.danskingdom.com/feed.xml" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i><span class="label">Blog RSS Feed</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Change these VS Code default settings to make it even more awesome">
+    <meta itemprop="description" content="This post is a collection of Visual Studio Code settings that I think are worth changing from their default values.This only includes native VS Code settings; no extensions or themes.">
+    <meta itemprop="datePublished" content="2023-03-14T00:00:00+00:00">
+    <meta itemprop="dateModified" content="2024-01-14T00:00:00+00:00">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+            <a href="https://blog.danskingdom.com/previews/pr-754/Visual-Studio-Code-default-settings-to-change/" itemprop="url">Change these VS Code default settings to make it even more awesome
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-03-14T00:00:00+00:00">March 14, 2023</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          16 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-stream"></i> Post Sections</h4></header>
+              <ul class="toc__menu"><li><a href="#introduction">Introduction</a><ul><li><a href="#settings-sync">Settings Sync</a></li><li><a href="#changing-settings-in-vs-code">Changing settings in VS Code</a></li></ul></li><li><a href="#editor-ui-settings">Editor UI settings</a><ul><li><a href="#show-hidden-characters">Show hidden characters</a></li><li><a href="#render-whitespace">Render whitespace</a></li><li><a href="#editor-sticky-scroll">Editor sticky scroll</a></li><li><a href="#breadcrumbs-navigation">Breadcrumbs navigation</a></li><li><a href="#minimap-for-vertical-scrolling">Minimap for vertical scrolling</a></li><li><a href="#cursor-style">Cursor style</a></li><li><a href="#cursor-blinking">Cursor blinking</a></li><li><a href="#smooth-scrolling">Smooth scrolling</a></li><li><a href="#smooth-caret-animation">Smooth caret animation</a></li><li><a href="#editor-decoration-colors">Editor decoration colors</a></li><li><a href="#wrap-tabs">Wrap tabs</a></li><li><a href="#tab-height">Tab height</a></li><li><a href="#pinned-tabs-on-separate-row">Pinned tabs on separate row</a></li><li><a href="#pinned-tab-size">Pinned tab size</a></li><li><a href="#preview-editor-tab">Preview editor tab</a></li><li><a href="#bracket-pair-colorization">Bracket pair colorization</a></li><li><a href="#bracket-pair-guides">Bracket pair guides</a></li><li><a href="#editor-font">Editor font</a></li><li><a href="#editor-font-ligatures">Editor font ligatures</a></li><li><a href="#file-tree-indentation">File tree indentation</a></li><li><a href="#file-tree-indentation-guide-lines">File tree indentation guide lines</a></li><li><a href="#file-tree-indentation-guide-lines-color">File tree indentation guide lines color</a></li><li><a href="#file-tree-sticky-scroll">File tree sticky scroll</a></li><li><a href="#file-tree-compact-folders">File tree compact folders</a></li><li><a href="#debug-toolbar-location">Debug toolbar location</a></li><li><a href="#side-bar-location">Side bar location</a></li><li><a href="#activity-bar-location">Activity bar location</a></li></ul></li><li><a href="#editor-file-and-formatting-settings">Editor file and formatting settings</a><ul><li><a href="#save-files-automatically">Save files automatically</a></li><li><a href="#trim-trailing-whitespace">Trim trailing whitespace</a></li><li><a href="#insert-final-newline">Insert final newline</a></li><li><a href="#trim-final-newlines">Trim final newlines</a></li><li><a href="#format-on-paste">Format on paste</a></li><li><a href="#format-on-save-and-format-save-mode">Format on save and format save mode</a></li><li><a href="#auto-guess-encoding">Auto guess encoding</a></li><li><a href="#default-language-for-new-files">Default language for new files</a></li><li><a href="#automatically-use-find-in-selection-if-multiple-lines-are-selected">Automatically use find-in-selection if multiple lines are selected</a></li></ul></li><li><a href="#terminal-settings">Terminal settings</a><ul><li><a href="#change-the-default-integrated-terminal-and-add-other-terminals">Change the default integrated terminal, and add other terminals</a></li><li><a href="#terminal-font">Terminal font</a></li><li><a href="#terminal-cursor-style">Terminal cursor style</a></li><li><a href="#scrollback">Scrollback</a></li></ul></li><li><a href="#git-settings">Git settings</a><ul><li><a href="#autofetch">Autofetch</a></li><li><a href="#auto-stash">Auto stash</a></li><li><a href="#merge-editor">Merge editor</a></li><li><a href="#smart-commit">Smart commit</a></li></ul></li><li><a href="#markdown-settings">Markdown settings</a><ul><li><a href="#pasting-urls-into-markdown">Pasting URLs into Markdown</a></li><li><a href="#markdown-validation">Markdown validation</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+            </nav>
+          </aside>
+        
+
+				<!--========== Dan's Customizations START ==========-->
+				<div>
+					<!-- Show an advertisement in the blog post content. -->
+					<!-- The advertisement shown at the bottom of a blog post. -->
+<div style="text-align: center; margin-bottom: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com In-Article Ad -->
+		<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid"
+			data-ad-client="ca-pub-0037930831928769" data-ad-slot="6215502013"></ins>
+		<script>
+			function RunGoogleAdsensePostAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+				</div>
+				<!--========== Dan's Customizations END ==========-->
+
+        <p>This post is a collection of Visual Studio Code settings that I think are worth changing from their default values.
+This only includes native VS Code settings; no extensions or themes.</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Visual Studio Code is an amazing editor that has a ton of settings, with more being introduced all the time.
+If you don’t keep up with all the release notes, it’s easy to miss some of the new settings.
+Looking through the list of settings can be overwhelming and time consuming, and it’s hard to know which ones are worth changing.
+Below I list settings that you may want to consider changing from their default values.</p>
+
+<blockquote>
+  <p>I understand that most of these settings are personal preference, and you may not agree with all of my suggestions.
+I am simply listing these to make you aware of them.
+I encourage you to play around with them and see what works best for you.</p>
+</blockquote>
+
+<p>I’ll note that some of the settings below are mentioned even though they are on by default.
+This is done for features that were not originally turned on by default when they were introduced, and you may still have them turned off in VS Code due to Settings Sync carrying forward the original setting value.</p>
+
+<h3 id="settings-sync">Settings Sync</h3>
+
+<p>Speaking of Settings Sync, if you do not have it enabled, you should consider doing so.
+It allows you to sync your settings across multiple machines, and can also sync extensions, keyboard shortcuts, user snippets and tasks, UI state, and profiles.
+It is great for when you wipe your computer, or migrate to a new machine, as it brings all your customizations with you.
+It used to require an extension, but is now built into VS Code.
+Read more about it in <a href="https://code.visualstudio.com/docs/editor/settings-sync">the official docs</a>.</p>
+
+<h3 id="changing-settings-in-vs-code">Changing settings in VS Code</h3>
+
+<p>You can access the settings in VS Code from the <code class="language-plaintext highlighter-rouge">File</code> -&gt; <code class="language-plaintext highlighter-rouge">Preferences</code> -&gt; <code class="language-plaintext highlighter-rouge">Settings</code> menu, or use the keyboard shortcut <kbd>Ctrl</kbd>+<kbd>,</kbd> (<kbd>Cmd</kbd>+<kbd>,</kbd> on macOS).
+From there, use the search box to find the settings mentioned below in this post.</p>
+
+<p>If you prefer to modify the <code class="language-plaintext highlighter-rouge">settings.json</code> file directly, you can open it using the button in the top right corner of the settings window.
+The settings.json file typically only shows setting values that have been changed from their default.
+You can use the GUI setting’s gear icon to <code class="language-plaintext highlighter-rouge">Reset Setting</code> to its default value, and it will be removed from the settings.json file.</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/screenshot-of-settings-screen.png" alt="Screenshot of the Settings UI in VS Code" /></p>
+
+<p>If you want to quickly see what settings you’ve changed from the default values, look in the settings.json file.</p>
+
+<p>While testing out many different settings, I recommend opening the Settings tab in a separate tab group to the side (grab the tab and drag it to the right side of the text editor), or else opening it a separate VS Code instance on another monitor.
+This way you can see both the Settings tab and another tab at the same time, allowing you to modify settings and see the results instantly in the other tab without having to switch back and forth.</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/dock-settings-tab-on-the-right-side-of-window.png" alt="Dock settings tab to the right side of the editor" /></p>
+
+<p>Alright, enough preamble, let’s see the settings!</p>
+
+<p>If there are other settings you think belong on this list, please let me know in the comments.</p>
+
+<!-- Related: You may also be interested in this post about [Visual Studio Code extensions to install](/Visual-Studio-Code-extensions-to-install/). -->
+
+<h2 id="editor-ui-settings">Editor UI settings</h2>
+
+<h3 id="show-hidden-characters">Show hidden characters</h3>
+
+<p>Make hidden characters easily visible in the editor.
+This is on by default for all languages, except for Plain Text and Markdown, so we have to turn it on there explicitly.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor › Unicode Highlight: Invisible Characters</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"[markdown]"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"editor.unicodeHighlight.invisibleCharacters"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="err">,</span><span class="w">
+</span><span class="nl">"[plaintext]"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"editor.unicodeHighlight.invisibleCharacters"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/show-invisible-characters-settings-result.png" alt="Result of enabling the Show Invisible Characters setting" /></p>
+
+<p><strong>Note:</strong> There are separate settings for the <code class="language-plaintext highlighter-rouge">Markdown</code> and <code class="language-plaintext highlighter-rouge">PlainText</code> languages, which are <code class="language-plaintext highlighter-rouge">false</code> by default, so be sure to enable all of them.</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/show-invisible-characters-multiple-settings.png" alt="Screenshot showing there are multiple language settings for showing invisible characters" /></p>
+
+<h3 id="render-whitespace">Render whitespace</h3>
+
+<p>By default VS Code only shows a glyph for space and tab characters when you highlight them.
+I prefer seeing the glyph any time there is potentially unexpected whitespace, which is typically when there is more than one whitespace character, and is what the <code class="language-plaintext highlighter-rouge">boundary</code> setting value does.
+This means you will also see glyphs for indentation, but I find it helpful to see the indentation level at a glance (Python/YAML anyone 😏), and to ensure I’m not mixing tabs and spaces (because I’m weird like that ok! 😜).</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor › Render Whitespace</code> to <code class="language-plaintext highlighter-rouge">boundary</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.renderWhitespace"</span><span class="p">:</span><span class="w"> </span><span class="s2">"boundary"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/render-whitespace-setting-result.png" alt="Result of using render whitespace with shown configuration" /></p>
+
+<h3 id="editor-sticky-scroll">Editor sticky scroll</h3>
+
+<p>As you scroll down through nested classes/functions/structures, the names stick to the top of the editor making it easy to see the nested scope you’re currently working in.
+Works in many different languages, such as JavaScript, TypeScript, C#, JSON, YAML, Markdown, etc.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor › Sticky Scroll: Enabled</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.stickyScroll.enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/editor-sticky-scroll-setting-result.png" alt="Result of using sticky scroll in YAML" /></p>
+
+<p>And here it is in action while scrolling through a Markdown file:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/editor-sticky-scroll-setting-result-animation.gif" alt="Animation showing sticky scroll in action in Markdown" /></p>
+
+<p>You can also quickly toggle this setting on/off from the <code class="language-plaintext highlighter-rouge">View</code> &gt; <code class="language-plaintext highlighter-rouge">Appearance</code> menu.</p>
+
+<h3 id="breadcrumbs-navigation">Breadcrumbs navigation</h3>
+
+<p>Displays a breadcrumbs navigation bar at the top of the editor for the current tab, showing not only the file path, but also the class and function that is currently in focus.</p>
+
+<p>This setting is now on by default, but it might be turned off if you’ve been using VS Code with Settings Sync for a while.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Breadcrumbs: Enabled</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"breadcrumbs.enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/breadcrumbs-navigation-setting-result.png" alt="Result of using breadcrumbs navigation" /></p>
+
+<h3 id="minimap-for-vertical-scrolling">Minimap for vertical scrolling</h3>
+
+<p>The minimap is a small preview of the entire file that is displayed on the right side of the editor, replacing the traditional vertical scrollbar.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor › Minimap: Enabled</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.minimap.enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In addition to just enabling the minimap, you can also customize it with many different settings.
+If you search for <code class="language-plaintext highlighter-rouge">minimap</code> in the settings, you will see the many different settings that you can configure.
+The minimap configuration is a very personal preference, so I recommend trying out different settings to see what works best for you.</p>
+
+<p>Below are the non-default minimap JSON settings that I use:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.minimap.showSlider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"always"</span><span class="err">,</span><span class="w">
+</span><span class="nl">"editor.minimap.maxColumn"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="err">,</span><span class="w">
+</span><span class="nl">"editor.minimap.renderCharacters"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="err">,</span><span class="w">
+</span><span class="nl">"editor.minimap.size"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fill"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/minimap-setting-result.png" alt="Result of using the minimap for vertical scrolling with shown configuration" /></p>
+
+<h3 id="cursor-style">Cursor style</h3>
+
+<p>Change the caret (typing cursor) style.
+I actually prefer the default <code class="language-plaintext highlighter-rouge">line</code> style, but included this setting in the list as you may like a different style better.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor: Cursor Style</code> to <code class="language-plaintext highlighter-rouge">line</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.cursorStyle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"line"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result showing each of the different cursor styles:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/cursor-styles-example-results.png" alt="Result of using the different cursor styles" /></p>
+
+<h3 id="cursor-blinking">Cursor blinking</h3>
+
+<p>Control if the caret (typing cursor) blinks or not, as well as the animation it uses for the blink.
+This is a subtle UI tweak that you might not even notice, but I like it.
+I personally like the <code class="language-plaintext highlighter-rouge">expand</code> animation, but you can choose whatever you prefer.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor: Cursor Blinking</code> to <code class="language-plaintext highlighter-rouge">expand</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.cursorBlinking"</span><span class="p">:</span><span class="w"> </span><span class="s2">"expand"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p><a href="https://dev.to/chris__sev/animating-your-vs-code-cursor-w-cursor-blinking-1p30">This other blog</a> shows gifs of the different animations that you can choose from.</p>
+
+<h3 id="smooth-scrolling">Smooth scrolling</h3>
+
+<p>Adds a slight animation to vertically scrolling, rather than the page just jumping to the new location.
+I find this makes scrolling less jarring and easier to differentiate which direction you are scrolling.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor: Smooth Scrolling</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.smoothScrolling"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="smooth-caret-animation">Smooth caret animation</h3>
+
+<p>This is similar to the <a href="#smooth-scrolling">Smooth scrolling setting</a>, only for the caret (the typing cursor).
+This adds a slight animation of the caret moving to the new location, making it easier to follow, rather than it jumping and just appearing at the new location.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor: Cursor Smooth Caret Animation</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.cursorSmoothCaretAnimation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"on"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result of smooth caret animation off:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/smooth-caret-animation-off-result.gif" alt="Result of not using smooth caret animation" /></p>
+
+<p>Result of smooth caret animation on (does not look as smooth and nice in the gif due to its low frame rate):</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/smooth-caret-animation-on-result.gif" alt="Result of using smooth caret animation" /></p>
+
+<h3 id="editor-decoration-colors">Editor decoration colors</h3>
+
+<p>In addition to using glyphs in the tab name to indicate things like the file has been modified, VS Code will also change the color the tab text.</p>
+
+<p>This setting is now on by default, but it might be turned off if you’ve been using VS Code with Settings Sync for a while.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Workbench › Editor › Decorations: Colors</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"workbench.editor.decorations.colors"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/editor-decoration-colors-setting-result.png" alt="Result of enabling editor decoration colors" /></p>
+
+<h3 id="wrap-tabs">Wrap tabs</h3>
+
+<p>When you have many tabs open you can have them wrap and create another row, rather than having a horizontal scrollbar appear and needing to scroll the tabs into view.
+This uses more vertical space, but you can see all of your open tabs at once.
+This will create multiple rows of tabs if needed.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Workbench › Editor: Wrap Tabs</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"workbench.editor.wrapTabs"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/wrap-tabs-setting-result.png" alt="Screenshot of how many tabs look with wrap tabs enabled" /></p>
+
+<h3 id="tab-height">Tab height</h3>
+
+<p>You can reduce the tab height to save some vertical space, which is especially nice when you have tab wrapping enabled and have multiple rows of tabs.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Window › Density: Editor Tab Height</code> to <code class="language-plaintext highlighter-rouge">compact</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"window.density.editorTabHeight"</span><span class="p">:</span><span class="w"> </span><span class="s2">"compact"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="pinned-tabs-on-separate-row">Pinned tabs on separate row</h3>
+
+<p>You can have pinned tabs be displayed on their own row, above non-pinned tabs.
+Tabs can then be easily pinned and unpinned by dragging them in and out of the pinned row.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Workbench › Editor: Pinned Tabs On Separate Row</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"workbench.editor.pinnedTabsOnSeparateRow"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result before:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/pinned-tabs-on-separate-row-off.png" alt="Screenshot of pinned tabs not on a separate row" /></p>
+
+<p>and after:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/pinned-tabs-on-separate-row-on.png" alt="Screenshot of pinned tabs on a separate row" /></p>
+
+<h3 id="pinned-tab-size">Pinned tab size</h3>
+
+<p>Set the tab width for pinned tabs to be smaller.
+I find if I’ve pinned a tab, I often know what it is and don’t need to see the full filename in the tab.
+You can save some horizontal space by shrinking the tab size for pinned tabs.
+This is less of an issue if you have pinned tabs show on their own separate row, but I still like to use it as some files have very long names.</p>
+
+<p>You will still see the full filename in the tooltip when you hover the mouse over the tab, and in the <a href="#breadcrumbs-navigation">breadcrumbs navigation bar</a> when you have the file selected.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Workbench › Editor: Pinned Tab Sizing</code> to <code class="language-plaintext highlighter-rouge">shrink</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"workbench.editor.pinnedTabSizing"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shrink"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/pinned-tab-size-setting-result.png" alt="Result of using pinned tab sizing with shown configuration" /></p>
+
+<h3 id="preview-editor-tab">Preview editor tab</h3>
+
+<p>When you single click on a file in the file tree, it will open in the preview editor tab by default.
+There is only one preview tab, so if you single click on a different file in the file tree, it will close the first file you had open so it can display the new file in the preview tab.
+To have the file open in a non-preview tab, you can double click on the file in the file tree, double-click the preview tab, or edit the file.</p>
+
+<p>If you do not like the preview tab, you can disable it and have all files open in non-preview tabs.
+I personally like using the preview tab, but I know many people do not.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Workbench › Editor: Enable Preview</code> to <code class="language-plaintext highlighter-rouge">false</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"workbench.editor.enablePreview"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="bracket-pair-colorization">Bracket pair colorization</h3>
+
+<p>Colorize matching brackets/parenthesis, making it easier to see which opening bracket matches which closing bracket.</p>
+
+<p>There used to be several extensions that provided this functionality, but now it is built into VS Code.</p>
+
+<p>This setting is now on by default, but it might be turned off if you’ve been using VS Code with Settings Sync for a while.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor › Bracket Pair Colorization: Enabled</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.bracketPairColorization.enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result (notice how it’s easy to see which opening bracket matches which closing bracket):</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/bracket-pair-colorization-setting-result.png" alt="Screenshot of bracket pair colorization in action" /></p>
+
+<h3 id="bracket-pair-guides">Bracket pair guides</h3>
+
+<p>Add a vertical or horizontal line to the editor to help you see which pair of brackets/parenthesis you are currently modifying code for.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor › Guides: Bracket Pairs</code> to <code class="language-plaintext highlighter-rouge">active</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.guides.bracketPairs"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/bracket-pair-guides-setting-result.gif" alt="Gif of bracket pair guides in action" /></p>
+
+<h3 id="editor-font">Editor font</h3>
+
+<p>Change the font used in the editor.
+This is a very personal preference, and may require you to install the font on your machine.</p>
+
+<p>I personally like the <code class="language-plaintext highlighter-rouge">CaskaydiaCove Nerd Font</code> font.
+Another popular one is <code class="language-plaintext highlighter-rouge">FiraCode</code>.
+Both of these fonts support ligatures, and can be downloaded for free from <a href="https://www.nerdfonts.com/font-downloads">Nerd Fonts</a>.</p>
+
+<p>You can specify multiple fonts, and VS Code will use the first one that is available on your machine.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor: Font Family</code> to <code class="language-plaintext highlighter-rouge">'CaskaydiaCove Nerd Font Mono',Consolas, 'Courier New', monospace</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.fontFamily"</span><span class="p">:</span><span class="w"> </span><span class="s2">"'CaskaydiaCove Nerd Font Mono',Consolas, 'Courier New', monospace"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="editor-font-ligatures">Editor font ligatures</h3>
+
+<p>If your <a href="#editor-font">editor font</a> supports it, you can enable font ligatures.
+Font ligatures are a way to combine multiple characters into a single glyph, such as <code class="language-plaintext highlighter-rouge">==</code> becoming <code class="language-plaintext highlighter-rouge">≡</code>, or <code class="language-plaintext highlighter-rouge">-&gt;</code> becoming <code class="language-plaintext highlighter-rouge">→</code>.</p>
+
+<p>I personally do not like font ligatures, but I know many people do.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor: Font Ligatures</code>, which must be edited in the settings.json file.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.fontLigatures"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="file-tree-indentation">File tree indentation</h3>
+
+<p>Increase the indentation of nested items in the file tree so it is easier to tell when files are in a folder.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Workbench › Tree: Indent</code> to <code class="language-plaintext highlighter-rouge">11</code>, or whatever value you prefer.
+Default is 8.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"workbench.tree.indent"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="file-tree-indentation-guide-lines">File tree indentation guide lines</h3>
+
+<p>Show vertical lines in the file tree to help you see which files are in which folders.
+By default these are only shown when you hover over the mouse over the file tree, but I prefer to always show them.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Workbench › Tree: Render Indent Guides</code> to <code class="language-plaintext highlighter-rouge">always</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"workbench.tree.renderIndentGuides"</span><span class="p">:</span><span class="w"> </span><span class="s2">"always"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result (before and after):</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/always-show-workbench-tree-indent-guides-before-and-after-result.png" alt="Before and after screenshot of always showing the indent guides" /></p>
+
+<h3 id="file-tree-indentation-guide-lines-color">File tree indentation guide lines color</h3>
+
+<p>Change the color of the file tree indentation guide lines so they are easier to see.
+I found the default color to be too dark and hard to see on some monitors, so I make it brighter.
+You can choose whatever color you prefer.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Workbench: Color Customizations</code>, which must be edited in the settings.json file.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"workbench.colorCustomizations"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"tree.indentGuidesStroke"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#999999"</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Default</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">#</span><span class="mi">555555</span><span class="err">.</span><span class="w">
+</span><span class="p">}</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="file-tree-sticky-scroll">File tree sticky scroll</h3>
+
+<p>You can also enable sticky scroll in the file navigation tree.
+This will keep the directory hierarchy visible as you scroll through the file tree.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Workbench › Tree: Enable Sticky Scroll</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"workbench.tree.enableStickyScroll"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/file-tree-sticky-scroll-setting-result.png" alt="Result of using sticky scroll in the file navigation tree" /></p>
+
+<h3 id="file-tree-compact-folders">File tree compact folders</h3>
+
+<p>By default the file navigation tree will collapse folders that only contain a single folder.
+This saves a bit of vertical space, but can also make it harder to drag and drop files or folders into the collapsed folder.
+I prefer to disable it.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Explorer: Compact Folders</code> to <code class="language-plaintext highlighter-rouge">false</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"explorer.compactFolders"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result (enabled and disabled):</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/file-tree-explorer-compact-folders-setting-result.png" alt="Result of disabling compact folders in the file navigation tree" /></p>
+
+<h3 id="debug-toolbar-location">Debug toolbar location</h3>
+
+<p>By default the debug toolbar floats so that it is always visible and can be repositioned.
+The problem is it often floats over other controls or tabs, making them hard to access.
+You can dock the debug toolbar, but then it is only visible when you are in the Run And Debug view.
+Instead, I prefer to show the debug toolbar in the Command Center.
+This way it is always visible and accessible, but does not block any other controls.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Debug: Tool Bar Location</code> to <code class="language-plaintext highlighter-rouge">commandCenter</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"debug.toolBarLocation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"commandCenter"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result before, with controls obstructed:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/debug-toolbar-location-default-floating.png" alt="Screenshot of debug toolbar floating over controls" /></p>
+
+<p>Result after:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/debug-toolbar-location-command-center-result.png" alt="Screenshot of debug toolbar in command center" /></p>
+
+<h3 id="side-bar-location">Side bar location</h3>
+
+<p>By default the side bar is shown on the left side of the editor.
+I personally prefer this, but others prefer it on the right side so that when you open and close the side bar, all the text in the editor does not suddenly get shifted.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Workbench › Side Bar: Location</code> to <code class="language-plaintext highlighter-rouge">right</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"workbench.sideBar.location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"right"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result of side bar on the left (default):</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/side-bar-location-left-result.png" alt="Screenshot of side bar on the left" /></p>
+
+<p>Result of side bar on the right:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/side-bar-location-right-result.png" alt="Screenshot of side bar on the right" /></p>
+
+<h3 id="activity-bar-location">Activity bar location</h3>
+
+<p>By default the activity bar is shown on the side of the Side Bar.
+If you want to save a bit of horizontal space at the expense of being able to see more extension icons at once, you can move the activity bar to the top of the Side Bar.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Workbench › Activity Bar: Location</code> to <code class="language-plaintext highlighter-rouge">top</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"workbench.activityBar.location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"top"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Result:</p>
+
+<p><img src="/assets/Posts/2023-03-14-Visual-Studio-Code-default-settings-to-change/activity-bar-location-top-result.png" alt="Screenshot of activity bar on the top" /></p>
+
+<h2 id="editor-file-and-formatting-settings">Editor file and formatting settings</h2>
+
+<h3 id="save-files-automatically">Save files automatically</h3>
+
+<p>If you’re tired of constantly hitting <kbd>Ctrl</kbd>+<kbd>S</kbd> to save your files, you can enable auto-save.</p>
+
+<p>I personally like having it save files automatically after 1 second, but you can also choose to have it save when the editor or VS Code lose focus.
+Choose whatever works best for you.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Files: Auto Save</code> to <code class="language-plaintext highlighter-rouge">afterDelay</code>, and <code class="language-plaintext highlighter-rouge">Files: Auto Save Delay</code> to <code class="language-plaintext highlighter-rouge">1000</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"files.autoSave"</span><span class="p">:</span><span class="w"> </span><span class="s2">"afterDelay"</span><span class="err">,</span><span class="w">
+</span><span class="nl">"files.autoSaveDelay"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="trim-trailing-whitespace">Trim trailing whitespace</h3>
+
+<p>Automatically remove trailing whitespace at the end of any lines when the file is saved.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Files: Trim Trailing Whitespace</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"files.trimTrailingWhitespace"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p><strong>Note:</strong> When working in source controlled files, this can sometimes make the file diff very large if the diff viewer is not configured to ignore whitespace changes.</p>
+
+<h3 id="insert-final-newline">Insert final newline</h3>
+
+<p>Automatically add a final newline to the end of the file when you save it.
+This is especially helpful if you are working with text files that will be accessed on unix, as <a href="https://unix.stackexchange.com/a/18789/351983">unix requires a final newline to be present on text files</a>.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Files: Insert Final Newline</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"files.insertFinalNewline"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="trim-final-newlines">Trim final newlines</h3>
+
+<p>While we typically want a final newline, having more than one final newline looks sloppy.
+This setting will automatically trim any additional final newlines from the end of the file when you save it.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Files: Trim Final Newlines</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"files.trimFinalNewlines"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="format-on-paste">Format on paste</h3>
+
+<p>When you paste text into the editor, VS Code can automatically format the text for you according to any linters or formatting rules you have configured.
+This is especially useful when pasting code snippets from the internet.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor › Format On Paste</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.formatOnPaste"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="format-on-save-and-format-save-mode">Format on save and format save mode</h3>
+
+<p>Automatically format a file when you save it, applying linting rules and other formatting rules.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Format On Save</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.formatOnSave"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Along with this setting, you can specify the format mode.
+By default it will format the entire file.
+I prefer to only format the lines that I have changed, which is what the <code class="language-plaintext highlighter-rouge">modifications</code> setting value does.
+This is especially helpful when working with files in source control and you do not want your pull request diff to include a ton of formatting changes for lines that you did not edit, which may hide the actual changes you made.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Format On Save Mode</code> to <code class="language-plaintext highlighter-rouge">modifications</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.formatOnSaveMode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"modifications"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="auto-guess-encoding">Auto guess encoding</h3>
+
+<p>When you open a file, VS Code will guess the encoding of the file so it displays properly, and use that encoding when saving the file, rather than changing it to the default encoding type (which is specified by the <code class="language-plaintext highlighter-rouge">files.encoding</code> setting).</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Files: Auto Guess Encoding</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"files.autoGuessEncoding"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="default-language-for-new-files">Default language for new files</h3>
+
+<p>When you create a new tab in VS Code, but have not saved it and given it a file extension yet, VS Code does not know the file type and what language it is and thus can not provide services like syntax highlighting, intellisense, etc.
+You can provide a default language for new tabs that are not saved yet to get these services.</p>
+
+<p>I work a lot in PowerShell, so I set the default language to <code class="language-plaintext highlighter-rouge">powershell</code>.
+You may want to set it to something like <code class="language-plaintext highlighter-rouge">javascript</code>, <code class="language-plaintext highlighter-rouge">typescript</code>, <code class="language-plaintext highlighter-rouge">python</code>, <code class="language-plaintext highlighter-rouge">csharp</code>, <code class="language-plaintext highlighter-rouge">markdown</code>, etc.
+The supported language identifiers are <a href="https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers">listed here</a>.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Files: Default Language</code> to <code class="language-plaintext highlighter-rouge">powershell</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"files.defaultLanguage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"powershell"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="automatically-use-find-in-selection-if-multiple-lines-are-selected">Automatically use find-in-selection if multiple lines are selected</h3>
+
+<p>If you select multiple lines of text and use <kbd>Ctrl</kbd>+<kbd>F</kbd> or <kbd>Ctrl</kbd>+<kbd>H</kbd> to open the Find or Replace dialog respectively, VS Code can automatically toggle on the <code class="language-plaintext highlighter-rouge">Find in Selection</code> option of the dialog.
+To me, it feels intuitive that if I have multiple lines of text selected, I want to search within those lines, not the entire file.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Editor › Find: Auto Find In Selection</code> to <code class="language-plaintext highlighter-rouge">multiline</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"editor.find.autoFindInSelection"</span><span class="p">:</span><span class="w"> </span><span class="s2">"multiline"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="terminal-settings">Terminal settings</h2>
+
+<h3 id="change-the-default-integrated-terminal-and-add-other-terminals">Change the default integrated terminal, and add other terminals</h3>
+
+<p>If you use the integrated terminal, you can configure the default terminal to be something other than <code class="language-plaintext highlighter-rouge">cmd.exe</code> on Windows or <code class="language-plaintext highlighter-rouge">bash</code> on Linux/macOS.
+I prefer PowerShell, so I set it as my default.</p>
+
+<p>I use Windows, so I edit the <code class="language-plaintext highlighter-rouge">Windows</code> profile settings.
+Use the <code class="language-plaintext highlighter-rouge">Linux</code> and <code class="language-plaintext highlighter-rouge">Osx</code> profiles accordingly for those platforms.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Terminal › Integrated › Default Profile: Windows</code> to <code class="language-plaintext highlighter-rouge">PowerShell</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"terminal.integrated.defaultProfile.windows"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PowerShell"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>If the terminal that you want to use is not in the list, you can add it to your list of terminals that are available using the setting below.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Terminal › Integrated › Profiles: Windows</code>, which must be edited in the settings.json file.</p>
+
+<p>JSON setting (example):</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"terminal.integrated.profiles.windows"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"PowerShell"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PowerShell"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"icon"</span><span class="p">:</span><span class="w"> </span><span class="s2">"terminal-powershell"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"Command Prompt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"${env:windir}</span><span class="se">\\</span><span class="s2">Sysnative</span><span class="se">\\</span><span class="s2">cmd.exe"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"${env:windir}</span><span class="se">\\</span><span class="s2">System32</span><span class="se">\\</span><span class="s2">cmd.exe"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nl">"icon"</span><span class="p">:</span><span class="w"> </span><span class="s2">"terminal-cmd"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"Git Bash"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Git Bash"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="terminal-font">Terminal font</h3>
+
+<p>Similar to the <a href="#editor-font">editor font</a>, you can configure the font that is used in the integrated terminal.</p>
+
+<p>Again, I prefer the <code class="language-plaintext highlighter-rouge">CaskaydiaCove Nerd Font Mono</code> font which you can get free from <a href="https://www.nerdfonts.com/font-downloads">Nerd Fonts</a>, but feel free to use whatever font you prefer.
+You may want to ensure you pick a font that supports any ligatures that you may want to use.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Terminal › Integrated: Font Family</code> to <code class="language-plaintext highlighter-rouge">"CaskaydiaCove Nerd Font Mono"</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"terminal.integrated.fontFamily"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CaskaydiaCove Nerd Font Mono"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="terminal-cursor-style">Terminal cursor style</h3>
+
+<p>You can configure the cursor style that is used in the integrated terminal.
+I prefer the <code class="language-plaintext highlighter-rouge">line</code> cursor style over <code class="language-plaintext highlighter-rouge">block</code> or <code class="language-plaintext highlighter-rouge">underline</code>, but you can choose whatever you prefer.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Terminal › Integrated: Cursor Style</code> to <code class="language-plaintext highlighter-rouge">line</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"terminal.integrated.cursorStyle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"line"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="scrollback">Scrollback</h3>
+
+<p>The integrated terminal has a scrollback buffer that stores the output of previous commands.
+It defaults to <code class="language-plaintext highlighter-rouge">1000</code> lines, but I prefer to increase it as some scripts can output a lot of text and I like to ensure I’m able to view it all.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Terminal › Integrated: Scrollback</code> to <code class="language-plaintext highlighter-rouge">10000</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"terminal.integrated.scrollback"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="git-settings">Git settings</h2>
+
+<h3 id="autofetch">Autofetch</h3>
+
+<p>Automatically fetch from the remote repository periodically.
+This allows you to see easily if your local repository is out of date or not, without having to fetch manually.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Git: Autofetch</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"git.autofetch"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="auto-stash">Auto stash</h3>
+
+<p>Automatically stash your changes before pulling, and restore them after the pull succeeds.
+Without this, you may be presented with a prompt or error if you have uncommitted changes and try to pull.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Git: Auto Stash</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"git.autoStash"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="merge-editor">Merge editor</h3>
+
+<p>When you are resolving merge conflicts, VS Code will open the visual merge editor to help you resolve the conflicting lines.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Git: Merge Editor</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"git.mergeEditor"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="smart-commit">Smart commit</h3>
+
+<p>By default if you have not staged any changes, VS Code will prompt you to stage them before you can commit, giving you the options “Yes”, “No”, “Always”, and “Never”.</p>
+
+<ul>
+  <li>If you selected “Always”, it will have automatically stage all changes for you before committing them.</li>
+  <li>If you selected “Never”, the Commit button will be disabled until you stage some changes.</li>
+</ul>
+
+<p>I prefer to not be prompted and for it to automatically stage all changes before committing, so I use this setting.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Git: Enable Smart Commit</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"git.enableSmartCommit"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>If you prefer requiring changes to be manually staged before they can be committed, and do not want to be prompted, you can set the above <code class="language-plaintext highlighter-rouge">enableSmartCommit</code> setting to <code class="language-plaintext highlighter-rouge">false</code>, and also set <code class="language-plaintext highlighter-rouge">suggestSmartCommit</code> to false.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Git: Suggest Smart Commit</code> to <code class="language-plaintext highlighter-rouge">false</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"git.suggestSmartCommit"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="markdown-settings">Markdown settings</h2>
+
+<h3 id="pasting-urls-into-markdown">Pasting URLs into Markdown</h3>
+
+<p>Automatically wrap hyperlinks pasted into markdown files with the markdown link syntax.</p>
+
+<p>For example, pasting <code class="language-plaintext highlighter-rouge">https://someurl.com</code> into a markdown file will be converted to <code class="language-plaintext highlighter-rouge">[Title](https://someurl.com)</code>.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Markdown › Editor › Paste URL As Formatted Link: Enabled</code> to <code class="language-plaintext highlighter-rouge">smart</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"markdown.editor.pasteUrlAsFormattedLink.enabled"</span><span class="p">:</span><span class="w"> </span><span class="s2">"smart"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="markdown-validation">Markdown validation</h3>
+
+<p>Validate your markdown files and notify you of some common errors, such as broken links to pages or images in your repo.</p>
+
+<p>GUI setting: <code class="language-plaintext highlighter-rouge">Markdown › Validation: Enabled</code> to <code class="language-plaintext highlighter-rouge">true</code>.</p>
+
+<p>JSON setting:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"markdown.validate.enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I hope you’ve found these default setting adjustments useful.</p>
+
+<p>If you have suggestions for other default settings that I missed, please let me know in the comments below.</p>
+
+<p>I plan to update this post as I find more useful settings to tweak, and as new ones are introduced, so be sure to check back from time to time.</p>
+
+<p>Happy coding!</p>
+
+        
+
+				<!--========== Dan's Customizations START ==========-->
+				<div>
+					<!-- Show an advertisement after the blog post content. -->
+					<!-- The advertisement shown at the bottom of a blog post. -->
+<div style="text-align: center; margin-top: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com Responsive Ad 1 -->
+		<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-0037930831928769" data-ad-slot="7917470839"
+			data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			function RunGoogleAdsensePostAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+				</div>
+				<!--========== Dan's Customizations END ==========-->
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/previews/pr-754/tags/#editor" class="page__taxonomy-item p-category" rel="tag">Editor</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-754/tags/#productivity" class="page__taxonomy-item p-category" rel="tag">Productivity</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-754/tags/#visual-studio-code" class="page__taxonomy-item p-category" rel="tag">Visual Studio Code</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-754/tags/#vs-code" class="page__taxonomy-item p-category" rel="tag">VS Code</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/previews/pr-754/categories/#editor" class="page__taxonomy-item p-category" rel="tag">Editor</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-754/categories/#productivity" class="page__taxonomy-item p-category" rel="tag">Productivity</a><span class="sep">, </span>
+    
+      <a href="/previews/pr-754/categories/#visual-studio-code" class="page__taxonomy-item p-category" rel="tag">Visual Studio Code</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2024-01-14">January 14, 2024</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  <h4 class="page__share-title">Share on</h4>
+
+  <a href="https://x.com/intent/tweet?via=deadlydog&text=Change+these+VS+Code+default+settings+to+make+it+even+more+awesome%20https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-754%2FVisual-Studio-Code-default-settings-to-change%2F" class="btn btn--x" aria-label="Share on X" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on X">
+    <i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i><span> X</span>
+  </a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-754%2FVisual-Studio-Code-default-settings-to-change%2F" class="btn btn--facebook" aria-label="Share on Facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook">
+    <i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span>
+  </a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.danskingdom.com/previews/pr-754/Visual-Studio-Code-default-settings-to-change/" class="btn btn--linkedin" aria-label="Share on LinkedIn" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn">
+    <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span>
+  </a>
+
+  <a href="https://bsky.app/intent/compose?text=Change+these+VS+Code+default+settings+to+make+it+even+more+awesome%20https%3A%2F%2Fblog.danskingdom.com%2Fpreviews%2Fpr-754%2FVisual-Studio-Code-default-settings-to-change%2F" class="btn btn--bluesky" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Bluesky">
+    <i class="fab fa-fw fa-bluesky" aria-hidden="true"></i><span> Bluesky</span>
+  </a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/previews/pr-754/Prevent-Admin-apps-from-blocking-AutoHotkey-by-using-UI-Access/" class="pagination--pager" title="Prevent Admin apps from blocking AutoHotkey by always using UI Access">Previous</a>
+    
+    
+      <a href="/previews/pr-754/Use-Carnac-to-show-key-presses-on-screen/" class="pagination--pager" title="Use Carnac to show key presses on-screen">Next</a>
+    
+  </nav>
+
+
+    </div>
+
+    
+      
+        <div class="page__comments">
+  
+  
+      <section id="static-comments">
+        
+          <!-- Start static comments -->
+          <div class="js-comments">
+            
+              <h4 class="page__comments-title">Comments</h4>
+              
+
+              <!-- In order to sort by date we must have an array of objects, not an array of arrays, so
+                    create a new array of plain comment objects and then sort by the comment date. -->
+              
+              
+              
+
+              
+                
+                
+                
+                
+                
+                <article id="comment1" class="js-comment comment" itemprop="comment" itemscope itemtype="https://schema.org/Comment">
+  <div class="comment__avatar-wrapper">
+    <img class="comment__avatar" src="https://www.gravatar.com/avatar/6c99f9403eb1045107cf1218f6341979?d=mm&s=80" alt="itsko">
+  </div>
+  <div class="comment__content-wrapper">
+    <h3 class="comment__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+      
+        <span itemprop="name"><a rel="external nofollow" itemprop="url" href="">itsko</a></span>
+      
+    </h3>
+    <p class="comment__date">
+      
+        <a href="#comment1" itemprop="url">
+        <time datetime="2025-01-28T15:41:36+00:00" itemprop="datePublished">January 28, 2025 at 03:41 PM</time>
+        </a>
+      
+    </p>
+    <div itemprop="text"><p>In several of your images, your indentations are colored (not just the brackets). Which setting is this?</p>
+</div>
+  </div>
+</article>
+
+              
+                
+                
+                
+                
+                
+                <article id="comment2" class="js-comment comment" itemprop="comment" itemscope itemtype="https://schema.org/Comment">
+  <div class="comment__avatar-wrapper">
+    <img class="comment__avatar" src="https://www.gravatar.com/avatar/c8addda594c8b338f1e3934e73505d0c?d=mm&s=80" alt="Daniel Schroeder">
+  </div>
+  <div class="comment__content-wrapper">
+    <h3 class="comment__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+      
+        <span itemprop="name"><a rel="external nofollow" itemprop="url" href="https://blog.danskingdom.com">Daniel Schroeder</a></span>
+      
+    </h3>
+    <p class="comment__date">
+      
+        <a href="#comment2" itemprop="url">
+        <time datetime="2025-01-28T18:21:31+00:00" itemprop="datePublished">January 28, 2025 at 06:21 PM</time>
+        </a>
+      
+    </p>
+    <div itemprop="text"><p>Hi itsko, to have the indentation be colored I’m using the indent-rainbow extension: https://marketplace.visualstudio.com/items?itemName=oderwat.indent-rainbow</p>
+</div>
+  </div>
+</article>
+
+              
+            
+          </div>
+          <!-- End static comments -->
+
+          <!-- Start new comment form -->
+          <div class="page__comments-form">
+            <h4 class="page__comments-title">Leave a Comment</h4>
+            <p class="small">Your email address will not be published. Required fields are marked <span class="required">*</span></p>
+            <form id="new_comment" class="page__comments-form js-form form" method="post" action="https://dansblog-staticman.azurewebsites.net/v3/entry/github/deadlydog/Blog/main/comments">
+              <div class="form__spinner">
+                <i class="fas fa-spinner fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only">Loading...</span>
+              </div>
+
+              <div class="form-group">
+                <label for="comment-form-message">Comment <small class="required">*</small></label>
+                <textarea type="text" rows="3" id="comment-form-message" name="fields[message]" tabindex="1"></textarea>
+                <div class="small help-block"><a href="https://daringfireball.net/projects/markdown/">Markdown is supported.</a></div>
+              </div>
+              <div class="form-group">
+                <label for="comment-form-name">Name <small class="required">*</small></label>
+                <input type="text" id="comment-form-name" name="fields[name]" tabindex="2" />
+              </div>
+              <div class="form-group">
+                <label for="comment-form-email">Email address <small class="required">*</small></label>
+                <input type="email" id="comment-form-email" name="fields[email]" tabindex="3" />
+              </div>
+              <div class="form-group">
+                <label for="comment-form-url">Website (optional)</label>
+                <input type="url" id="comment-form-url" name="fields[url]" tabindex="4"/>
+              </div>
+              <div class="form-group hidden" style="display: none;">
+                <input type="hidden" name="options[slug]" value="Visual-Studio-Code-default-settings-to-change">
+                <label for="comment-form-location">Not used. Leave blank if you are a human.</label>
+                <input type="text" id="comment-form-location" name="fields[hidden]" autocomplete="off"/>
+                <input type="hidden" name="options[reCaptcha][siteKey]" value="6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0">
+                <input type="hidden" name="options[reCaptcha][secret]" value="YDDQ/Zd3cWC5JcTKX5o3OH7tlG8soGbDSnkvg5uv6R7+SkM2ujaeZYCri5ZXUc7l+2L60NPxpRQFvMjlQq6hhjTVi9IJHrHjrmthPjHj1ZM/rNz6/FtWLs4Sm/mHP4z0/ZqwF5bcAn6s4rpnUR5nHJt3M3f1XtPVdgufg9vSxHNeFRUDRWpZxedDOTharP6xf55FRLnVpOchRe/KkIIi+L4MYfAn27esFdbpcP4rnxCujYk3VGvMUXuFT2JMVY9DMDKfE20D1SUR9sleqFwyaHoYlJG+V8oUJVioBPQTq61NoO2Xj3uddbnLN7hqSJ3V2JKCGa7UZvZCyab56/txOg==">
+              </div>
+              <!-- Start comment form alert messaging -->
+              <p class="hidden js-notice">
+                <strong class="js-notice-text"></strong>
+              </p>
+              <!-- End comment form alert messaging -->
+              
+                <div class="form-group">
+                  <div class="g-recaptcha" data-sitekey="6LeKP7EUAAAAAJ2v3u_zud_PfBUF7DgCeu0i1Pm0"></div>
+                </div>
+              
+              <div class="form-group">
+                <button type="submit" id="comment-form-submit" tabindex="5" class="btn btn--primary btn--large">Submit Comment</button>
+              </div>
+            </form>
+          </div>
+          <!-- End new comment form -->
+          <script async src="https://www.google.com/recaptcha/api.js"></script>
+        
+      </section>
+    
+</div>
+
+      
+    
+  </article>
+
+  
+  
+    
+<div class="page__related">
+  
+  <h2 class="page__related-title">You May Also Enjoy</h2>
+  <div class="grid__wrapper">
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-754/Host-website-PR-previews-on-GitHub-Pages-for-free/" rel="permalink">Host website PR previews on GitHub Pages for free
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-04-07T00:00:00+00:00">April 7, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">GitHub Pages allows you to host one static website per repository for free.
+The URL is typically in the format https://&lt;username&gt;.github.io/&lt;reposit...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-754/The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-properly/" rel="permalink">The part of the SDLC nobody talks about, and many companies don’t do properly
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-03-30T00:00:00+00:00">March 30, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">The most neglected phase of the software development lifecycle (SDLC) is often the decommissioning phase.
+An app has reached end-of-life, users are no longer...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-754/Easily-capture-terminal-output-from-users-you-help-remotely/" rel="permalink">Easily capture terminal output from users you help remotely
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-03-01T00:00:00+00:00">March 1, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">When helping others troubleshoot issues with their PC, you often need to see the output of commands they run.
+The easiest way to do this is to synchronously ...</p>
+  </article>
+</div>
+
+    
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/previews/pr-754/Colour-your-kubectl-output-and-type-less/" rel="permalink">Colour your kubectl output and type less
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2026-02-05T00:00:00+00:00">February 5, 2026</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">If you work with Kubernetes on the command line using kubectl, you will appreciate kubecolor.
+Kubecolor is a small utility that adds colour to your kubectl o...</p>
+  </article>
+</div>
+
+    
+  </div>
+</div>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!--========== Dan's Customizations START ==========-->
+
+<!-- Show the Donate image button at the bottom of the screen. -->
+<!-- This defines all of the CSS, HTML, and JavaScript needed for the Donate button and modal. -->
+
+<style>
+	 /* Have a fixed donate section on all of the pages (always on-top on bottom-left). */
+	#Donate
+	{
+		position: fixed;
+		width: 100%;
+		max-width: 1300px;	/* Ensure the Donate section doesn't drift too far left on large screens. */
+		bottom: 0;
+		pointer-events: none;	/* Allow clicking through the div to blog content underneath. */
+	}
+
+	#DonateModalOpenButton
+	{
+		z-index: 10;	/* Always on-top, except for modals. */
+		cursor: pointer;
+		pointer-events: auto;	/* Restore allowing clicking this element in the Donate div. */
+	}
+
+	/* Default size for the donate image on large screens. */
+	.donate-button-image
+	{
+		width: 150px;
+	}
+
+	/* Shrink donate image a bit on medium size screens. */
+	@media only screen and (max-width: 64em)
+	{
+		.donate-button-image
+		{
+			width: 100px;
+		}
+	}
+
+	/* Shrink donate images a lot on smaller screens. */
+	@media only screen and (max-width: 32em)
+	{
+		.donate-button-image
+		{
+			width: 80px;
+		}
+
+		.donate-image
+		{
+			width: 120px;
+		}
+	}
+
+	/* Modal background. */
+	.modal-container
+	{
+		display: none;	/* Hidden by default. */
+		position: fixed;
+		z-index: 100;	/* Always on top. */
+
+		/* Center the modal-container div. */
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+
+		width: 85%;
+		max-width: 600px;
+		overflow: auto;	/* Enable scroll if needed. */
+		background-color: rgb(255, 255, 255);
+
+		/* Give the container a nice rounded border */
+		border-radius: 10px;
+		border: 2px solid #235e70;
+		box-shadow: 0 0 10px #235e70;
+	}
+
+	/* The modal's close button. */
+	.modal-close-button
+	{
+		float: right;
+		margin-right: 20px;
+		color: #235e70;
+		font-size: 40px;
+		font-weight: bold;
+	}
+
+	.modal-close-button:hover,
+	.modal-close-button:focus
+	{
+		color: #000000;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	/* Modal content. */
+	.modal-content
+	{
+		margin: auto;
+		display: block;
+		clear: both;	/* Ensure the content appears below the floated close button. */
+		width: 80%;
+		text-align: center;
+		padding-bottom: 30px;
+		color: #235e70;
+	}
+
+	.modal-content a
+	{
+		/* Override the footer's "text-decoration: none;" by using !important. https://stackoverflow.com/a/64637823/602585 */
+		text-decoration: underline !important;
+	}
+</style>
+
+<!-- Show the Donate image button at the bottom of the screen. -->
+<div id="Donate">
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+		alt="Donate button image" />
+</div>
+<div id="DonateModal" class="modal-container">
+	<div id="DonateModalCloseButton" class="modal-close-button">&times;</div>
+	<div class="modal-content">
+		<p>
+			If you've found my blog helpful and would like to show your appreciation, buy me a <a
+				href="https://en.wikipedia.org/wiki/Poutine">poutine</a>! It will encourage me to create more content 😁
+		</p>
+
+		<div>
+			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
+				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
+					alt="Donate payment button image" />
+			</a>
+		</div>
+	</div>
+</div>
+
+<script>
+	var donateModal = document.getElementById("DonateModal");
+	var donateModalOpenButton = document.getElementById("DonateModalOpenButton");
+	var donateModalCloseButton = document.getElementById("DonateModalCloseButton");
+
+	// When the user clicks the open button, open the modal.
+	donateModalOpenButton.onclick = function (event)
+	{
+		if (DonateModalIsOpen())
+		{
+			CloseDonateModal();
+		}
+		else
+		{
+			OpenDonateModal();
+			event.stopPropagation();	// Prevent the window event handler from closing the modal instantly.
+		}
+	}
+
+	// When the user clicks the close button, close the modal.
+	donateModalCloseButton.onclick = function (event)
+	{
+		CloseDonateModal();
+	}
+
+	// When the user clicks anywhere outside the modal, close the modal.
+	window.onclick = function (event)
+	{
+		// Must check both the modal and it's children.
+		var userClickedOutsideOfModal = (event.target !== donateModal && !donateModal.contains(event.target))
+
+		if (DonateModalIsOpen() && userClickedOutsideOfModal)
+		{
+			CloseDonateModal();
+		}
+	}
+
+	function OpenDonateModal()
+	{
+		donateModal.style.display = "block";
+	}
+
+	function CloseDonateModal()
+	{
+		donateModal.style.display = "none";
+	}
+
+	function DonateModalIsOpen()
+	{
+		return donateModal.style.display == "block";
+	}
+</script>
+
+
+<!-- Put an advertisement in the site's footer. -->
+<!-- Put an advertisement in the site's footer. -->
+<div style="text-align: center; margin-bottom: 1rem;">
+	<span>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0037930831928769"
+			crossorigin="anonymous"></script>
+		<!-- Blog.DansKingdom.com Responsive Ad 2 -->
+		<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0037930831928769" data-ad-slot="1591735639"
+			data-ad-format="auto" data-full-width-responsive="true"></ins>
+		<script>
+			function RunGoogleAdsenseFooterAdvertisementJavaScript()
+			{
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+		</script>
+	</span>
+</div>
+
+
+<!--========== Dan's Customizations END ==========-->
+
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://bsky.app/profile/danskingdom.com" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-bluesky" aria-hidden="true"></i> Bluesky</a></li>
+        
+      
+        
+          <li><a href="https://hachyderm.io/@deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-mastodon" aria-hidden="true"></i> Mastodon</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> X / Twitter</a></li>
+        
+      
+        
+          <li><a href="https://www.youtube.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> YouTube</a></li>
+        
+      
+        
+          <li><a href="https://github.com/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.linkedin.com/in/1danielschroeder/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+        
+      
+        
+          <li><a href="https://stackoverflow.com/users/602585/deadlydog" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-stack-overflow" aria-hidden="true"></i> Stack Overflow</a></li>
+        
+      
+    
+
+    
+      <li><a href="/previews/pr-754/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+
+<div class="page__footer-copyright">&copy; 2026 <a href="https://blog.danskingdom.com">Daniel Schroeder&#39;s Programming Blog</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/previews/pr-754/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/previews/pr-754/assets/js/lunr/lunr.min.js"></script>
+<script src="/previews/pr-754/assets/js/lunr/lunr-store.js"></script>
+<script src="/previews/pr-754/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Replaced entire file with my updated version. Dan's Customizations START and END for entire file.
+	Google Analytics introduced new required consent tags in 2023, so we had to update the code to account for them.
+	More info: https://developers.google.com/tag-platform/security/guides/consent?consentmode=basic#gtag.js
+-->
+
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() { dataLayer.push(arguments); }
+
+	// Consent not granted by default.
+	gtag('consent', 'default', {
+		'ad_user_data': 'denied',
+		'ad_personalization': 'denied',
+		'ad_storage': 'denied',
+		'analytics_storage': 'denied',
+		// Wait 500ms to allow consent function to update consent values before calling Google Analytics.
+		'wait_for_update': 500,
+	});
+
+	gtag('js', new Date());
+	gtag('config', 'G-7CB6XGCWTK', {
+			'anonymize_ip': false
+		});
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7CB6XGCWTK"></script>
+<script>
+	function RunGoogleAnalyticsJavaScript()
+	{
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+
+		// Update consent values from denied to granted.
+		gtag('consent', 'update', {
+			ad_user_data: 'granted',
+			ad_personalization: 'granted',
+			ad_storage: 'granted',
+			analytics_storage: 'granted'
+		});
+	}
+</script>
+
+
+
+
+
+
+    
+  <script>
+    (function ($) {
+    $('#new_comment').submit(function () {
+      var form = this;
+
+      $(form).addClass('disabled');
+      $('#comment-form-submit').html('<i class="fas fa-spinner fa-spin fa-fw"></i> Loading...');
+
+      $.ajax({
+        type: $(this).attr('method'),
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        contentType: 'application/x-www-form-urlencoded',
+        success: function (data) {
+          $('#comment-form-submit').html('Submitted');
+          $('.page__comments-form .js-notice').removeClass('notice--danger');
+          $('.page__comments-form .js-notice').addClass('notice--success');
+          showAlert('Thanks for your comment! It will show on the site once it has been approved.');
+        },
+        error: function (err) {
+          console.log(err);
+          $('#comment-form-submit').html('Submit Comment');
+          $('.page__comments-form .js-notice').removeClass('notice--success');
+          $('.page__comments-form .js-notice').addClass('notice--danger');
+          showAlert('Sorry, there was an error with your submission. Please make sure all required fields have been completed and try again.');
+          $(form).removeClass('disabled');
+        }
+      });
+
+      return false;
+    });
+
+    function showAlert(message) {
+      $('.page__comments-form .js-notice').removeClass('hidden');
+      $('.page__comments-form .js-notice-text').html(message);
+    }
+  })(jQuery);
+  </script>
+
+
+  
+
+
+
+
+
+		<!--========== Dan's Customizations START ==========-->
+
+		<!-- Include any custom website level scripts. -->
+		<!--
+	Code in this file is included at the very bottom of every webpage.
+	This file should typically be used for scripts and other invisible
+	things that need to be loaded at the bottom of every page.
+-->
+
+<!-- Microsoft Clarity script for analytics (https://clarity.microsoft.com) -->
+<script type="text/javascript">
+	function RunMsClarityJavaScript()
+	{
+		// Code copied from the MS Clarity website.
+		(function (c, l, a, r, i, t, y)
+		{
+			c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+			t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+			y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+		})(window, document, "clarity", "script", "49915jr5qy");
+
+		// Let MS Clarity know the user consented so it can setup it's cookie tracking.
+		// More info: https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-consent-api-v2
+		window.clarity('consentv2', {
+			ad_storage: "granted",
+			analytics_storage: "granted"
+		});
+	}
+</script>
+
+
+<!-- Add button to toggle between light and dark themes. -->
+<script src="/assets/js/ThemeToggle.js" defer></script>
+
+<!-- Add buttons for copying code snippets to the clipboard. -->
+<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+
+<!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
+<span style="visibility: collapse;">
+	<a rel="me" href="https://hachyderm.io/@deadlydog">Mastodon</a>
+</span>
+
+<!-- Include the cookie notice popup. -->
+<!-- This should be included last to ensure that any functions it calls have been defined already. -->
+<!-- Original code taken from https://jekyllcodex.org/without-plugin/cookie-consent/ then modified. -->
+<style>
+	#cookie-notice {
+		padding: 0.5rem 1rem;
+		display: none;
+		text-align: center;
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		background: #222;
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	#cookie-notice a {
+		display: inline-block;
+		cursor: pointer;
+		margin-left: 0.5rem;
+	}
+
+	#cookie-notice-accept {
+		background: #07a21c;
+		color: white;
+	}
+
+	#cookie-notice-more-info {
+		background: #007bff;
+		color: white;
+	}
+
+	#cookie-notice-reject {
+		background: #dc3545;
+		color: white;
+	}
+
+	#cookie-notice-buttons {
+		display: inline-block;
+	}
+</style>
+
+<div id="cookie-notice">
+	<span>This website uses cookies to ensure you get the best experience.</span>
+	<span id="cookie-notice-buttons">
+		<a id="cookie-notice-more-info" class="btn btn-primary btn-sm" href="/privacy">More info</a>
+		<a id="cookie-notice-accept" class="btn btn-primary btn-sm">OK</a>
+	</span>
+</div>
+
+<script>
+	function createCookie(name, value, days)
+	{
+		var expires = "";
+		if (days)
+		{
+			var date = new Date();
+			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+			expires = "; expires=" + date.toUTCString();
+		}
+		document.cookie = name + "=" + value + expires + "; path=/";
+	}
+
+	function readCookie(name)
+	{
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0; i < ca.length; i++)
+		{
+			var c = ca[i];
+			while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+		}
+		return null;
+	}
+
+	function eraseCookie(name)
+	{
+		createCookie(name, "", -1);
+	}
+
+	function RunThirdPartyCodeThatUsesCookies()
+	{
+		// Call the functions that should not be ran until the user has accepted cookies.
+
+// If the user is not viewing a post, the Post Ad function will not be defined, so only call it if it is defined.
+if (typeof(RunGoogleAdsensePostAdvertisementJavaScript) === typeof(Function))
+{
+	RunGoogleAdsensePostAdvertisementJavaScript()
+}
+
+RunGoogleAdsenseFooterAdvertisementJavaScript()
+RunMsClarityJavaScript()
+
+// Google Analytics are not included when running locally/debugging, so to avoid an error only call this function if it is defined.
+if (typeof (RunGoogleAnalyticsJavaScript) === typeof(Function))
+{
+	RunGoogleAnalyticsJavaScript()
+}
+
+	}
+
+	// Rather than requiring consent, we just display a notice and assume consent if the user continues to use the website.
+	// Google displays its own consent automatically for countries that require it: https://umbracocommunity.social/@steve_gibe/111925508834045878
+	RunThirdPartyCodeThatUsesCookies()
+
+	if (readCookie('cookie-notice-response') != 'accepted')
+	{
+		// Display the cookie notice.
+		document.getElementById('cookie-notice').style.display = 'block';
+	}
+
+	document.getElementById('cookie-notice-accept').addEventListener("click", function ()
+	{
+		// Persist cookie acceptance for 180 days and hide the cookie notice.
+		createCookie('cookie-notice-response', 'accepted', 180);
+		document.getElementById('cookie-notice').style.display = 'none';
+
+		// Reload the page so the analytics scripts, etc. are ran on this page, not just future pages.
+		// I considered just calling the RunThirdPartyCodeThatUsesCookies() function here, but was
+		// not sure how that would affect some analytics metrics, like the time to load the page, etc.
+		location.reload();
+	});
+</script>
+
+
+
+		<!--========== Dan's Customizations END ==========-->
+  </body>
+</html>
