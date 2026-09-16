@@ -1,0 +1,23 @@
+{
+	"subject": "acct:deadlydog@hachyderm.io",
+	"aliases": [
+		"https://hachyderm.io/@deadlydog",
+		"https://hachyderm.io/users/deadlydog"
+	],
+	"links": [
+		{
+			"rel": "http://webfinger.net/rel/profile-page",
+			"type": "text/html",
+			"href": "https://hachyderm.io/@deadlydog"
+		},
+		{
+			"rel": "self",
+			"type": "application/activity+json",
+			"href": "https://hachyderm.io/users/deadlydog"
+		},
+		{
+			"rel": "http://ostatus.org/schema/1.0/subscribe",
+			"template": "https://hachyderm.io/authorize_interaction?uri={uri}"
+		}
+	]
+}
