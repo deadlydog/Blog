@@ -1,0 +1,38 @@
+  <!-- 
+	Custom targets and properties added so that we can specify the database to publish to using command line parameters with VS 2012 .sqlproj projects, like we did with VS 2010 .dbproj projects.
+	This allows us to specify the MSBuild command-line parameters TargetDatabaseName, and TargetConnectionString when Publishing, and PublishToDatabase when Building.
+	I also stumbled across the undocumented parameter, PublishScriptFileName, which can be used to specify the generated sql script file name, just like DeployScriptFileName used to in VS 2010 .dbproj projects.
+	Taken from: http://blog.danskingdom.com/using-msbuild-to-publish-a-vs-2012-ssdt-sqlproj-database-project-the-same-way-as-a-vs-2010-dbproj-database-project/
+  -->
+  <PropertyGroup Condition="'$(TargetDatabaseName)' != '' Or '$(TargetConnectionString)' != ''">
+    <PublishToDatabase Condition="'$(PublishToDatabase)' == ''">False</PublishToDatabase>
+    <TargetConnectionStringXml Condition="'$(TargetConnectionString)' != ''">
+      &lt;TargetConnectionString xdt:Transform="Replace"&gt;$(TargetConnectionString)&lt;/TargetConnectionString&gt;
+    </TargetConnectionStringXml>
+    <TargetDatabaseXml Condition="'$(TargetDatabaseName)' != ''">
+      &lt;TargetDatabaseName xdt:Transform="Replace"&gt;$(TargetDatabaseName)&lt;/TargetDatabaseName&gt;
+    </TargetDatabaseXml>
+    <TransformPublishXml>&lt;?xml version="1.0"?&gt;
+        &lt;Project xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"&gt;
+        &lt;PropertyGroup&gt;$(TargetConnectionStringXml)$(TargetDatabaseXml)&lt;/PropertyGroup&gt;
+        &lt;/Project&gt;
+    </TransformPublishXml>
+    <SqlPublishProfilePath Condition="'$([System.IO.Path]::IsPathRooted($(SqlPublishProfilePath)))' == 'False'">$(MSBuildProjectDirectory)\$(SqlPublishProfilePath)</SqlPublishProfilePath>
+    <!-- In order to do a transform, we HAVE to change the SqlPublishProfilePath -->
+    <TransformOutputFile>$(MSBuildProjectDirectory)\Transformed_$(TargetDatabaseName).publish.xml</TransformOutputFile>
+    <TransformScope>$([System.IO.Path]::GetFullPath($(MSBuildProjectDirectory)))</TransformScope>
+    <TransformStackTraceEnabled Condition="'$(TransformStackTraceEnabled)'==''">False</TransformStackTraceEnabled>
+  </PropertyGroup>
+  <Target Name="AfterBuild" Condition="'$(PublishToDatabase)'=='True'">
+    <CallTarget Targets="Publish" />
+  </Target>
+  <UsingTask TaskName="ParameterizeTransformXml" AssemblyFile="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.Tasks.dll" />
+  <Target Name="BeforePublish" Condition="'$(TargetDatabaseName)' != '' Or '$(TargetConnectionString)' != ''">
+    <Message Text="TargetDatabaseName = '$(TargetDatabaseName)', TargetConnectionString = '$(TargetConnectionString)', PublishScriptFileName = '$(PublishScriptFileName)', Transformed Sql Publish Profile Path = '$(TransformOutputFile)'" Importance="high" />
+    <!-- If TargetDatabaseName or TargetConnectionString, is passed in then we use the tokenize transform to create a parameterized sql publish file -->
+    <Error Condition="!Exists($(SqlPublishProfilePath))" Text="The SqlPublishProfilePath '$(SqlPublishProfilePath)' does not exist, please specify a valid file using msbuild /p:SqlPublishProfilePath='Path'" />
+    <ParameterizeTransformXml Source="$(SqlPublishProfilePath)" IsSourceAFile="True" Transform="$(TransformPublishXml)" IsTransformAFile="False" Destination="$(TransformOutputFile)" IsDestinationAFile="True" Scope="$(TransformScope)" StackTrace="$(TransformStackTraceEnabled)" SourceRootPath="$(MSBuildProjectDirectory)" />
+    <PropertyGroup>
+      <SqlPublishProfilePath>$(TransformOutputFile)</SqlPublishProfilePath>
+    </PropertyGroup>
+  </Target>
