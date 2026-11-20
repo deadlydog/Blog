@@ -8,9 +8,11 @@ toc: false
 categories:
   - DotNet
   - NuGet
+  - Security
 tags:
   - DotNet
   - NuGet
+  - Security
 ---
 
 In the age of AI, new zero-day vulnerabilities are showing up every day, and .NET NuGet packages are no exception.
