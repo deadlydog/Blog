@@ -51,6 +51,8 @@
 
 
 
+  <meta property="article:modified_time" content="2026-11-19T00:00:00+00:00">
+
 
 
 
@@ -367,7 +369,7 @@ InitializeLightOrDarkModeStylesheet();
     <meta itemprop="headline" content="Host website PR previews on GitHub Pages for free">
     <meta itemprop="description" content="GitHub Pages allows you to host one static website per repository for free.The URL is typically in the format https://&lt;username&gt;.github.io/&lt;repository&gt;/, and you can use it to host your project’s documentation, portfolio, or any static content.I use it to host this blog for free, along with a custom domain name.">
     <meta itemprop="datePublished" content="2026-04-07T00:00:00+00:00">
-    
+    <meta itemprop="dateModified" content="2026-11-19T00:00:00+00:00">
 
     <div class="page__inner-wrap">
       
@@ -582,6 +584,19 @@ When the PR is closed, the workflow deletes the preview site from the <code clas
           <span class="s">"@ | Set-Content -Path /tmp/_config_preview.yml</span>
 
           <span class="s">bundle exec jekyll build --config _config.yml,/tmp/_config_preview.yml --destination ./_site_preview</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Fix root-relative asset paths in preview</span>
+        <span class="na">shell</span><span class="pi">:</span> <span class="s">pwsh</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">$previewBaseurl = "/previews/pr-${{ github.event.pull_request.number }}"</span>
+          <span class="s">$assetPathPattern = '(?i)(\b(?:src|href|poster)\s*=\s*["''])/assets/'</span>
+          <span class="s">Get-ChildItem -Path ./_site_preview -Filter *.html -File -Recurse | ForEach-Object {</span>
+            <span class="s">$content = Get-Content -LiteralPath $_.FullName -Raw</span>
+            <span class="s">$updated = [regex]::Replace($content, $assetPathPattern, ('${1}' + $previewBaseurl + '/assets/'))</span>
+            <span class="s">if ($updated -cne $content) {</span>
+              <span class="s">Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8</span>
+            <span class="s">}</span>
+          <span class="s">}</span>
 
       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy preview to gh-pages branch previews subdirectory</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">peaceiris/actions-gh-pages@v4</span>
@@ -837,7 +852,7 @@ You can <a href="https://github.com/deadlydog/Blog/blob/main/robots.txt">view my
 
         
 
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2026-04-07T00:00:00+00:00">April 7, 2026</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2026-11-19">November 19, 2026</time></p>
 
       </footer>
 
