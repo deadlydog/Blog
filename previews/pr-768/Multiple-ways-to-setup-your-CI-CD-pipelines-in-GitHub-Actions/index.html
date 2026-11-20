@@ -602,13 +602,13 @@ Duplicate code is harder to maintain and can easily lead to bugs if the code is 
     <p>The deployment jobs/steps will be skipped for PRs and branch builds, but will still show up in the workflow web UI.
 This can be confusing to users, as they may not understand why those jobs/steps were skipped and that they cannot be manually triggered.</p>
 
-    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-1-jobs-that-will-never-run-show-in-the-web-ui.png" alt="Jobs that will never run showing in the web UI" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-1-jobs-that-will-never-run-show-in-the-web-ui.png" alt="Jobs that will never run showing in the web UI" /></p>
   </li>
   <li>
     <p>The PR builds and non-main branch builds will show up in the same <code class="language-plaintext highlighter-rouge">1-single-file--build-and-deploy</code> workflow runs as the <code class="language-plaintext highlighter-rouge">main</code> branch builds.
 If there are a lot of PR runs or pushes to branches, they may bury the <code class="language-plaintext highlighter-rouge">main</code> branch runs, forcing you to go back several pages in the web UI to find the <code class="language-plaintext highlighter-rouge">main</code> branch runs to answer questions like, “When was the last time we deployed to production?”.</p>
 
-    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-1-main-branch-build-and-deploy-buried-under-pr-builds-in-github-workflow-runs.png" alt="Main branch build buried under PR builds" />)</p>
+    <p><img src="/previews/pr-768/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-1-main-branch-build-and-deploy-buried-under-pr-builds-in-github-workflow-runs.png" alt="Main branch build buried under PR builds" />)</p>
   </li>
 </ul>
 
@@ -742,7 +742,7 @@ They do provide <a href="https://stackoverflow.com/a/77009805/602585">API endpoi
   <li>
     <p>The build workflow only shows the build steps in the GitHub Actions UI, and the deployment workflow only shows the deployment steps, so we do not constantly have “skipped” jobs for non-deployment builds like in the previous single-workflow-file approach.</p>
 
-    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-2-workflows-do-not-need-to-have-skipped-steps.png" alt="Workflows only contain appropriate steps so they do not always have skipped steps" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-2-workflows-do-not-need-to-have-skipped-steps.png" alt="Workflows only contain appropriate steps so they do not always have skipped steps" /></p>
   </li>
   <li>Non-main branches and PRs can be manually deployed without any workflow code changes.</li>
   <li>Builds for PRs and non-main branches that we do not want deployed do not trigger deployment workflows.</li>
@@ -755,14 +755,14 @@ They do provide <a href="https://stackoverflow.com/a/77009805/602585">API endpoi
     <p>The deployment workflow is triggered even if the build workflow for the main branch fails, resulting in skipped deployment runs showing in the workflow UI.
 This can be confusing to users, and it clutters the workflow UI.</p>
 
-    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-2-deploy-workflow-jobs-are-all-skipped-when-main-branch-build-fails.png" alt="Skipped deployment workflow runs clutter the workflow UI" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-2-deploy-workflow-jobs-are-all-skipped-when-main-branch-build-fails.png" alt="Skipped deployment workflow runs clutter the workflow UI" /></p>
   </li>
   <li>
     <p>The name of the deployment workflow run is always <code class="language-plaintext highlighter-rouge">2-pull--deploy</code>, rather than the commit message of the build workflow run that triggered it.
 It also does not show the commit SHA.
 This can make it difficult to find the deployment workflow run you are looking for in the GitHub UI.</p>
 
-    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-2-deploy-workflow-run-name-is-always-the-same.png" alt="Deployment workflow runs are always named the same and do not include commit SHA" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-2-deploy-workflow-run-name-is-always-the-same.png" alt="Deployment workflow runs are always named the same and do not include commit SHA" /></p>
   </li>
   <li>
     <p>Certain variables must be duplicated between the build and deployment workflows (e.g. <code class="language-plaintext highlighter-rouge">env.artifactName</code>), or additional code added to pass the variables between the workflows.</p>
@@ -915,20 +915,20 @@ Since the build workflow is triggering the deployment workflow, the end result i
   <li>
     <p>Since the deployment workflow is never triggered by GitHub, but is instead called by the build workflow, it means the deployment workflow will never show any runs.</p>
 
-    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-3-deployment-workflow-never-has-any-runs.png" alt="Deployment workflow never has any runs" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-3-deployment-workflow-never-has-any-runs.png" alt="Deployment workflow never has any runs" /></p>
 
     <p>Instead, the deploy jobs will show up as part of the build workflow run.
 This means that builds for PRs and non-main branches will be mixed in with the <code class="language-plaintext highlighter-rouge">main</code> branch builds and deployments.
 Just like with the <code class="language-plaintext highlighter-rouge">1-single-file--build-and-deploy</code> approach, this may bury the deployments under several pages of non-main branch runs, making it difficult to find runs you care about in the GitHub UI.</p>
 
-    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-3-all-builds-and-deployments-are-mixed-in-together.png" alt="Builds and deployments for all branches are mixed in together" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-3-all-builds-and-deployments-are-mixed-in-together.png" alt="Builds and deployments for all branches are mixed in together" /></p>
   </li>
   <li>
     <p>Since the deployment jobs show up in the build workflow run, the GitHub UI prefixes each of the deployment jobs with the name of the job from the build workflow.
 This can make it difficult to see the full name of the deployment jobs in the generated diagram.
 Thankfully, the jobs are listed on the left in a tree view as well, so you can still read the full name there more easily.</p>
 
-    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-3-build-job-prefixed-on-deployment-job-names.png" alt="Deployment workflow name is prefixed on deployment jobs" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-3-build-job-prefixed-on-deployment-job-names.png" alt="Deployment workflow name is prefixed on deployment jobs" /></p>
   </li>
 </ul>
 
@@ -1059,7 +1059,7 @@ These are typically throwaway builds, so it is nice to not have them cluttering 
   <li>
     <p>In the deployment workflow run GitHub UI, the build job name is prefixed with the name of the build job in the deployment workflow, which is a minor annoyance.</p>
 
-    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-4-build-job-name-is-prefixed-with-deployment-workflow-job-name.png" alt="Build job name prefixed with job name from deployment workflow" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-4-build-job-name-is-prefixed-with-deployment-workflow-job-name.png" alt="Build job name prefixed with job name from deployment workflow" /></p>
   </li>
 </ul>
 
@@ -1249,7 +1249,7 @@ Secrets of course should not be committed to source control, so you would still 
   <li>
     <p>Similar to <code class="language-plaintext highlighter-rouge">3-push--deploy</code> above, because the template will only be referenced by other workflows and never directly triggered itself, it still shows up in the GitHub Actions UI as a workflow, but will never have any runs shown, which may be confusing to users.</p>
 
-    <p><img src="/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-5-deploy-template-will-never-show-any-runs.png" alt="Deploy template shows in the workflows even though it will never have any runs" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2024-01-05-Multiple-ways-to-setup-your-CI-CD-pipelines-in-GitHub-Actions/approach-5-deploy-template-will-never-show-any-runs.png" alt="Deploy template shows in the workflows even though it will never have any runs" /></p>
   </li>
 </ul>
 
@@ -1888,7 +1888,7 @@ The easiest way to do this is to synchronously ...</p>
 
 <!-- Show the Donate image button at the bottom of the screen. -->
 <div id="Donate">
-	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png"
 		alt="Donate button image" />
 </div>
 <div id="DonateModal" class="modal-container">
@@ -1900,7 +1900,7 @@ The easiest way to do this is to synchronously ...</p>
 		</p>
 
 		<div>
-			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<img class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png" alt="Poutine image" />
 			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
 				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
 					alt="Donate payment button image" />
@@ -2173,10 +2173,10 @@ The easiest way to do this is to synchronously ...</p>
 
 
 <!-- Add button to toggle between light and dark themes. -->
-<script src="/assets/js/ThemeToggle.js" defer></script>
+<script src="/previews/pr-768/assets/js/ThemeToggle.js" defer></script>
 
 <!-- Add buttons for copying code snippets to the clipboard. -->
-<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+<script src="/previews/pr-768/assets/js/AddCopyToClipboardButtons.js" defer></script>
 
 <!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
 <span style="visibility: collapse;">

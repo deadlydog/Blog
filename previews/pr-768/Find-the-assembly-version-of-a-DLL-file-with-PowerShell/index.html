@@ -445,7 +445,7 @@ In this case, you can use PowerShell to find the assembly version of a DLL file.
 
 <p>The object returned will contain many properties, with the assembly <code class="language-plaintext highlighter-rouge">Version</code> and <code class="language-plaintext highlighter-rouge">Name</code> written the to the terminal by default.</p>
 
-<p><img src="/assets/Posts/2025-02-07-Find-the-assembly-version-of-a-DLL-file-with-PowerShell/use-powershell-to-get-assembly-version.png" alt="Using PowerShell to get the assembly version of a DLL file" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2025-02-07-Find-the-assembly-version-of-a-DLL-file-with-PowerShell/use-powershell-to-get-assembly-version.png" alt="Using PowerShell to get the assembly version of a DLL file" /></p>
 
 <p>Since we are just calling a .NET method, you could also do this as C# code in a console app.</p>
 
@@ -472,7 +472,7 @@ The assembly binding redirects were referencing version <code class="language-pl
 <p>Often times you can find the assembly version of a DLL by simply looking at the file properties in File Explorer, under the <code class="language-plaintext highlighter-rouge">Details</code> tab.
 However, in this case, neither version of the <code class="language-plaintext highlighter-rouge">System.Memory.dll</code> assemblies was showing their proper assembly version in the file properties.</p>
 
-<p><img src="/assets/Posts/2025-02-07-Find-the-assembly-version-of-a-DLL-file-with-PowerShell/system.memory.dll-file-properties.png" alt="The file properties of both versions of System.Memory.dll" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2025-02-07-Find-the-assembly-version-of-a-DLL-file-with-PowerShell/system.memory.dll-file-properties.png" alt="The file properties of both versions of System.Memory.dll" /></p>
 
 <p>You can see that the <code class="language-plaintext highlighter-rouge">File version</code> and <code class="language-plaintext highlighter-rouge">Product version</code> fields of the assemblies in the NuGet package and in the artifact are not showing the actual assembly version of the DLL; either <code class="language-plaintext highlighter-rouge">4.0.2.0</code> or <code class="language-plaintext highlighter-rouge">4.0.1.2</code>.</p>
 
@@ -480,7 +480,7 @@ However, in this case, neither version of the <code class="language-plaintext hi
 
 <p>PowerShell to the rescue!</p>
 
-<p><img src="/assets/Posts/2025-02-07-Find-the-assembly-version-of-a-DLL-file-with-PowerShell/use-powershell-to-get-both-assembly-versions.png" alt="Using PowerShell to get the assembly versions of both assemblies" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2025-02-07-Find-the-assembly-version-of-a-DLL-file-with-PowerShell/use-powershell-to-get-both-assembly-versions.png" alt="Using PowerShell to get the assembly versions of both assemblies" /></p>
 
 <p>Now that I knew the actual assembly versions, I could update the assembly binding redirect in my <code class="language-plaintext highlighter-rouge">app.config</code> file to match the version of the assembly being copied into the artifacts.
 Specifically, <code class="language-plaintext highlighter-rouge">newVersion="4.0.1.2</code>.</p>
@@ -1109,7 +1109,7 @@ The easiest way to do this is to synchronously ...</p>
 
 <!-- Show the Donate image button at the bottom of the screen. -->
 <div id="Donate">
-	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png"
 		alt="Donate button image" />
 </div>
 <div id="DonateModal" class="modal-container">
@@ -1121,7 +1121,7 @@ The easiest way to do this is to synchronously ...</p>
 		</p>
 
 		<div>
-			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<img class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png" alt="Poutine image" />
 			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
 				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
 					alt="Donate payment button image" />
@@ -1394,10 +1394,10 @@ The easiest way to do this is to synchronously ...</p>
 
 
 <!-- Add button to toggle between light and dark themes. -->
-<script src="/assets/js/ThemeToggle.js" defer></script>
+<script src="/previews/pr-768/assets/js/ThemeToggle.js" defer></script>
 
 <!-- Add buttons for copying code snippets to the clipboard. -->
-<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+<script src="/previews/pr-768/assets/js/AddCopyToClipboardButtons.js" defer></script>
 
 <!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
 <span style="visibility: collapse;">

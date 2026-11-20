@@ -496,7 +496,7 @@ This works similarly to the <code class="language-plaintext highlighter-rouge">M
 
 <p>You will notice some summary information is output to the console when you run the <code class="language-plaintext highlighter-rouge">Trace-Script</code> command, including the total <code class="language-plaintext highlighter-rouge">Duration</code>, which is the same info that the <code class="language-plaintext highlighter-rouge">Measure-Command</code> cmdlet would have given us.</p>
 
-<p><img src="/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-script-summary-output-screenshot.png" alt="Trace-Script summary output" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-script-summary-output-screenshot.png" alt="Trace-Script summary output" /></p>
 
 <h2 id="viewing-the-profile-trace-information">Viewing the profile trace information</h2>
 
@@ -504,7 +504,7 @@ This works similarly to the <code class="language-plaintext highlighter-rouge">M
 
 <p>The <code class="language-plaintext highlighter-rouge">TotalDuration</code> property is the same TimeSpan that <code class="language-plaintext highlighter-rouge">Measure-Command</code> would have given us:</p>
 
-<p><img src="/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-total-duration-screenshot.png" alt="Trace TotalDuration property output" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-total-duration-screenshot.png" alt="Trace TotalDuration property output" /></p>
 
 <p>The real value of the Profiler is in the <code class="language-plaintext highlighter-rouge">Top50SelfDuration</code> and <code class="language-plaintext highlighter-rouge">Top50Duration</code> properties, which is a list of the top 50 slowest commands in the trace.
 The 2 properties show similar information, just sorted based on <code class="language-plaintext highlighter-rouge">SelfDuration</code> or <code class="language-plaintext highlighter-rouge">Duration</code> respectively.</p>
@@ -521,7 +521,7 @@ You can then look at the <code class="language-plaintext highlighter-rouge">Top5
 
 <p>Here is the output of the <code class="language-plaintext highlighter-rouge">Top50SelfDuration</code> property:</p>
 
-<p><img src="/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-top-50-self-duration-table.png" alt="Trace Top50SelfDuration property output" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-top-50-self-duration-table.png" alt="Trace Top50SelfDuration property output" /></p>
 
 <p>In this screenshot we can see that the top offender (the first row) is a line in the <code class="language-plaintext highlighter-rouge">tiPS</code> module’s <code class="language-plaintext highlighter-rouge">Configuration.ps1</code> file on line <code class="language-plaintext highlighter-rouge">8</code>, which is called once and taking 693 milliseconds to execute.
 <code class="language-plaintext highlighter-rouge">tiPS</code> is a module that I am currently developing and have added to my profile to automatically import it on every new session.</p>
@@ -530,7 +530,7 @@ You can then look at the <code class="language-plaintext highlighter-rouge">Top5
 Unfortunately the number of columns displayed is based on your console window width.
 If we make the console window wider, we can see 2 more very useful columns: <code class="language-plaintext highlighter-rouge">Function</code> and <code class="language-plaintext highlighter-rouge">Text</code>, which is the actual line of code that was executed.</p>
 
-<p><img src="/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-top-50-self-duration-table-wider-width.png" alt="Trace Top50SelfDuration property output with wider console window" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-top-50-self-duration-table-wider-width.png" alt="Trace Top50SelfDuration property output with wider console window" /></p>
 
 <p>Even with the wider console window, much of the text is still cut off.
 To see the full text we have a couple options.
@@ -539,7 +539,7 @@ We can pipe the output to <code class="language-plaintext highlighter-rouge">For
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$trace</span><span class="o">.</span><span class="nf">Top50SelfDuration</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Format-List</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-top-50-self-duration-list.png" alt="Trace Top50SelfDuration property output in Format-List" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-top-50-self-duration-list.png" alt="Trace Top50SelfDuration property output in Format-List" /></p>
 
 <p>This is good for seeing details about each individual entry, but not great for viewing the entire list.</p>
 
@@ -548,7 +548,7 @@ We can pipe the output to <code class="language-plaintext highlighter-rouge">For
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$trace</span><span class="o">.</span><span class="nf">Top50SelfDuration</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Out-GridView</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-top-50-self-duration-grid-view.png" alt="Trace Top50SelfDuration property output in Out-GridView" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-top-50-self-duration-grid-view.png" alt="Trace Top50SelfDuration property output in Out-GridView" /></p>
 
 <p>This allows me to see all of the columns, reorder and hide columns I don’t care about, as well as sort and filter the results.</p>
 
@@ -565,13 +565,13 @@ Since it is third party code there’s not much I can do outside of not loading 
 <p>With that in mind, let’s focus on the code that I can optimize.
 The 6th row shows another top offending line in the <code class="language-plaintext highlighter-rouge">tiPS</code> module.</p>
 
-<p><img src="/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-tips-dot-source-offending-line.png" alt="Trace Top50SelfDuration property output in Out-GridView with 6th row highlighted" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-tips-dot-source-offending-line.png" alt="Trace Top50SelfDuration property output in Out-GridView with 6th row highlighted" /></p>
 
 <p>Notice that this line has a total <code class="language-plaintext highlighter-rouge">Duration</code> of 1054 milliseconds, due to it being called 15 times.
 On initial inspection, it appears that this line of code is slowing the module load time even more than our initial top offender (we’ll come back to this).
 This is made more apparent when we sort by <code class="language-plaintext highlighter-rouge">Duration</code>:</p>
 
-<p><img src="/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-tips-dot-source-offending-line-sorted-by-duration.png" alt="Trace Top50Duration property output in Out-GridView sorted by Duration" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-09-09-Easily-profile-your-PowerShell-code-with-the-Profiler-module/trace-tips-dot-source-offending-line-sorted-by-duration.png" alt="Trace Top50Duration property output in Out-GridView sorted by Duration" /></p>
 
 <p>We can ignore the top row as it is dot-sourcing the file that contains all of my custom profile code, which is why the <code class="language-plaintext highlighter-rouge">Percent</code> shows as <code class="language-plaintext highlighter-rouge">99.79</code>.
 I keep my custom profile code in a separate file and dot-source it into the official $Profile so that it can be shared between PowerShell 5 and Pwsh 7, as well as automatically backed up on OneDrive.</p>
@@ -1148,7 +1148,7 @@ The easiest way to do this is to synchronously ...</p>
 
 <!-- Show the Donate image button at the bottom of the screen. -->
 <div id="Donate">
-	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png"
 		alt="Donate button image" />
 </div>
 <div id="DonateModal" class="modal-container">
@@ -1160,7 +1160,7 @@ The easiest way to do this is to synchronously ...</p>
 		</p>
 
 		<div>
-			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<img class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png" alt="Poutine image" />
 			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
 				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
 					alt="Donate payment button image" />
@@ -1433,10 +1433,10 @@ The easiest way to do this is to synchronously ...</p>
 
 
 <!-- Add button to toggle between light and dark themes. -->
-<script src="/assets/js/ThemeToggle.js" defer></script>
+<script src="/previews/pr-768/assets/js/ThemeToggle.js" defer></script>
 
 <!-- Add buttons for copying code snippets to the clipboard. -->
-<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+<script src="/previews/pr-768/assets/js/AddCopyToClipboardButtons.js" defer></script>
 
 <!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
 <span style="visibility: collapse;">

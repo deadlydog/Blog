@@ -447,9 +447,9 @@ InitializeLightOrDarkModeStylesheet();
 
 <p>Create a shortcut to the Visual Studio Command Prompt (2010), move it directly to the C: drive, and make sure it is called “Visual Studio Command Prompt (2010)” (it is referenced at this location with this name by the AutoHotkey script in the following steps, but can be changed if needed).</p>
 
-<p><img src="/assets/Posts/2012/11/vs2010commandprompt.png" alt="VS2010CommandPrompt" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2012/11/vs2010commandprompt.png" alt="VS2010CommandPrompt" /></p>
 
-<p><img src="/assets/Posts/2012/11/cdrive.png" alt="CDrive" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2012/11/cdrive.png" alt="CDrive" /></p>
 
 <h2 id="step-3">Step 3</h2>
 
@@ -623,20 +623,20 @@ InitializeLightOrDarkModeStylesheet();
 
 <p>This method is the easiest, but I discovered it after Method 2 (below). Simply open up the Windows Start Menu, navigate to the Startup folder within All Programs, right-click on it and choose Open All Users. Then simply paste a shortcut to your AutoHotkey script in this folder. That’s it; the script will now launch whenever any user logs into Windows. If you only want the script to run when <strong>you</strong> log into Windows (no other users), then just choose Open instead of Open All Users when right-clicking on the Startup folder.</p>
 
-<p><img src="/assets/Posts/2012/11/index.png" alt="Open startup directory" />
-<img src="/assets/Posts/2012/11/index2.png" alt="Paste shortcut into directory" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2012/11/index.png" alt="Open startup directory" />
+<img src="/previews/pr-768/assets/Posts/2012/11/index2.png" alt="Paste shortcut into directory" /></p>
 
 <h3 id="method-2">Method 2</h3>
 
 <p>Open the Windows Task Scheduler and create a new Basic Task. Give it a name and description (something like “launch AutoHotkey script at login”), and then specify to have it run “When I log on”. Then specify that you want it to “Start a program”, and then point it towards the AutoHotkey script you created in Step 3. Before you finish the wizard, check off “Open the Properties dialog for this task when I click Finish”. When that Properties dialog opens up, go to the Conditions tab and make sure none of the checkboxes under the Power category are checked off; this will ensure the script still launches if you are on a laptop and not plugged into AC power. If you need your script to “Run as admin”, then on the General tab check “Run with highest privileges”; this may be required for your script to perform certain actions the require admin privileges, so you can check it off just to be safe.</p>
 
-<p><img src="/assets/Posts/2012/11/open-task-scheduler1.png" alt="Open Task Scheduler" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2012/11/open-task-scheduler1.png" alt="Open Task Scheduler" /></p>
 
-<p><img src="/assets/Posts/2012/11/create-basic-task-in-task-scheduler.png" alt="Create Basic Task in Task Scheduler" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2012/11/create-basic-task-in-task-scheduler.png" alt="Create Basic Task in Task Scheduler" /></p>
 
-<p><img src="/assets/Posts/2012/11/basic-task-conditions.png" alt="Basic Task Conditions" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2012/11/basic-task-conditions.png" alt="Basic Task Conditions" /></p>
 
-<p><img src="/assets/Posts/2012/11/run-scheduled-task-as-admin_2.png" alt="Run Scheduled Task as Admin" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2012/11/run-scheduled-task-as-admin_2.png" alt="Run Scheduled Task as Admin" /></p>
 
 <p>And that’s it. Now you can build your solution file in MSBuild with a quick keystroke from anywhere on your computer. I have chosen to use the Windows Key for my shortcut keys, but you don’t have to; you can use whatever keyboard shortcut you want. And feel free to modify the script I provided to do whatever else you want; AutoHotkey is very powerful and can be used for so many things, so be sure to <a href="http://www.autohotkey.com">checkout their website</a> for more examples of scripts and what it can do. For example lots of people use it to automatically spell-correct as they type, or to automatically expand abbreviations (so I could type DS and hit tab, and have it expand to Daniel Schroeder, or type MyAddress and have it put my address in).</p>
 
@@ -1167,7 +1167,7 @@ The easiest way to do this is to synchronously ...</p>
 
 <!-- Show the Donate image button at the bottom of the screen. -->
 <div id="Donate">
-	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png"
 		alt="Donate button image" />
 </div>
 <div id="DonateModal" class="modal-container">
@@ -1179,7 +1179,7 @@ The easiest way to do this is to synchronously ...</p>
 		</p>
 
 		<div>
-			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<img class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png" alt="Poutine image" />
 			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
 				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
 					alt="Donate payment button image" />
@@ -1452,10 +1452,10 @@ The easiest way to do this is to synchronously ...</p>
 
 
 <!-- Add button to toggle between light and dark themes. -->
-<script src="/assets/js/ThemeToggle.js" defer></script>
+<script src="/previews/pr-768/assets/js/ThemeToggle.js" defer></script>
 
 <!-- Add buttons for copying code snippets to the clipboard. -->
-<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+<script src="/previews/pr-768/assets/js/AddCopyToClipboardButtons.js" defer></script>
 
 <!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
 <span style="visibility: collapse;">

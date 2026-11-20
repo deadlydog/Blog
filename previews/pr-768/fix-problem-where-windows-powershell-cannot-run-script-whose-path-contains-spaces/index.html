@@ -439,7 +439,7 @@ InitializeLightOrDarkModeStylesheet();
 
 <p>The default Windows action when you double click on a PowerShell script is to open it in an editor, rather than to actually run the script. If this bugs you, it’s easy enough to fix. Just right-click on the script, go to “Open with” –&gt; “Choose default program…”, and then select Windows PowerShell, making sure the “Use this app for all .ps1 files” option is checked (this might be called “Always use the selected program to open this kind of file” or something else depending on which version of Windows you are using).</p>
 
-<p><img src="/assets/Posts/2013/05/ChooseDefaultPowerShellApplication.png" alt="Choose Default PowerShell Application" /> <img src="/assets/Posts/2013/05/MakeWindowsPowerShellDefaultApplication.png" alt="Make Windows PowerShell Default Application" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2013/05/ChooseDefaultPowerShellApplication.png" alt="Choose Default PowerShell Application" /> <img src="/previews/pr-768/assets/Posts/2013/05/MakeWindowsPowerShellDefaultApplication.png" alt="Make Windows PowerShell Default Application" /></p>
 
 <p>If you don’t mind opening in an editor as the default action, then to run the script you can just right-click on the script and choose “Open with” –&gt; “Windows PowerShell”. This is probably how 90% of people run their PowerShell scripts; power uses might run their scripts directly from the PowerShell command prompt.</p>
 
@@ -447,7 +447,7 @@ InitializeLightOrDarkModeStylesheet();
 
 <p>So the problem that the 90% of people are likely to encounter is that as soon as the script path has a space in it (either in the filename itself or in the directory path the file resides in), they will see the powershell console flash some red text at them for about 1/10th of a second before it closes, and they will be wondering why the script did not run; or worse, they won’t know that it didn’t run (see the “Keep PowerShell Console Open” section below). If they are lucky enough to press Print Screen at the right moment, or decide to open up a PowerShell console and run from there, they might see an error message similar to this:</p>
 
-<p><img src="/assets/Posts/2013/05/Powershell-Invalid-Path-Error-Message.png" alt="Powershell Invalid Path Error Message" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2013/05/Powershell-Invalid-Path-Error-Message.png" alt="Powershell Invalid Path Error Message" /></p>
 
 <blockquote>
   <p>The term ‘C:\My’ is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.</p>
@@ -463,15 +463,15 @@ InitializeLightOrDarkModeStylesheet();
   <p><strong>Windows 8 Pro Tip:</strong> You can open the PowerShell console at your current directory in File Explorer by choosing File –&gt; Open Windows PowerShell.</p>
 </blockquote>
 
-<p><img src="/assets/Posts/2013/05/Open-Powershell-From-File-Explorer.png" alt="Open Powershell From File Explorer" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2013/05/Open-Powershell-From-File-Explorer.png" alt="Open Powershell From File Explorer" /></p>
 
 <p>If you simply try to run the script by enclosing the path to the script in double quotes you will just see the path spit back at you in the console, instead of actually running the script.</p>
 
-<p><img src="/assets/Posts/2013/05/Try-to-run-script-with-spaces-the-wrong-way.png" alt="Try to run script with spaces the wrong way" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2013/05/Try-to-run-script-with-spaces-the-wrong-way.png" alt="Try to run script with spaces the wrong way" /></p>
 
 <p>The trick is that you have to put “&amp; “ before the script path to actually run the script. Also, if you are trying to run a script from the current directory without using the full path, you will need to put “." before the relative script filename.</p>
 
-<p><img src="/assets/Posts/2013/05/Run-PowerShell-script-the-right-way.png" alt="Run PowerShell script the right way" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2013/05/Run-PowerShell-script-the-right-way.png" alt="Run PowerShell script the right way" /></p>
 
 <h2 id="run-script-path-with-spaces-from-file-explorer">Run script path with spaces from File Explorer</h2>
 
@@ -499,7 +499,7 @@ InitializeLightOrDarkModeStylesheet();
 @="\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" \"&amp; \\\"%1\\\"\""
 </code></pre></div></div>
 
-<p><a href="/assets/Posts/2013/09/FixRunPowerShellScriptWithSpacesInPathProblem.zip">Download Registry Script</a></p>
+<p><a href="/previews/pr-768/assets/Posts/2013/09/FixRunPowerShellScriptWithSpacesInPathProblem.zip">Download Registry Script</a></p>
 
 <p>IMHO this seems like a bug with the PowerShell installer (and Windows since PowerShell is built into Windows 7 and up), so please go <a href="https://connect.microsoft.com/PowerShell/feedback/details/788806/powershell-script-cannot-be-ran-outside-of-console-if-path-contains-spaces">up-vote the bug I submitted to get this fixed</a>.</p>
 
@@ -525,7 +525,7 @@ InitializeLightOrDarkModeStylesheet();
 @="\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoExit \"&amp; \\\"%1\\\"\""
 </code></pre></div></div>
 
-<p><a href="/assets/Posts/2013/09/FixRunPowerShellScriptWithSpacesInPathProblemAndLeaveConsoleOpenWhenScriptCompletes.zip">Download Registry Script</a></p>
+<p><a href="/previews/pr-768/assets/Posts/2013/09/FixRunPowerShellScriptWithSpacesInPathProblemAndLeaveConsoleOpenWhenScriptCompletes.zip">Download Registry Script</a></p>
 
 <p>I hope you find this information as useful as I did. Happy coding!</p>
 
@@ -1408,7 +1408,7 @@ The easiest way to do this is to synchronously ...</p>
 
 <!-- Show the Donate image button at the bottom of the screen. -->
 <div id="Donate">
-	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png"
 		alt="Donate button image" />
 </div>
 <div id="DonateModal" class="modal-container">
@@ -1420,7 +1420,7 @@ The easiest way to do this is to synchronously ...</p>
 		</p>
 
 		<div>
-			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<img class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png" alt="Poutine image" />
 			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
 				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
 					alt="Donate payment button image" />
@@ -1693,10 +1693,10 @@ The easiest way to do this is to synchronously ...</p>
 
 
 <!-- Add button to toggle between light and dark themes. -->
-<script src="/assets/js/ThemeToggle.js" defer></script>
+<script src="/previews/pr-768/assets/js/ThemeToggle.js" defer></script>
 
 <!-- Add buttons for copying code snippets to the clipboard. -->
-<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+<script src="/previews/pr-768/assets/js/AddCopyToClipboardButtons.js" defer></script>
 
 <!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
 <span style="visibility: collapse;">

@@ -462,19 +462,19 @@ If you are wanting to search your entire organization, ensure you have access to
 <p>You can use the global search bar at the top center of the web page to search for resources by name, resource type (service), or resource group.
 If you want to just browse your resources, navigate to the <code class="language-plaintext highlighter-rouge">Subscriptions</code> blade and then drill down into the resource groups and their resources to inspect them.</p>
 
-<p><img src="/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/azure-portal-search-by-resource-name-screenshot.png" alt="Search Azure Portal by resource name" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/azure-portal-search-by-resource-name-screenshot.png" alt="Search Azure Portal by resource name" /></p>
 
-<p><img src="/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/azure-portal-search-by-service-screenshot.png" alt="Search Azure Portal by service" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/azure-portal-search-by-service-screenshot.png" alt="Search Azure Portal by service" /></p>
 
 <p>NOTE: To ensure you are able to view and search all of the subscriptions you have access to, click the gear icon on the top-right of the webpage and ensure the <code class="language-plaintext highlighter-rouge">Default subscription filter</code> is set to <code class="language-plaintext highlighter-rouge">All subscriptions</code>, otherwise you may not see the resources you expect.</p>
 
-<p><img src="/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/azure-portal-default-subscription-filter-screenshot.png" alt="Azure Portal default subscription filter" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/azure-portal-default-subscription-filter-screenshot.png" alt="Azure Portal default subscription filter" /></p>
 
 <p>There is also an <code class="language-plaintext highlighter-rouge">All Resources</code> blade that will allow you to browse, search, sort, and filter all resources in the subscriptions you have access to.
 It shows you the resource Name, Type, Location, Resource Group, and Subscription, and also allows you to filter your resources by Tag.
 This is a powerful blade that can be useful for finding resources of a specific type, in a specific location, or with a specific tag.</p>
 
-<p><img src="/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/azure-portal-all-resources-screenshot.png" alt="Azure Portal All Resources blade" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/azure-portal-all-resources-screenshot.png" alt="Azure Portal All Resources blade" /></p>
 
 <p>To solve my initial problem, I could use the <code class="language-plaintext highlighter-rouge">All Resources</code> blade to filter by Type <code class="language-plaintext highlighter-rouge">Cloud service (classic)</code>.</p>
 
@@ -489,7 +489,7 @@ If you are looking for something more specific, you may need to use another appr
 It may also expose some properties that the portal does not.
 I have found this view is not that helpful on its own, but can be when used in conjunction with the other approaches below.</p>
 
-<p><img src="/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/azure-resource-explorer-screenshot.png" alt="Azure Resource Explorer screenshot" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/azure-resource-explorer-screenshot.png" alt="Azure Resource Explorer screenshot" /></p>
 
 <p>If you do not see the resources you expect, you may need to change the directory using the dropdown box at the top.
 If your organization has a lot of resources, the page can be very resource intensive and bring your browser to its knees.</p>
@@ -516,7 +516,7 @@ You can view all of the various <a href="https://www.powershellgallery.com/packa
 <p>Now that the module is installed and connected, you can use <code class="language-plaintext highlighter-rouge">Get-AzResource</code> to explore the resources in the subscription you are connected to.
 To list the subscriptions you have access to, use <code class="language-plaintext highlighter-rouge">Get-AzSubscription</code>, and to change subscriptions, use <code class="language-plaintext highlighter-rouge">Set-AzContext -Subscription &lt;subscription name&gt;</code>.</p>
 
-<p><img src="/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/az-powershell-module-view-resource-screenshot.png" alt="View Azure resources with Az PowerShell module" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/az-powershell-module-view-resource-screenshot.png" alt="View Azure resources with Az PowerShell module" /></p>
 
 <p>The PowerShell module exposes more properties than the portal does, and you can use regular PowerShell commands to filter and search for resources you want.
 You can also use the Az module to create, modify, and delete resources as well.
@@ -535,7 +535,7 @@ To view all of the subscriptions you have access to, use <code class="language-p
 <p>The CLI has subcommands for many resource types, such as <code class="language-plaintext highlighter-rouge">az vm list</code> or <code class="language-plaintext highlighter-rouge">az webapp list</code> to list just VMs or web apps.
 Use <code class="language-plaintext highlighter-rouge">az --help</code> to see all of the available commands.</p>
 
-<p><img src="/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/az-cli-view-key-vaults-screenshot.png" alt="View Azure resources with Azure CLI" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/az-cli-view-key-vaults-screenshot.png" alt="View Azure resources with Azure CLI" /></p>
 
 <p>The CLI may expose more properties than the portal, and allows you to also create, modify, and delete resources.
 For more information, check out the <a href="https://learn.microsoft.com/en-us/cli/azure/">Azure CLI documentation</a>.</p>
@@ -581,7 +581,7 @@ The example queries can show you how to use the Kusto query language, and the tr
 
 <p>Here’s a screenshot of the query editor with the above query:</p>
 
-<p><img src="/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/azure-resource-graph-explorer-screenshot.png" alt="Azure Resource Graph Explorer" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2024-01-19-Several-ways-to-explore-your-Azure-resources/azure-resource-graph-explorer-screenshot.png" alt="Azure Resource Graph Explorer" /></p>
 
 <p>If needed, I could refine the query to further filter down the results based on other resource properties.</p>
 
@@ -1154,7 +1154,7 @@ The easiest way to do this is to synchronously ...</p>
 
 <!-- Show the Donate image button at the bottom of the screen. -->
 <div id="Donate">
-	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png"
 		alt="Donate button image" />
 </div>
 <div id="DonateModal" class="modal-container">
@@ -1166,7 +1166,7 @@ The easiest way to do this is to synchronously ...</p>
 		</p>
 
 		<div>
-			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<img class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png" alt="Poutine image" />
 			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
 				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
 					alt="Donate payment button image" />
@@ -1439,10 +1439,10 @@ The easiest way to do this is to synchronously ...</p>
 
 
 <!-- Add button to toggle between light and dark themes. -->
-<script src="/assets/js/ThemeToggle.js" defer></script>
+<script src="/previews/pr-768/assets/js/ThemeToggle.js" defer></script>
 
 <!-- Add buttons for copying code snippets to the clipboard. -->
-<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+<script src="/previews/pr-768/assets/js/AddCopyToClipboardButtons.js" defer></script>
 
 <!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
 <span style="visibility: collapse;">

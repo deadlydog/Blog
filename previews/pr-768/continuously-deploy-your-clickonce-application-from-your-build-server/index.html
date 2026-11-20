@@ -455,13 +455,13 @@ InitializeLightOrDarkModeStylesheet();
 
 <p>The first difference is that you will need to provide the “/target:Publish” argument to MSBuild when it builds your project. Here is what this looks like in VSTS:</p>
 
-<p><img src="/assets/Posts/2017/01/Build-MSBuildPublishTarget.png" alt="Build - MsBuild publish target" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2017/01/Build-MSBuildPublishTarget.png" alt="Build - MsBuild publish target" /></p>
 
 <p>This will cause MSBuild to build the required artifacts into an “app.publish” directory. e.g. bin\Debug\app.publish.</p>
 
 <p>The next difference is that you will want to copy that “app.publish” directory to your build artifacts directory. To do this, you will need to add a Copy Files step into your build process that copies the “app.publish” directory from the ClickOnce project’s bin directory to where the build artifacts are expected to be. You will want to do this before the step that publishes your build artifacts. Here is what this looks like in VSTS:</p>
 
-<p><img src="/assets/Posts/2017/01/Build-CopyFilesToArtifactsDirectory.png" alt="Build - Copy files to artifacts directory" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2017/01/Build-CopyFilesToArtifactsDirectory.png" alt="Build - Copy files to artifacts directory" /></p>
 
 <p>So we copy the files into the build artifacts directory, and then the Publish Build Artifacts step at the end will copy those files to wherever you’ve specified; in my case it’s a network share.</p>
 
@@ -469,7 +469,7 @@ InitializeLightOrDarkModeStylesheet();
 
 <p>For completeness sake, this is what my Publish Build Artifacts step looks like in VSTS, and you’ll also notice the “Import-PfxCertificate.ps1” step before the MSBuild step as well:</p>
 
-<p><img src="/assets/Posts/2017/01/Build-PublishBuildArtifacts.png" alt="Build - Publish build artifacts" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2017/01/Build-PublishBuildArtifacts.png" alt="Build - Publish build artifacts" /></p>
 
 <p>So we now have the ClickOnce artifacts being generated and stored in the appropriate directory. If you wanted, you could publish the build artifacts to the ClickOnce application’s final destination right now (instead of a file share as I’ve done here), but I’m going to follow best practices and separate the application “build” and “deployment” portions into their respective subsystems, as you may want separate control over when a build gets published, or maybe you don’t want to publish EVERY build; only some of them.</p>
 
@@ -485,7 +485,7 @@ InitializeLightOrDarkModeStylesheet();
 
 <p>So instead I removed that default step and added a simple “Copy Files” step, and then configured it to grab the files from the file share that the build published the artifacts to, and set the destination to where the ClickOnce application was publishing to when I would do a manual publish from within Visual Studio. Here is what that step looks like in VSTS:</p>
 
-<p><img src="/assets/Posts/2017/01/Release-PublishBuildArtifacts.png" alt="Release - Publish build artifacts" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2017/01/Release-PublishBuildArtifacts.png" alt="Release - Publish build artifacts" /></p>
 
 <p>You should be able to run this release definition and see that it is able to post a new version of your ClickOnce application. Hooray! I setup my releases to automatically publish on every build, but you can configure yours however you like.</p>
 
@@ -499,7 +499,7 @@ InitializeLightOrDarkModeStylesheet();
 
 <p>In order for the build system to access this Set-ProjectFilesClickOnceVersion.ps1 script you will need to check it into source control. Also, you need to make sure you add this build step before the MSBuild step. Here is what this step looks like in VSTS:</p>
 
-<p><img src="/assets/Posts/2017/01/Build-SetProjectFilesClickOnceVersion.png" alt="Build - Set project files ClickOnce version" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2017/01/Build-SetProjectFilesClickOnceVersion.png" alt="Build - Set project files ClickOnce version" /></p>
 
 <p>The Script Filename points to the location of the Set-ProjectFilesClickOnceVersion.ps1 script in my repository. Also note that I set the Working Folder to the directory that contains the .csproj project file. This is necessary since we are dealing with relative paths, not absolute ones.</p>
 
@@ -1576,7 +1576,7 @@ The easiest way to do this is to synchronously ...</p>
 
 <!-- Show the Donate image button at the bottom of the screen. -->
 <div id="Donate">
-	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png"
 		alt="Donate button image" />
 </div>
 <div id="DonateModal" class="modal-container">
@@ -1588,7 +1588,7 @@ The easiest way to do this is to synchronously ...</p>
 		</p>
 
 		<div>
-			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<img class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png" alt="Poutine image" />
 			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
 				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
 					alt="Donate payment button image" />
@@ -1861,10 +1861,10 @@ The easiest way to do this is to synchronously ...</p>
 
 
 <!-- Add button to toggle between light and dark themes. -->
-<script src="/assets/js/ThemeToggle.js" defer></script>
+<script src="/previews/pr-768/assets/js/ThemeToggle.js" defer></script>
 
 <!-- Add buttons for copying code snippets to the clipboard. -->
-<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+<script src="/previews/pr-768/assets/js/AddCopyToClipboardButtons.js" defer></script>
 
 <!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
 <span style="visibility: collapse;">

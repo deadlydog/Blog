@@ -438,11 +438,11 @@ InitializeLightOrDarkModeStylesheet();
         <p>The Windows context menu provides an <code class="language-plaintext highlighter-rouge">Edit Script</code> option for AutoHotkey <code class="language-plaintext highlighter-rouge">.ahk</code> files.
 Unfortunately, it defaults to opening in Notepad, which is not a great editor for AutoHotkey scripts.</p>
 
-<p><img src="/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/windows-file-explorer-context-menu-for-ahk-files-to-edit-script.png" alt="Windows File Explorer context menu for .ahk files Edit Script option" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/windows-file-explorer-context-menu-for-ahk-files-to-edit-script.png" alt="Windows File Explorer context menu for .ahk files Edit Script option" /></p>
 
 <p>The same is true when using the <code class="language-plaintext highlighter-rouge">Edit This Script</code> option from the context menu of the tray icon for a running script.</p>
 
-<p><img src="/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/autohotkey-tray-icon-context-menu-edit-script.png" alt="A running AutoHotkey scripts tray icon context menu" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/autohotkey-tray-icon-context-menu-edit-script.png" alt="A running AutoHotkey scripts tray icon context menu" /></p>
 
 <p>Fortunately there is a simple way to change the default editor for AutoHotkey scripts.</p>
 
@@ -473,7 +473,7 @@ You can use those, but let’s first look at how to manually modify the registry
 
 <p>I use Visual Studio Code, so this is what my registry entry looks like after updating it:</p>
 
-<p><img src="/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/autohotkey-default-script-editor-registry-key-to-edit.png" alt="Setting the registry entry for Visual Studio Code" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/autohotkey-default-script-editor-registry-key-to-edit.png" alt="Setting the registry entry for Visual Studio Code" /></p>
 
 <h4 id="creating-the-registry-key-if-it-does-not-exist">Creating the registry key if it does not exist</h4>
 
@@ -502,7 +502,7 @@ Below are some popular editors and their registry value to use.</p>
 <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"C:\Program Files\Notepad++\notepad++.exe" "%1"
 </code></pre></div></div>
 
-<p><a href="/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/NotepadPlusPlusAsDefaultAhkEditor.reg">Download Notepad++ .reg file</a></p>
+<p><a href="/previews/pr-768/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/NotepadPlusPlusAsDefaultAhkEditor.reg">Download Notepad++ .reg file</a></p>
 
 <hr />
 
@@ -526,7 +526,7 @@ Below are some popular editors and their registry value to use.</p>
 Even if SciTE4AutoHotkey is already installed, you can run the installer again to set it as the default editor.
 Or use the .reg file provided below.</p>
 
-<p><a href="/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/SciTE4AutoHotkeyAsDefaultAhkEditor.reg">Download SciTE4AutoHotkey .reg file</a></p>
+<p><a href="/previews/pr-768/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/SciTE4AutoHotkeyAsDefaultAhkEditor.reg">Download SciTE4AutoHotkey .reg file</a></p>
 
 <hr />
 
@@ -535,7 +535,7 @@ Or use the .reg file provided below.</p>
 <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"C:\Program Files\Sublime Text 3\sublime_text.exe" "%1"
 </code></pre></div></div>
 
-<p><a href="/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/SublimeText3AsDefaultAhkEditor.reg">Download Sublime Text 3 .reg file</a></p>
+<p><a href="/previews/pr-768/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/SublimeText3AsDefaultAhkEditor.reg">Download Sublime Text 3 .reg file</a></p>
 
 <h2 id="locating-the-executable-file-path">Locating the executable file path</h2>
 
@@ -547,7 +547,7 @@ Or use the .reg file provided below.</p>
   <li>
     <p>Right-click on the editor and choose <code class="language-plaintext highlighter-rouge">Open file location</code>.</p>
 
-    <p><img src="/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/open-application-file-location-from-windows-start-menu.png" alt="Open the application file location from the Windows Start Menu" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/open-application-file-location-from-windows-start-menu.png" alt="Open the application file location from the Windows Start Menu" /></p>
   </li>
   <li>That should open up File Explorer.
     <ol>
@@ -557,7 +557,7 @@ Or use the .reg file provided below.</p>
           <li>
             <p>In the shortcut properties window, click the <code class="language-plaintext highlighter-rouge">Open File Location</code> button to open a new File Explorer window containing the .exe file.</p>
 
-            <p><img src="/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/open-file-location-from-shortcut-file-properties.png" alt="Open the shortcut file location from the shortcut properties window" /></p>
+            <p><img src="/previews/pr-768/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/open-file-location-from-shortcut-file-properties.png" alt="Open the shortcut file location from the shortcut properties window" /></p>
           </li>
         </ol>
       </li>
@@ -566,7 +566,7 @@ Or use the .reg file provided below.</p>
   <li>
     <p>Copy the path of the executable file and use that as the value for the registry key.</p>
 
-    <p><img src="/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/copy-path-to-executable-file.png" alt="Copy the path of the executable file from File Explorer" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2023-03-02-Change-the-default-AutoHotkey-script-editor/copy-path-to-executable-file.png" alt="Copy the path of the executable file from File Explorer" /></p>
   </li>
 </ol>
 
@@ -1121,7 +1121,7 @@ The easiest way to do this is to synchronously ...</p>
 
 <!-- Show the Donate image button at the bottom of the screen. -->
 <div id="Donate">
-	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png"
 		alt="Donate button image" />
 </div>
 <div id="DonateModal" class="modal-container">
@@ -1133,7 +1133,7 @@ The easiest way to do this is to synchronously ...</p>
 		</p>
 
 		<div>
-			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<img class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png" alt="Poutine image" />
 			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
 				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
 					alt="Donate payment button image" />
@@ -1406,10 +1406,10 @@ The easiest way to do this is to synchronously ...</p>
 
 
 <!-- Add button to toggle between light and dark themes. -->
-<script src="/assets/js/ThemeToggle.js" defer></script>
+<script src="/previews/pr-768/assets/js/ThemeToggle.js" defer></script>
 
 <!-- Add buttons for copying code snippets to the clipboard. -->
-<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+<script src="/previews/pr-768/assets/js/AddCopyToClipboardButtons.js" defer></script>
 
 <!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
 <span style="visibility: collapse;">

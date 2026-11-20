@@ -443,7 +443,7 @@ The most common workaround is to <a href="https://www.autohotkey.com/docs/v1/Pro
 By default, the AutoHotkey installer will add a <code class="language-plaintext highlighter-rouge">Run with UI Access</code> context menu item to AHK scripts.
 If you use this context menu item to run your script (by right-clicking the AHK script and choosing <code class="language-plaintext highlighter-rouge">Run with UI Access</code>), it will run with UI Access and you will be able to trigger your AHK scripts when an Admin app has focus.</p>
 
-<p><img src="/assets/Posts/2023-03-04-Prevent-Admin-apps-from-blocking-AutoHotkey-by-using-UI-Access/run-ahk-script-with-ui-access.png" alt="Run AHK script with UI Access" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-03-04-Prevent-Admin-apps-from-blocking-AutoHotkey-by-using-UI-Access/run-ahk-script-with-ui-access.png" alt="Run AHK script with UI Access" /></p>
 
 <p>This solution addresses the issue, but it is not ideal for a couple reasons:</p>
 
@@ -464,7 +464,7 @@ The executable file path we want to update is stored in the following registry k
 
 <p>The default registry value typically looks like this:</p>
 
-<p><img src="/assets/Posts/2023-03-04-Prevent-Admin-apps-from-blocking-AutoHotkey-by-using-UI-Access/default-autohotkey-open-command-registry-value.png" alt="Default AHK open command registry value" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2023-03-04-Prevent-Admin-apps-from-blocking-AutoHotkey-by-using-UI-Access/default-autohotkey-open-command-registry-value.png" alt="Default AHK open command registry value" /></p>
 
 <p><strong>NOTE:</strong> Be aware that updating or reinstalling AutoHotkey will restore the registry value to its default value, so you will need to perform the action below again after updating AutoHotkey.</p>
 
@@ -492,7 +492,7 @@ The executable file path we want to update is stored in the following registry k
 <span class="n">RegWrite</span><span class="p">,</span> <span class="n">REG_SZ</span><span class="p">,</span> <span class="n">HKEY_CLASSES_ROOT</span><span class="err">\</span><span class="n">AutoHotkeyScript</span><span class="err">\</span><span class="n">Shell</span><span class="err">\</span><span class="n">Open</span><span class="err">\</span><span class="n">Command</span><span class="p">,,</span> <span class="p">%</span><span class="n">UiAccessCommandKeyValue</span><span class="p">%</span>
 </code></pre></div></div>
 
-<p>You can <a href="/assets/Posts/2023-03-04-Prevent-Admin-apps-from-blocking-AutoHotkey-by-using-UI-Access/Always-start-AutoHotkey-with-UI-Access.ahk">download the script here</a>.</p>
+<p>You can <a href="/previews/pr-768/assets/Posts/2023-03-04-Prevent-Admin-apps-from-blocking-AutoHotkey-by-using-UI-Access/Always-start-AutoHotkey-with-UI-Access.ahk">download the script here</a>.</p>
 
 <p>Simply run the AHK script and it will update the registry value for you.</p>
 
@@ -509,13 +509,13 @@ The executable file path we want to update is stored in the following registry k
   <li>
     <p>Double-click the <code class="language-plaintext highlighter-rouge">(Default)</code> value to edit it, copy its value data, then click Cancel.</p>
 
-    <p><img src="/assets/Posts/2023-03-04-Prevent-Admin-apps-from-blocking-AutoHotkey-by-using-UI-Access/default-autohotkey-uiaccess-command-registry-value.png" alt="Copy the UI Access registry value data" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2023-03-04-Prevent-Admin-apps-from-blocking-AutoHotkey-by-using-UI-Access/default-autohotkey-uiaccess-command-registry-value.png" alt="Copy the UI Access registry value data" /></p>
   </li>
   <li>Navigate to <code class="language-plaintext highlighter-rouge">HKEY_CLASSES_ROOT\AutoHotkeyScript\Shell\Open\Command</code>.</li>
   <li>
     <p>Double-click the <code class="language-plaintext highlighter-rouge">(Default)</code> value to edit it, paste the value data you copied from the <code class="language-plaintext highlighter-rouge">uiAccess</code> key, then click OK.</p>
 
-    <p><img src="/assets/Posts/2023-03-04-Prevent-Admin-apps-from-blocking-AutoHotkey-by-using-UI-Access/updated-autohotkey-open-command-registry-value.png" alt="Modify the Open registry value data" /></p>
+    <p><img src="/previews/pr-768/assets/Posts/2023-03-04-Prevent-Admin-apps-from-blocking-AutoHotkey-by-using-UI-Access/updated-autohotkey-open-command-registry-value.png" alt="Modify the Open registry value data" /></p>
   </li>
 </ol>
 
@@ -1150,7 +1150,7 @@ The easiest way to do this is to synchronously ...</p>
 
 <!-- Show the Donate image button at the bottom of the screen. -->
 <div id="Donate">
-	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png"
 		alt="Donate button image" />
 </div>
 <div id="DonateModal" class="modal-container">
@@ -1162,7 +1162,7 @@ The easiest way to do this is to synchronously ...</p>
 		</p>
 
 		<div>
-			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<img class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png" alt="Poutine image" />
 			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
 				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
 					alt="Donate payment button image" />
@@ -1435,10 +1435,10 @@ The easiest way to do this is to synchronously ...</p>
 
 
 <!-- Add button to toggle between light and dark themes. -->
-<script src="/assets/js/ThemeToggle.js" defer></script>
+<script src="/previews/pr-768/assets/js/ThemeToggle.js" defer></script>
 
 <!-- Add buttons for copying code snippets to the clipboard. -->
-<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+<script src="/previews/pr-768/assets/js/AddCopyToClipboardButtons.js" defer></script>
 
 <!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
 <span style="visibility: collapse;">

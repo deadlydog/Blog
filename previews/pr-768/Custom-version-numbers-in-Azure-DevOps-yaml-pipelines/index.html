@@ -444,7 +444,7 @@ Whether you are looking to use semantic versioning, or want to use some other ve
 <p>Before we look at the yaml way, if you’ve been using Azure DevOps for a while you may have already solved this problem in the classic build pipeline editor.
 One way to do this was to use the <code class="language-plaintext highlighter-rouge">$(Rev:r)</code> syntax in your <code class="language-plaintext highlighter-rouge">Build number format</code>; for example, using <code class="language-plaintext highlighter-rouge">1.0.0.$(Rev:r)</code>.</p>
 
-<p><img src="/assets/Posts/2020-01-10-Custom-version-numbers-in-Azure-DevOps-yaml-pipelines/AzurePipelinesClassicEditorBuildNumberFormat.png" alt="Azure Pipelines classic editor build number format" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2020-01-10-Custom-version-numbers-in-Azure-DevOps-yaml-pipelines/AzurePipelinesClassicEditorBuildNumberFormat.png" alt="Azure Pipelines classic editor build number format" /></p>
 
 <p>The <code class="language-plaintext highlighter-rouge">$(Rev:r)</code> syntax acts as a variable with an auto-incrementing value, so the first build would be <code class="language-plaintext highlighter-rouge">1.0.0.0</code>, the next would be <code class="language-plaintext highlighter-rouge">1.0.0.1</code>, then <code class="language-plaintext highlighter-rouge">1.0.0.2</code>, and so on.
 Once any part of the string to the left of <code class="language-plaintext highlighter-rouge">$(Rev:r)</code> changes, the counter resets to zero.
@@ -453,7 +453,7 @@ So if you changed the Build Number Format to <code class="language-plaintext hig
 <p>To access the Build Number Format value in your tasks so that you could actually use it, you would use the built-in <code class="language-plaintext highlighter-rouge">$(Build.BuildNumber)</code> variable.
 For example, if you wanted to apply the version to all of your .Net projects before building the assemblies, you could do this:</p>
 
-<p><img src="/assets/Posts/2020-01-10-Custom-version-numbers-in-Azure-DevOps-yaml-pipelines/AzurePipelinesClassicEditorUsingBuildNumberFormat.png" alt="Azure Pipelines classic editor using build number format" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2020-01-10-Custom-version-numbers-in-Azure-DevOps-yaml-pipelines/AzurePipelinesClassicEditorUsingBuildNumberFormat.png" alt="Azure Pipelines classic editor using build number format" /></p>
 
 <p>I am a huge fan of <a href="https://marketplace.visualstudio.com/items?itemName=richardfennellBM.BM-VSTS-Versioning-Task">Richard Fennell’s Manifest Versioning Build Tasks Azure DevOps extension</a>, which is what is being used in the above screenshot to version all of the .Net assemblies with our version number.</p>
 
@@ -1810,7 +1810,7 @@ The easiest way to do this is to synchronously ...</p>
 
 <!-- Show the Donate image button at the bottom of the screen. -->
 <div id="Donate">
-	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png"
 		alt="Donate button image" />
 </div>
 <div id="DonateModal" class="modal-container">
@@ -1822,7 +1822,7 @@ The easiest way to do this is to synchronously ...</p>
 		</p>
 
 		<div>
-			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<img class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png" alt="Poutine image" />
 			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
 				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
 					alt="Donate payment button image" />
@@ -2095,10 +2095,10 @@ The easiest way to do this is to synchronously ...</p>
 
 
 <!-- Add button to toggle between light and dark themes. -->
-<script src="/assets/js/ThemeToggle.js" defer></script>
+<script src="/previews/pr-768/assets/js/ThemeToggle.js" defer></script>
 
 <!-- Add buttons for copying code snippets to the clipboard. -->
-<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+<script src="/previews/pr-768/assets/js/AddCopyToClipboardButtons.js" defer></script>
 
 <!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
 <span style="visibility: collapse;">

@@ -465,7 +465,7 @@ System.InvalidOperationException: Showing a modal dialog box or form when the ap
   <li>In the <em>Configure Certificate…</em> dropdown, choose an existing certificate that you have, or create a new test certificate and provide a password for it. This should create the certificate and add the new .pfx file to your project’s root.</li>
 </ol>
 
-<p><img src="/assets/Posts/2016/12/Create-Pfx-Certificate-In-UWP-App.png" alt="Create Pfx Certificate In UWP App" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2016/12/Create-Pfx-Certificate-In-UWP-App.png" alt="Create Pfx Certificate In UWP App" /></p>
 
 <h2 id="creating-a-new-pfx-file-for-a-clickonce-application">Creating a new .pfx file for a ClickOnce application</h2>
 
@@ -478,7 +478,7 @@ System.InvalidOperationException: Showing a modal dialog box or form when the ap
   <li>choose the certificate you want to use, or create your own password-protected test certificate.</li>
 </ol>
 
-<p><img src="/assets/Posts/2016/12/Create-Pfx-Certificate-In-ClickOnce-App.png" alt="Create Pfx Certificate In ClickOnce App" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2016/12/Create-Pfx-Certificate-In-ClickOnce-App.png" alt="Create Pfx Certificate In ClickOnce App" /></p>
 
 <h2 id="applying-the-pfx-file-before-building-on-the-build-server">Applying the .pfx file before building on the build server</h2>
 
@@ -508,7 +508,7 @@ System.InvalidOperationException: Showing a modal dialog box or form when the ap
 
 <p>Here I am using VSTS (Visual Studio Team Services), but the same steps should generally apply to any build system (e.g. TeamCity). I have created a new build step called <em>Apply Store Certificate</em> that calls the Import-PfxCertificate.ps1 PowerShell script. This step is set to occur before the <em>Build solution</em> step, and provides the required parameters to the script; the path to the .pfx file and the certificates password (as a hidden variable that I configured in the build system). Notice that I also set the <em>Working folder</em> that the script will run from to the directory that the .pfx resides in, so that the script will be able to resolve the absolute file path.</p>
 
-<p><img src="/assets/Posts/2016/12/VSTS-Build-Pfx-Certificate-Step.png" alt="VSTS Build Pfx Certificate Step" /></p>
+<p><img src="/previews/pr-768/assets/Posts/2016/12/VSTS-Build-Pfx-Certificate-Step.png" alt="VSTS Build Pfx Certificate Step" /></p>
 
 <p>Your build system should now be able to apply the certificate before building the solution, avoiding the certificate errors and hopefully resulting in a successful build.</p>
 
@@ -1481,7 +1481,7 @@ The easiest way to do this is to synchronously ...</p>
 
 <!-- Show the Donate image button at the bottom of the screen. -->
 <div id="Donate">
-	<img id="DonateModalOpenButton" class="donate-button-image" src="/assets/Site/CanadianPoutine.png"
+	<img id="DonateModalOpenButton" class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png"
 		alt="Donate button image" />
 </div>
 <div id="DonateModal" class="modal-container">
@@ -1493,7 +1493,7 @@ The easiest way to do this is to synchronously ...</p>
 		</p>
 
 		<div>
-			<img class="donate-button-image" src="/assets/Site/CanadianPoutine.png" alt="Poutine image" />
+			<img class="donate-button-image" src="/previews/pr-768/assets/Site/CanadianPoutine.png" alt="Poutine image" />
 			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G2XLYDXFE2MNQ">
 				<img class="donate-image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
 					alt="Donate payment button image" />
@@ -1766,10 +1766,10 @@ The easiest way to do this is to synchronously ...</p>
 
 
 <!-- Add button to toggle between light and dark themes. -->
-<script src="/assets/js/ThemeToggle.js" defer></script>
+<script src="/previews/pr-768/assets/js/ThemeToggle.js" defer></script>
 
 <!-- Add buttons for copying code snippets to the clipboard. -->
-<script src="/assets/js/AddCopyToClipboardButtons.js" defer></script>
+<script src="/previews/pr-768/assets/js/AddCopyToClipboardButtons.js" defer></script>
 
 <!-- Verify that I own this website to Mastodon so it shows up as verified in my Mastodon profile -->
 <span style="visibility: collapse;">
