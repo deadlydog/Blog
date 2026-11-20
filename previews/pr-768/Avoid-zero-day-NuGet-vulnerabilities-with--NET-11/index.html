@@ -470,6 +470,11 @@ For example:</p>
 
 <p>See <a href="https://learn.microsoft.com/es-es/nuget/consume-packages/minimum-package-publish-age">the official docs here</a>.</p>
 
+<p>Your projects aren’t on .NET 11 yet?
+Don’t worry.
+You can still add the <code class="language-plaintext highlighter-rouge">minPublishAgeHours</code> setting to your <code class="language-plaintext highlighter-rouge">NuGet.config</code> file, and it will simply be ignored by older versions of the .NET SDK that do not support it.
+But when you do eventually update, it will take effect and help protect your systems.</p>
+
 <h2 id="conclusion">Conclusion</h2>
 
 <p>That’s it!
