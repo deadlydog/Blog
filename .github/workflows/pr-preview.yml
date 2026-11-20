@@ -42,6 +42,19 @@ jobs:
 
           bundle exec jekyll build --config _config.yml,/tmp/_config_preview.yml --destination ./_site_preview
 
+      - name: Fix root-relative asset paths in preview
+        shell: pwsh
+        run: |
+          $previewBaseurl = "/previews/pr-${{ github.event.pull_request.number }}"
+          $assetPathPattern = '(?i)(\b(?:src|href|poster)\s*=\s*["''])/assets/'
+          Get-ChildItem -Path ./_site_preview -Filter *.html -File -Recurse | ForEach-Object {
+            $content = Get-Content -LiteralPath $_.FullName -Raw
+            $updated = [regex]::Replace($content, $assetPathPattern, ('${1}' + $previewBaseurl + '/assets/'))
+            if ($updated -cne $content) {
+              Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8
+            }
+          }
+
       - name: Deploy preview to gh-pages branch previews subdirectory
         uses: peaceiris/actions-gh-pages@v4
         with:
