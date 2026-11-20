@@ -35,7 +35,7 @@ For example, if you want to ensure you do not update to any NuGet package versio
 
 If you have multiple package sources, you may want to add the `minPublishAgeHours` attribute to each of them.
 
-If you don't want to manually update your `NuGet.config` file, you can use the `dotnet nuget` CLI to set the `minPublishAgeHours` for your package sources.
+If you don't want to manually create or update your `NuGet.config` file, you can use the `dotnet` CLI to set the `minPublishAgeHours` for your package sources.
 For example:
 
 ```bash
