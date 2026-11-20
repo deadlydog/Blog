@@ -7,9 +7,11 @@ comments_locked: false
 toc: false
 categories:
   - PowerShell
+  - Security
   - Social
 tags:
   - PowerShell
+  - Security
   - Social
   - Podcast
 ---

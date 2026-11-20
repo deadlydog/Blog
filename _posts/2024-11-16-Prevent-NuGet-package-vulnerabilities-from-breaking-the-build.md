@@ -8,10 +8,12 @@ toc: false
 categories:
   - DotNet
   - NuGet
+  - Security
   - Visual Studio
 tags:
   - DotNet
   - NuGet
+  - Security
   - Visual Studio
 ---
 

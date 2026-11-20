@@ -6,8 +6,12 @@ permalink: /The-part-of-the-SDLC-nobody-talks-about--and-many-companies-dont-do-
 comments_locked: false
 toc: false
 categories:
+  - DevOps
+  - Security
   - Software Engineering
 tags:
+  - DevOps
+  - Security
   - Software Engineering
 ---
 
