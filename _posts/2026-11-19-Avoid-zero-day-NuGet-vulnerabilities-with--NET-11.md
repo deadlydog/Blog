@@ -60,4 +60,6 @@ By using this simple configuration you can keep your machine, your teammates mac
 Since the `NuGet.config` file is typically configured at the solution or git repo level, consider writing a script to rip through all of your repos and add/update the `NuGet.config` file with the `minPublishAgeHours` setting for your package sources.
 Or ask AI to create you a script to do it 😉.
 
+Aaaaaaaand here's a creepy image to help remind you to keep your packages up to date, but not too up to date 😁
+
 ![DotNet NuGet vulnerability](/assets/Posts/2026-11-19-Avoid-zero-day-NuGet-vulnerabilities-with--NET-11/Dotnet-NuGet-vulnerabiltiy.png)
