@@ -73,4 +73,6 @@ Or ask AI to create you a script to do it 😉.
 
 Aaaaaaaand here's a creepy image to help remind you to keep your packages up to date, but not too up to date 😁
 
+Happy coding!
+
 ![DotNet NuGet vulnerability](/assets/Posts/2026-11-19-Avoid-zero-day-NuGet-vulnerabilities-with--NET-11/Dotnet-NuGet-vulnerabiltiy.png)
