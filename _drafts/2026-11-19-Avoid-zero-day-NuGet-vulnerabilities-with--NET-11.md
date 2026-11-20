@@ -19,7 +19,7 @@ However, if you (or one of your team members) had done a NuGet update on the sam
 
 ## .NET 11 to the rescue
 
-.NET 11 introduces a new security feature that will not update NuGet packages to a new version until it is X number of hours old.
+.NET 11 introduces a new security feature that will not update NuGet packages to a new version until it is at least X number of hours old.
 
 To take advantage of this, simply add the `minPublishAgeHours` element to your `NuGet.config` file's package source.
 For example, if you want to ensure you do not update to any NuGet package versions that are less than 3 days (72 hours) old, you might configure your `NuGet.config` like this:
