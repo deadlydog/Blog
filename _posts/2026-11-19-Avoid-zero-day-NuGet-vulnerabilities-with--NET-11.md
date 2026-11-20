@@ -53,6 +53,11 @@ dotnet nuget update source nuget.org --min-publish-age-hours 72
 
 See [the official docs here](https://learn.microsoft.com/es-es/nuget/consume-packages/minimum-package-publish-age).
 
+Your projects aren't on .NET 11 yet?
+Don't worry.
+You can still add the `minPublishAgeHours` setting to your `NuGet.config` file, and it will simply be ignored by older versions of the .NET SDK that do not support it.
+But when you do eventually update, it will take effect and help protect your systems.
+
 ## Conclusion
 
 That's it!
