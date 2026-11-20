@@ -454,7 +454,7 @@ For example, if you want to ensure you do not update to any NuGet package versio
 
 <p>If you have multiple package sources, you may want to add the <code class="language-plaintext highlighter-rouge">minPublishAgeHours</code> attribute to each of them.</p>
 
-<p>If you don’t want to manually update your <code class="language-plaintext highlighter-rouge">NuGet.config</code> file, you can use the <code class="language-plaintext highlighter-rouge">dotnet nuget</code> CLI to set the <code class="language-plaintext highlighter-rouge">minPublishAgeHours</code> for your package sources.
+<p>If you don’t want to manually create or update your <code class="language-plaintext highlighter-rouge">NuGet.config</code> file, you can use the <code class="language-plaintext highlighter-rouge">dotnet</code> CLI to set the <code class="language-plaintext highlighter-rouge">minPublishAgeHours</code> for your package sources.
 For example:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dotnet nuget add <span class="nb">source </span>https://api.nuget.org/v3/index.json <span class="nt">--name</span> nuget.org <span class="nt">--min-publish-age-hours</span> 72
