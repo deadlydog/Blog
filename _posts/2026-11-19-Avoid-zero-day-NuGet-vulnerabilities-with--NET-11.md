@@ -16,6 +16,7 @@ tags:
 ---
 
 In the age of AI, new zero-day vulnerabilities are showing up every day, and .NET NuGet packages are no exception.
+
 Typically, package vulnerabilities are detected and taken down within the first couple days of hitting a package registry.
 However, if you (or one of your team members) had done a NuGet update on the same day as a vulnerability was released, your machine could end up compromised, or you may end up unknowingly shipping malicious code.
 
