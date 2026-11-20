@@ -2,7 +2,7 @@
 title: "Host website PR previews on GitHub Pages for free"
 permalink: /Host-website-PR-previews-on-GitHub-Pages-for-free/
 #date: 2099-01-15T00:00:00-06:00
-#last_modified_at: 2099-01-22
+last_modified_at: 2026-11-19
 comments_locked: false
 toc: false
 categories:
@@ -149,6 +149,19 @@ jobs:
           "@ | Set-Content -Path /tmp/_config_preview.yml
 
           bundle exec jekyll build --config _config.yml,/tmp/_config_preview.yml --destination ./_site_preview
+
+      - name: Fix root-relative asset paths in preview
+        shell: pwsh
+        run: |
+          $previewBaseurl = "/previews/pr-${% raw %}{{ github.event.pull_request.number }}{% endraw %}"
+          $assetPathPattern = '(?i)(\b(?:src|href|poster)\s*=\s*["''])/assets/'
+          Get-ChildItem -Path ./_site_preview -Filter *.html -File -Recurse | ForEach-Object {
+            $content = Get-Content -LiteralPath $_.FullName -Raw
+            $updated = [regex]::Replace($content, $assetPathPattern, ('${1}' + $previewBaseurl + '/assets/'))
+            if ($updated -cne $content) {
+              Set-Content -LiteralPath $_.FullName -Value $updated -NoNewline -Encoding utf8
+            }
+          }
 
       - name: Deploy preview to gh-pages branch previews subdirectory
         uses: peaceiris/actions-gh-pages@v4
